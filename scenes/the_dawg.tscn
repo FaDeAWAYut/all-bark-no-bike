@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://dfnmfcww2cu6i"]
+
+[ext_resource type="Script" path="res://TheDawg.gd" id="1_jfyaa"]
+[ext_resource type="Texture2D" uid="uid://b7wcsauy7nqkt" path="res://assets/TheDawg.png" id="2_eavk6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lcpkc"]
+size = Vector2(96, 168)
+
+[node name="The Dawg" type="CharacterBody2D"]
+z_index = 1
+script = ExtResource("1_jfyaa")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(6.95, 6.95)
+texture = ExtResource("2_eavk6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 4)
+shape = SubResource("RectangleShape2D_lcpkc")

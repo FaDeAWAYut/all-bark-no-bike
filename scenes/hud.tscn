@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://cobth27w6p3ja"]
+
+[ext_resource type="FontFile" uid="uid://7ba5y644lx4p" path="res://assets/font/DTM-Sans.otf" id="1_gist6"]
+
+[node name="HUD" type="CanvasLayer"]
+
+[node name="HPLabel" type="Label" parent="."]
+offset_left = 32.0
+offset_right = 161.0
+offset_bottom = 121.0
+theme_override_fonts/font = ExtResource("1_gist6")
+theme_override_font_sizes/font_size = 100
+text = "HP:"
+horizontal_alignment = 1
+vertical_alignment = 1
