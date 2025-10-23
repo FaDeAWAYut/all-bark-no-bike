@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://p3b5yajekrdr"]
 
-[ext_resource type="Script" path="res://scenes/main.gd" id="1_e2v34"]
+[ext_resource type="Script" uid="uid://ct048k6rsjfbb" path="res://scenes/main.gd" id="1_e2v34"]
 [ext_resource type="PackedScene" uid="uid://b530dx4s8ydsy" path="res://scenes/parallax_background.tscn" id="1_mh4tl"]
 [ext_resource type="PackedScene" uid="uid://dfnmfcww2cu6i" path="res://scenes/the_dawg.tscn" id="2_631s2"]
 [ext_resource type="PackedScene" uid="uid://cobth27w6p3ja" path="res://scenes/hud.tscn" id="4_dwgw2"]
