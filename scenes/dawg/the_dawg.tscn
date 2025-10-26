@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://dfnmfcww2cu6i"]
 
-[ext_resource type="Script" path="res://TheDawg.gd" id="1_jfyaa"]
+[ext_resource type="Script" uid="uid://bg5sn4uhfhgto" path="res://TheDawg.gd" id="1_jfyaa"]
 [ext_resource type="Texture2D" uid="uid://b7wcsauy7nqkt" path="res://assets/TheDawg.png" id="2_eavk6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lcpkc"]

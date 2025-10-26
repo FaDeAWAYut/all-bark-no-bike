@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dmj6eoyf11sy5"]
 
-[ext_resource type="Script" path="res://scenes/car.gd" id="1_03ue1"]
+[ext_resource type="Script" uid="uid://7p7ka87arm7a" path="res://scenes/car/car.gd" id="1_03ue1"]
 [ext_resource type="Texture2D" uid="uid://di6d5m58674ux" path="res://assets/car.png" id="1_88lhg"]
 
 [node name="Car" type="Area2D"]
