@@ -6,8 +6,8 @@ signal speed_changed(new_speed)
 
 var speed : float
 var time : float
-var startSpeed : float = 5.0
-var maxSpeed : int = 100
+var startSpeed : float = 150.0
+var maxSpeed : float = 600.0
 
 func start():
 	time = 0
@@ -17,7 +17,7 @@ func update(delta: float):
 	time += delta
 	
 	if speed < maxSpeed and time >= 1:
-		speed = startSpeed + ((time - 1) * 2)
+		speed = startSpeed + ((time - 1) * 20)
 		speed_changed.emit(speed)
 	
 	return speed

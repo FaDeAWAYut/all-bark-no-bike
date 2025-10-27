@@ -11,6 +11,7 @@ var speedManager: SpeedManager
 # Game constants
 const dogStartPosition := Vector2i(960, 920)
 const camStartPosition := Vector2i(960, 560)
+@export var currentSpeed: float
 
 var screenSize : Vector2i
 
@@ -33,8 +34,6 @@ func initialize_modules():
 	
 	# Create and setup speed manager
 	speedManager = SpeedManager.new()
-	speedManager.startSpeed = 5.0
-	speedManager.maxSpeed = 100
 	add_child(speedManager)
 
 func setup_signal_connections():
@@ -56,11 +55,11 @@ func new_game():
 	$"TheDawg".velocity = Vector2i(0, 0)
 	$Camera2D.position = camStartPosition
 
-func _process(delta):
+func _physics_process(delta: float):
 	if gameManager.isGameOver:
 		return
 		
-	var currentSpeed = speedManager.update(delta)
+	currentSpeed = speedManager.update(delta)
 	
 	# Update obstacle spawning
 	obstacleSpawner.update(delta, $Camera2D.position.y, screenSize.x)
@@ -69,8 +68,8 @@ func _process(delta):
 	show_hp()
 	
 	# Move the dawg and the cam
-	$"TheDawg".position.y -= currentSpeed
-	$Camera2D.position.y -= currentSpeed
+	$"TheDawg".position.y -= currentSpeed * delta
+	$Camera2D.position.y -= currentSpeed * delta
 
 func _on_obstacle_spawned(obs: Node):
 	# Add the obstacle to the scene and set up collision
