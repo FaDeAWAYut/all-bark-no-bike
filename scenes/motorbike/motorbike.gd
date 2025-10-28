@@ -10,6 +10,10 @@ extends CharacterBody2D
 # Obstacle detection settings
 @export var obstacle_check_rate: float = 0.2
 
+# Screen boundaries (adjust these based on your camera/screen size)
+@export var screen_top_y: float = 150.0    # Top boundary (pixels from top)
+@export var screen_bottom_y: float = 300.0 # Bottom boundary (pixels from top)
+
 # Internal variables
 var direction: int = 1
 var timer: float = 0.0
@@ -32,7 +36,10 @@ func _ready():
 	
 	motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
 	direction = 1 if randf() > 0.5 else -1
+	
+	# Set initial position within screen bounds
 	global_position.x = clamp(global_position.x, min_x, max_x)
+	global_position.y = randf_range(screen_top_y, screen_bottom_y)
 
 func _physics_process(delta):
 	timer += delta
@@ -60,14 +67,14 @@ func handle_normal_movement():
 		change_direction()
 		timer = 0.0
 	
-	# Move in the current direction
+	# Move only horizontally (no vertical movement since camera is static)
 	velocity.x = direction * speed_x
-	velocity.y = -1 * currentSpeed
+	velocity.y = 0  # No vertical movement
 
 func handle_obstacle_escape():
-	# Move away from obstacle
+	# Move away from obstacle (only horizontally)
 	velocity.x = escape_direction * escape_speed
-	velocity.y = -1 * currentSpeed
+	velocity.y = 0  # No vertical movement
 
 func check_for_obstacles():
 	current_obstacle = null
@@ -108,6 +115,7 @@ func change_direction():
 	direction = 1 if randf() > 0.5 else -1
 
 func enforce_boundaries():
+	# Horizontal boundaries
 	if global_position.x <= min_x:
 		global_position.x = min_x
 		if direction == -1:
@@ -120,3 +128,9 @@ func enforce_boundaries():
 			direction = -1
 		if escape_direction == 1:
 			escape_direction = -1
+	
+	# Vertical boundaries (keep within top half of screen)
+	if global_position.y <= screen_top_y:
+		global_position.y = screen_top_y
+	elif global_position.y >= screen_bottom_y:
+		global_position.y = screen_bottom_y

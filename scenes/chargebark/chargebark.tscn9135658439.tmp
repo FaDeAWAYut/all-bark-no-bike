@@ -1,0 +1,76 @@
+[gd_scene load_steps=11 format=3 uid="uid://lxglkufg1d0p"]
+
+[ext_resource type="Texture2D" uid="uid://bilmvxmic10y8" path="res://assets/chargebark.png" id="1_qib41"]
+[ext_resource type="Script" uid="uid://cwaya4k65mxwg" path="res://scenes/chargebark/chargebark.gd" id="2_v23p3"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v23p3"]
+atlas = ExtResource("1_qib41")
+region = Rect2(10, 0, 80, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ts3qr"]
+atlas = ExtResource("1_qib41")
+region = Rect2(110, 0, 80, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_trph1"]
+atlas = ExtResource("1_qib41")
+region = Rect2(210, 0, 80, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nixa6"]
+atlas = ExtResource("1_qib41")
+region = Rect2(310, 0, 80, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4n5ad"]
+atlas = ExtResource("1_qib41")
+region = Rect2(410, 0, 80, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ckkum"]
+atlas = ExtResource("1_qib41")
+region = Rect2(510, 0, 80, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_db887"]
+atlas = ExtResource("1_qib41")
+region = Rect2(610, 0, 80, 100)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jlbkf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v23p3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ts3qr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_trph1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nixa6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4n5ad")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ckkum")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_db887")
+}],
+"loop": true,
+"name": &"chargebark",
+"speed": 10.0
+}]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D"]
+texture_filter = 1
+position = Vector2(3.8146973e-06, 3.8146973e-06)
+scale = Vector2(3.2, 3.2)
+sprite_frames = SubResource("SpriteFrames_jlbkf")
+animation = &"chargebark"
+frame = 4
+frame_progress = 0.08326436
+script = ExtResource("2_v23p3")
+speed = null
+damage = null
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(-7.5, -22.5, 7.499998, -22.5, 19.999996, -17.5, 32.499996, -7.5, 39.999996, 24.999996, 22.499996, 7.499998, -1.1920928e-06, 2.4999986, -22.5, 7.499998, -39.999996, 24.999996, -32.499996, -7.5, -20, -17.5)

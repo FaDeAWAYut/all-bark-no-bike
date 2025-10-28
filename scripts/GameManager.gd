@@ -19,6 +19,7 @@ func reduce_HP(hp : int):
 		return
 		
 	playerHp = max(0, playerHp - hp)
+	#ส่ง signal ชื่อ hp_changed ออกไป โดยตัวแปร = playerHp
 	hp_changed.emit(playerHp)
 	
 	if playerHp <= 0:
