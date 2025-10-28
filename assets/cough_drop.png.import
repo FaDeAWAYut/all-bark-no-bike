@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://di6d5m58674ux"
-path="res://.godot/imported/car.png-d32f5b1402097a8b34a6ade6a9b7d527.ctex"
+uid="uid://brulun06rh5xb"
+path="res://.godot/imported/cough_drop.png-ce15b7e73d5d9ba8257ad752223d5a24.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/car.png"
-dest_files=["res://.godot/imported/car.png-d32f5b1402097a8b34a6ade6a9b7d527.ctex"]
+source_file="res://assets/cough_drop.png"
+dest_files=["res://.godot/imported/cough_drop.png-ce15b7e73d5d9ba8257ad752223d5a24.ctex"]
 
 [params]
 

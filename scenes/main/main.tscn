@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://p3b5yajekrdr"]
+[gd_scene load_steps=7 format=3 uid="uid://p3b5yajekrdr"]
 
 [ext_resource type="Script" uid="uid://ct048k6rsjfbb" path="res://scenes/main/main.gd" id="1_e2v34"]
 [ext_resource type="PackedScene" uid="uid://b530dx4s8ydsy" path="res://scenes/background/parallax_background.tscn" id="1_mh4tl"]
 [ext_resource type="PackedScene" uid="uid://dfnmfcww2cu6i" path="res://scenes/dawg/the_dawg.tscn" id="2_631s2"]
 [ext_resource type="PackedScene" uid="uid://cobth27w6p3ja" path="res://scenes/hud/hud.tscn" id="4_dwgw2"]
 [ext_resource type="PackedScene" uid="uid://d4mchi4q55xdb" path="res://scenes/motorbike/motorbike.tscn" id="5_6q06x"]
+[ext_resource type="Script" uid="uid://w5tembhx3n1a" path="res://scenes/collectable/collectables_manager.gd" id="6_ow5a4"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_e2v34")
@@ -22,3 +23,8 @@ position = Vector2(960, 560.055)
 [node name="Motorbike" parent="." instance=ExtResource("5_6q06x")]
 position = Vector2(963, 147)
 scale = Vector2(3.7999988, 3.7999988)
+
+[node name="CollectablesManager" type="Node" parent="."]
+script = ExtResource("6_ow5a4")
+
+[node name="CoughDropsPool" type="Node" parent="CollectablesManager"]
