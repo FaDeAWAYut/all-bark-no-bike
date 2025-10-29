@@ -8,6 +8,8 @@ var gameManager: GameManager
 var obstacleSpawner: ObstacleSpawner
 var speedManager: SpeedManager
 
+@export var collectablesManager: CollectablesManager
+
 # Game constants
 const dogStartPosition := Vector2i(960, 920)
 const camStartPosition := Vector2i(960, 560)
@@ -65,6 +67,9 @@ func _physics_process(delta: float):
 	obstacleSpawner.update(delta, $Camera2D.position.y, screenSize.x)
 	obstacleSpawner.cleanup_offscreen_obstacles($Camera2D.position.y, screenSize.y)
 	
+	#update item drop spawning
+	collectablesManager.update(delta, $Camera2D.position.y, screenSize.x)
+	collectablesManager.cleanup_offscreen_collectables($Camera2D.position.y, screenSize.y)
 	show_hp()
 	
 	# Move the dawg and the cam

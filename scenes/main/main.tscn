@@ -8,8 +8,9 @@
 [ext_resource type="Script" uid="uid://w5tembhx3n1a" path="res://scenes/collectable/collectables_manager.gd" id="6_ow5a4"]
 [ext_resource type="PackedScene" uid="uid://778k268328ak" path="res://scenes/collectable/cough_drops/cough_drops_pool.tscn" id="7_hujxm"]
 
-[node name="Main" type="Node"]
+[node name="Main" type="Node" node_paths=PackedStringArray("collectablesManager")]
 script = ExtResource("1_e2v34")
+collectablesManager = NodePath("CollectablesManager")
 
 [node name="ParallaxBackground" parent="." instance=ExtResource("1_mh4tl")]
 
