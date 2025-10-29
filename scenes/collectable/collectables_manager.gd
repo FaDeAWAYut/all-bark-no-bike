@@ -4,18 +4,24 @@ class_name CollectablesManager
 
 @export_group("Cough Drops")
 @export var cough_drop_pool: Pool
-@export var cough_drop_spawn_interval: float = 2.0
+@export var min_spawn_interval: float = 1.0
+@export var max_spawn_interval: float = 5.0
 var cough_drop_timer: float = 0.0
+var current_spawn_interval: float
 
 @export_group("Other Drops")
 # reference to other pools here
 
 func update(delta: float, camera_y_position: float, screen_size_x: float):
+	if current_spawn_interval == 0.0:
+		current_spawn_interval = randf_range(min_spawn_interval, max_spawn_interval)
+	
 	cough_drop_timer += delta
 	
-	if cough_drop_timer >= cough_drop_spawn_interval:
+	if cough_drop_timer >= current_spawn_interval:
 		spawn_cough_drops(camera_y_position, screen_size_x)
 		cough_drop_timer = 0.0
+		current_spawn_interval = randf_range(min_spawn_interval, max_spawn_interval)
 
 func spawn_cough_drops(camera_y_position: float, screen_size_x: float):
 	var cough_drop = cough_drop_pool.get_object()
