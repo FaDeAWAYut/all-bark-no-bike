@@ -1,3 +1,5 @@
 extends Node
 
-#this script manages all the collectable pools and signals the player when an item is collected.
+var cough_drop_pool: Pool
+
+# reference to other drops
