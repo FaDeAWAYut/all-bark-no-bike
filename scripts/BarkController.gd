@@ -5,6 +5,9 @@ class_name BarkController
 # Reference to the dog node
 var theDawg: Node2D
 
+# Bark spawn offset
+@export var barkSpawnOffset: Vector2 = Vector2(0, -50)
+
 # Audio
 var barkSound: AudioStreamPlayer
 var chargebarkSFX = preload("res://assets/sfx/chargebarksfx.mp3")
@@ -28,8 +31,8 @@ func shoot_chargebark():
 	var chargebarkScene = preload("res://scenes/chargebark/chargebark.tscn")
 	var bullet = chargebarkScene.instantiate()
 	
-	# Position at the dog's position
-	bullet.global_position = theDawg.global_position + Vector2(0, -50)
+	# Position at the dog's position with adjustable offset
+	bullet.global_position = theDawg.global_position + barkSpawnOffset
 	
 	# Add to scene
 	get_tree().current_scene.add_child(bullet)

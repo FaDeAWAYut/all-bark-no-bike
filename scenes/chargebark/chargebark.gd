@@ -1,10 +1,14 @@
 extends Area2D
 
 @onready var anim = $AnimatedSprite2D
+
+# Group for basic properties
+@export_group("Basic Properties")
 @export var speed = 1200
 @export var damage = 10
 
-# New export variables for customization
+# Group for appearance customization
+@export_group("Appearance Settings")
 @export var fadeInTime: float = 0.1
 @export var squeezeScaleX: float = 0.1
 @export var squeezeScaleY: float = 1.2
@@ -48,7 +52,7 @@ func _physics_process(delta: float) -> void:
 		queue_free()
 
 func _on_body_entered(body: Node2D):
-	if body.name == "Motorbike" or body.is_in_group("enemy"):
+	if body.is_in_group("enemy"):
 		# Apply damage
 		pass
 		# Play hit effect

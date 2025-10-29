@@ -94,9 +94,7 @@ func _physics_process(delta: float):
 	obstacleSpawner.cleanup_offscreen_obstacles($Camera2D.position.y, screenSize.y)
 	
 	show_hp()
-	
-	# Update screen effects
-	screenEffects.update_screen_shake(delta)
+
 	
 	# Scroll the background instead of moving camera
 	scroll_background(delta)
@@ -161,7 +159,7 @@ func _input(event):
 		
 	if event.is_action_pressed("shoot") and canChargeShoot:
 		barkController.shoot_chargebark()
-		screenEffects.screen_shake(2.0, 0.2)
+		screenEffects.screen_shake(0.1, 0.2)
 		screenEffects.screen_flash(0.3, 0.15)
 
 func _on_game_ended():

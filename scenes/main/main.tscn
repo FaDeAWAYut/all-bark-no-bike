@@ -19,6 +19,6 @@ position = Vector2(960, 560.055)
 
 [node name="HUD" parent="." instance=ExtResource("4_dwgw2")]
 
-[node name="Motorbike" parent="." instance=ExtResource("5_6q06x")]
+[node name="Motorbike" parent="." groups=["enemy"] instance=ExtResource("5_6q06x")]
 position = Vector2(963, 147)
 scale = Vector2(3.7999988, 3.7999988)

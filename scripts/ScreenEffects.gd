@@ -32,6 +32,9 @@ func screen_shake(intensity: float, duration: float):
 	shakeIntensity = intensity
 	shakeDuration = duration
 
+func _process(delta: float):
+	update_screen_shake(delta)
+
 func update_screen_shake(delta: float):
 	if shakeDuration > 0 and camera:
 		var shakeOffset = Vector2(
