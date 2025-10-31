@@ -51,7 +51,6 @@ func spawn_cough_drops(camera_y_position: float, screen_size_x: float):
 	cough_drop.scale = Vector2(cough_drop_scale, cough_drop_scale)
 
 func stop_spawning():
-	print("Stopping collectable spawning")
 	spawning_enabled = false
 	check_and_emit_cleared()
 

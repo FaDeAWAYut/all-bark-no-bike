@@ -5,7 +5,7 @@ var carScene = preload("res://scenes/car/car.tscn")
 
 # Module instances
 var gameManager: GameManager
-var obstacleSpawner: ObstacleSpawner
+@export var obstacleSpawner: ObstacleSpawner
 var speedManager: SpeedManager
 var barkController: BarkController
 var screenEffects: ScreenEffects
@@ -42,7 +42,6 @@ func initialize_modules():
 	add_child(gameManager)
 	
 	# Create and setup obstacle spawner
-	obstacleSpawner = ObstacleSpawner.new()
 	obstacleSpawner.setup(1.0, -0.5, 5.0)
 	add_child(obstacleSpawner)
 	
@@ -101,7 +100,6 @@ func _physics_process(delta: float):
 	
 	# Update obstacle spawning
 	obstacleSpawner.update(delta, $Camera2D.position.y, screenSize.x, currentSpeed)
-	obstacleSpawner.cleanup_offscreen_obstacles($Camera2D.position.y, screenSize.y)
 	
 	#update item drop spawning
 	collectablesManager.update(delta, $Camera2D.position.y, screenSize.x, currentSpeed)

@@ -82,8 +82,6 @@ func _physics_process(delta):
 				motorbike_hidden.emit()
 				is_hiding = false
 				is_hidden = true
-				print("Motorbike is now hidden")
-		
 		move_and_slide()
 		return
 
@@ -99,8 +97,6 @@ func _physics_process(delta):
 				is_showing = false
 				is_hidden = false
 				is_positioned = true
-				print("Motorbike is now visible")
-		
 		move_and_slide()
 		return
 	
@@ -218,7 +214,6 @@ func show_motorbike():
 	if not is_hidden:
 		return
 
-	print("Showing motorbike")
 	# Re-enable raycasts
 	if ray_cast_left:
 		ray_cast_left.enabled = true

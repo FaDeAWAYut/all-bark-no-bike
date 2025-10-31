@@ -16,8 +16,10 @@ extends Sprite2D
 @export_group("References")
 @export var motorbike: Node
 @export var collectables_manager: CollectablesManager
+@export var obstacle_spawner: ObstacleSpawner
 var is_motorbike_hidden: bool = false
 var is_item_drops_cleared: bool = false
+var is_obstacles_cleared: bool = false
 
 var screen_size: Vector2
 var screen_height: float
@@ -43,15 +45,17 @@ func _ready() -> void:
 	# Connect to motorbike hidden signal
 	if motorbike and motorbike.has_signal("motorbike_hidden"):
 		motorbike.motorbike_hidden.connect(_on_motorbike_hidden)
-
 	collectables_manager.collectables_cleared.connect(_on_collectables_cleared)
+	obstacle_spawner.obstacles_cleared.connect(_on_obstacles_cleared)
+	
 	hide()
 
 func _process(_delta: float) -> void:
 	# Check if conditions are met to trigger display
-	if is_motorbike_hidden and is_item_drops_cleared:
+	if is_motorbike_hidden and is_item_drops_cleared and is_obstacles_cleared:
 		is_motorbike_hidden = false
 		is_item_drops_cleared = false
+		is_obstacles_cleared = false
 		trigger_display()
 
 	var current_speed = 0.0
@@ -90,26 +94,30 @@ func _on_timer_timeout():
 		else:
 			turn_angle_degrees = -90.0
 			flip_h = true
-			print(turn_offset_x)
 		display_turn() 
 func display_turn():
 	motorbike.hide_motorbike()
 	collectables_manager.stop_spawning()
+	# Stop obstacle spawning through main scene
+	if main_scene and main_scene.has_method("get") and "obstacleSpawner" in main_scene:
+		main_scene.obstacleSpawner.stop_spawning()
 
 func _on_motorbike_hidden():
 	if is_motorbike_hidden:
 		return
 	is_motorbike_hidden = true
-	print("Motorbike hidden signal received")
 
 func _on_collectables_cleared():
 	if is_item_drops_cleared:
 		return
 	is_item_drops_cleared = true
-	print("Collectables cleared signal received")
+
+func _on_obstacles_cleared():
+	if is_obstacles_cleared:
+		return
+	is_obstacles_cleared = true
 
 func trigger_display():
-	print("Displaying road turn")
 	is_turning = true
 	global_position = Vector2(global_position.x, camera.global_position.y - distance_from_camera)
 	if flip_h:
@@ -154,6 +162,9 @@ func _start_reset_delay():
 
 func reset_turn():
 	collectables_manager.start_spawning()
+	# Start obstacle spawning through main scene
+	if main_scene and main_scene.has_method("get") and "obstacleSpawner" in main_scene:
+		main_scene.obstacleSpawner.start_spawning()
 	hide()
 	if not flip_h:
 		global_position += Vector2(turn_offset_x, 0)
