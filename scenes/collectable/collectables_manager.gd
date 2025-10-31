@@ -2,6 +2,8 @@ extends Node
 
 class_name CollectablesManager
 
+@export var spawn_offset_y: float = 1000.0
+
 @export_group("Cough Drops")
 @export var cough_drop_pool: Pool
 @export var min_spawn_interval: float = 1.0
@@ -20,6 +22,8 @@ signal collectables_cleared
 # reference to other pools here
 
 func update(delta: float, camera_y_position: float, screen_size_x: float, current_speed: float):
+	move_drop(delta)
+	
 	if not spawning_enabled:
 		return
 		
@@ -33,18 +37,15 @@ func update(delta: float, camera_y_position: float, screen_size_x: float, curren
 		spawn_cough_drops(camera_y_position, screen_size_x)
 		cough_drop_timer = 0.0
 		current_spawn_interval = randf_range(min_spawn_interval, max_spawn_interval)
-	
-	move_drop(delta)
 
 func move_drop(delta: float):
 	for drop in cough_drop_pool.active_objects:
 		if is_instance_valid(drop):
-			# Move obstacle downward at the current speed
 			drop.position.y += cough_drop_speed * delta
 
 func spawn_cough_drops(camera_y_position: float, screen_size_x: float):
 	var cough_drop = cough_drop_pool.get_object()
-	var drop_y_level = camera_y_position - 1500
+	var drop_y_level = camera_y_position - spawn_offset_y
 	var drop_x_level = screen_size_x * randf_range(0.3, 0.7)
 	cough_drop.position = Vector2(drop_x_level, drop_y_level)
 	cough_drop.scale = Vector2(cough_drop_scale, cough_drop_scale)
