@@ -7,7 +7,7 @@ var carScene = preload("res://scenes/car/car.tscn")
 var gameManager: GameManager
 @export var obstacleSpawner: ObstacleSpawner
 var speedManager: SpeedManager
-var barkController: BarkController
+@export var barkController: BarkController
 var screenEffects: ScreenEffects
 
 @export var collectablesManager: CollectablesManager
@@ -55,11 +55,6 @@ func initialize_modules():
 	# Create and setup speed manager
 	speedManager = SpeedManager.new()
 	add_child(speedManager)
-	
-	# Create and setup bark controller
-	barkController = BarkController.new()
-	barkController.setup($"TheDawg")
-	add_child(barkController)
 	
 	# Create and setup screen effects
 	screenEffects = ScreenEffects.new()
@@ -175,8 +170,8 @@ func _input(event):
 		
 	if event.is_action_pressed("shoot") and canChargeShoot:
 		barkController.shoot_chargebark()
-		screenEffects.screen_shake(0.1, 0.2)
-		screenEffects.screen_flash(0.3, 0.15)
+		#screenEffects.screen_shake(0.1, 0.2)
+		#screenEffects.screen_flash(0.3, 0.15)
 
 func _on_game_ended():
 	await get_tree().create_timer(0.1).timeout

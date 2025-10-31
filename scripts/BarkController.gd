@@ -3,7 +3,7 @@ extends Node
 class_name BarkController
 
 # Reference to the dog node
-var theDawg: Node2D
+@export var theDawg: Node2D
 
 # Bark spawn offset
 @export var barkSpawnOffset: Vector2 = Vector2(0, -50)
