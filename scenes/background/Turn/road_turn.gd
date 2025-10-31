@@ -131,6 +131,7 @@ func _start_reset_delay():
 
 func reset_turn():
 	motorbike.show_motorbike()
+	collectables_manager.start_spawning()
 	hide()
 	global_position += Vector2(turn_offset_x, 0)
 	rotation_degrees = 0.0

@@ -33,7 +33,7 @@ motorbike = NodePath("../Motorbike")
 collectables_manager = NodePath("../CollectablesManager")
 
 [node name="Timer" type="Timer" parent="RoadTurn"]
-wait_time = 10.0
+wait_time = 15.0
 autostart = true
 
 [node name="TheDawg" parent="." instance=ExtResource("2_631s2")]

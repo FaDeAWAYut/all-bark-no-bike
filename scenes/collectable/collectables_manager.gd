@@ -40,9 +40,12 @@ func spawn_cough_drops(camera_y_position: float, screen_size_x: float):
 
 func stop_spawning():
 	spawning_enabled = false
-	
-	# Check if all pools are empty and emit signal if so
 	check_and_emit_cleared()
+
+func start_spawning():
+	spawning_enabled = true
+	cough_drop_timer = 0.0
+	current_spawn_interval = 0.0
 
 func cleanup_offscreen_collectables(camera_y_position: float, screen_size_y: float):
 	var collectables_to_remove = []
@@ -71,5 +74,4 @@ func check_and_emit_cleared():
 	#     all_pools_empty = false
 	
 	if all_pools_empty:
-		print("All collectables cleared")
 		collectables_cleared.emit()
