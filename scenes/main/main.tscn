@@ -19,13 +19,12 @@ camStartPosition = Vector2i(448, 252)
 [node name="ParallaxBackground" parent="." instance=ExtResource("1_mh4tl")]
 
 [node name="LeftTurnRoad" type="Sprite2D" parent="."]
-visible = false
 texture_filter = 1
-position = Vector2(448, -679)
+position = Vector2(448, -806)
 scale = Vector2(2, 2)
 texture = ExtResource("3_yyfjg")
 centered = false
-offset = Vector2(-336, -336)
+offset = Vector2(-403, -403.5)
 script = ExtResource("4_b1x3f")
 road_spawn_position = Vector2i(448, -679)
 

@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://b6ntqpksjtv5q"]
+
+[ext_resource type="Texture2D" uid="uid://cfnqo70bxekfx" path="res://assets/left_turn_placeholder.png" id="1_roox5"]
+[ext_resource type="Script" path="res://scenes/background/Turn/road_turn.gd" id="2_1oaxq"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("2_1oaxq")
+
+[node name="LeftTurnRoad" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(428, 0)
+scale = Vector2(2, 2)
+texture = ExtResource("1_roox5")
+centered = false
+offset = Vector2(-550, -336)
+
+[node name="RightTurnRoad" type="Sprite2D" parent="."]
+visible = false
+texture_filter = 1
+position = Vector2(1284, 0)
+scale = Vector2(4, 4)
+texture = ExtResource("1_roox5")
+centered = false
+offset = Vector2(-550, -336)
