@@ -12,6 +12,10 @@ extends Sprite2D
 @export var base_pivot_offset: float = 0.0  # Base offset from screen center to start pivot
 @export var speed_pivot_factor: float = 0.5  # How much speed affects when pivot starts
 
+@export_group("References")
+@export var motorbike: Node
+var is_motorbike_hidden: bool = false
+
 var screen_size: Vector2
 var screen_height: float
 
@@ -31,12 +35,21 @@ func _ready() -> void:
 	
 	# Connect timer timeout signal
 	timer.timeout.connect(_on_timer_timeout)
-	display_turn()
+	
+	# Connect to motorbike hidden signal
+	if motorbike and motorbike.has_signal("motorbike_hidden"):
+		motorbike.motorbike_hidden.connect(_on_motorbike_hidden)
+
+	hide()
 
 func _process(_delta: float) -> void:
+	# Check if conditions are met to trigger display
+	if is_motorbike_hidden:
+		trigger_display()
+		is_motorbike_hidden = false
+	
 	if is_turning:
 		# Get the camera position to calculate relative position on screen
-		
 		if camera:
 			# Get current game speed to calculate dynamic pivot trigger point
 			var current_speed = 0.0
@@ -54,11 +67,24 @@ func _process(_delta: float) -> void:
 				turn_around_pivot()
 				is_turning = false  # Prevent multiple calls
 
+func _on_timer_timeout():
+	if is_visible_in_tree():
+		return
+
+	# Check probability and display turn if successful
+	if randf() < probability_left_turn:
+		display_turn()
 
 func display_turn():
+	is_turning = true
+	motorbike.hide_motorbike()
+
+func _on_motorbike_hidden():
+	is_motorbike_hidden = true
+
+func trigger_display():
 	global_position = Vector2(global_position.x, camera.global_position.y - distance_from_camera)
 	show()
-	is_turning = true
 
 func turn_around_pivot():
 	# Calculate the final rotation
@@ -92,14 +118,6 @@ func _start_reset_delay():
 	# Wait for reset_delay seconds then call reset_turn
 	delay_tween.tween_interval(reset_delay)
 	delay_tween.tween_callback(reset_turn)
-
-func _on_timer_timeout():
-	if is_visible_in_tree():
-		return
-
-	# Check probability and display turn if successful
-	if randf() < probability_left_turn:
-		display_turn()
 
 func reset_turn():
 	hide()

@@ -7,6 +7,8 @@ extends CharacterBody2D
 @export var max_x: float = 1600.0
 @export var change_direction_time: float = 2.0
 
+@export var hide_duration: float = 3.0
+
 # Obstacle detection settings
 @export var obstacle_check_rate: float = 0.2
 
@@ -21,6 +23,9 @@ var obstacle_timer: float = 0.0
 var current_obstacle: Node2D = null
 var escape_direction: int = 0
 var currentSpeed: float
+var is_hiding: bool = false
+
+signal motorbike_hidden
 
 # Module Instances
 var speedManager: SpeedManager
@@ -42,6 +47,10 @@ func _ready():
 	global_position.y = randf_range(screen_top_y, screen_bottom_y)
 
 func _physics_process(delta):
+	# Skip all normal behavior if bike is hiding
+	if is_hiding:
+		return
+		
 	timer += delta
 	obstacle_timer += delta
 	
@@ -134,3 +143,32 @@ func enforce_boundaries():
 		global_position.y = screen_top_y
 	elif global_position.y >= screen_bottom_y:
 		global_position.y = screen_bottom_y
+
+func hide_motorbike():
+	# Set hiding flag to disable obstacle detection and normal behavior
+	is_hiding = true
+	
+	# Clear current obstacle state
+	current_obstacle = null
+	escape_direction = 0
+	
+	# Disable raycasts
+	if ray_cast_left:
+		ray_cast_left.enabled = false
+	if ray_cast_right:
+		ray_cast_right.enabled = false
+	if ray_cast_center:
+		ray_cast_center.enabled = false
+	
+	# Create a tween to animate the bike moving rapidly upward
+	var tween = create_tween()
+	
+	var target_y = global_position.y - 1000
+	tween.tween_property(self, "global_position:y", target_y, hide_duration)
+	
+	# Hide the bike after the movement completes
+	tween.tween_callback(hide)
+	
+	# Stop normal movement by clearing velocity
+	velocity = Vector2.ZERO
+	motorbike_hidden.emit()

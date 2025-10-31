@@ -18,7 +18,7 @@ camStartPosition = Vector2i(448, 252)
 
 [node name="ParallaxBackground" parent="." instance=ExtResource("1_mh4tl")]
 
-[node name="LeftTurnRoad" type="Sprite2D" parent="." node_paths=PackedStringArray("main_scene")]
+[node name="LeftTurnRoad" type="Sprite2D" parent="." node_paths=PackedStringArray("main_scene", "motorbike")]
 texture_filter = 1
 position = Vector2(447, -967)
 scale = Vector2(2, 2)
@@ -28,6 +28,7 @@ offset = Vector2(-483.5, -483.5)
 script = ExtResource("4_b1x3f")
 road_spawn_position = Vector2i(447, -967)
 main_scene = NodePath("..")
+motorbike = NodePath("../Motorbike")
 
 [node name="Timer" type="Timer" parent="LeftTurnRoad"]
 autostart = true
@@ -42,7 +43,7 @@ position = Vector2(448, 252)
 [node name="HUD" parent="." instance=ExtResource("4_dwgw2")]
 
 [node name="Motorbike" parent="." instance=ExtResource("5_6q06x")]
-position = Vector2(448, 133)
+position = Vector2(448, 86.000015)
 scale = Vector2(2.5, 2.5)
 max_x = 896.0
 

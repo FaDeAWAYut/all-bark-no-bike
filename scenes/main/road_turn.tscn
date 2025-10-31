@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://b6ntqpksjtv5q"]
 
 [ext_resource type="Texture2D" uid="uid://cfnqo70bxekfx" path="res://assets/left_turn_placeholder.png" id="1_roox5"]
-[ext_resource type="Script" path="res://scenes/background/Turn/road_turn.gd" id="2_1oaxq"]
+[ext_resource type="Script" uid="uid://bj3bj0d8skqwt" path="res://scenes/background/Turn/left_turn_road.gd" id="2_1oaxq"]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("2_1oaxq")
