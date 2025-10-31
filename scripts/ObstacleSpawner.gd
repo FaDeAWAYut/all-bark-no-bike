@@ -7,6 +7,7 @@ signal obstacles_cleared
 
 # Pool-based obstacle management
 @export var obstacle_pools: Array[Pool] = []
+@export var spawn_offset_y: float = 1000.0
 var obstacleTimer : float = 0.0
 var obstacleSpawnInterval : float = 2.0
 var minSpawnVariation : float = -0.5
@@ -91,7 +92,7 @@ func try_spawn_obstacle(camera_y_position: float, screen_size_x: float):
 	var obs = pool.get_object()
 	
 	# Spawn just above the top of the screen
-	var spawnY = camera_y_position - 2000  # 2000 pixels above camera
+	var spawnY = camera_y_position - spawn_offset_y
 	var spawnX = screen_size_x * randf_range(0.3, 0.7)
 	
 	obs.position = Vector2(spawnX, spawnY)
