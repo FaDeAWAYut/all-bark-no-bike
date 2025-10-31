@@ -1,8 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://p3b5yajekrdr"]
+[gd_scene load_steps=10 format=3 uid="uid://p3b5yajekrdr"]
 
 [ext_resource type="Script" uid="uid://ct048k6rsjfbb" path="res://scenes/main/main.gd" id="1_e2v34"]
 [ext_resource type="PackedScene" uid="uid://b530dx4s8ydsy" path="res://scenes/background/parallax_background.tscn" id="1_mh4tl"]
 [ext_resource type="PackedScene" uid="uid://dfnmfcww2cu6i" path="res://scenes/dawg/the_dawg.tscn" id="2_631s2"]
+[ext_resource type="Texture2D" uid="uid://cfnqo70bxekfx" path="res://assets/left_turn_placeholder.png" id="3_yyfjg"]
+[ext_resource type="Script" uid="uid://bj3bj0d8skqwt" path="res://scenes/background/Turn/left_turn_road.gd" id="4_b1x3f"]
 [ext_resource type="PackedScene" uid="uid://cobth27w6p3ja" path="res://scenes/hud/hud.tscn" id="4_dwgw2"]
 [ext_resource type="PackedScene" uid="uid://d4mchi4q55xdb" path="res://scenes/motorbike/motorbike.tscn" id="5_6q06x"]
 [ext_resource type="Script" uid="uid://w5tembhx3n1a" path="res://scenes/collectable/collectables_manager.gd" id="6_ow5a4"]
@@ -17,6 +19,13 @@ camStartPosition = Vector2i(560, 500)
 [node name="ParallaxBackground" parent="." instance=ExtResource("1_mh4tl")]
 
 [node name="LeftTurnRoad" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(560, -192)
+scale = Vector2(5, 5)
+texture = ExtResource("3_yyfjg")
+centered = false
+offset = Vector2(-111.99999, -112.000015)
+script = ExtResource("4_b1x3f")
 
 [node name="TheDawg" parent="." instance=ExtResource("2_631s2")]
 position = Vector2(560, 500)
