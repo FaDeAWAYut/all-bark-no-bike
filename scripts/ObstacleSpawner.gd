@@ -71,7 +71,7 @@ func update_obstacles(_delta: float, camera_y_position: float, _screen_size_x: f
 				
 				# Check if offscreen manually if check_offscreen method doesn't exist or isn't working
 				var screen_size_y = get_viewport().get_visible_rect().size.y
-				if obs.position.y > (camera_y_position + screen_size_y + 200):  # 200 pixels below screen
+				if obs.position.y > (camera_y_position + screen_size_y + 200):  
 					obstacles_to_remove.append(obs)
 	
 	# Return offscreen obstacles to pool

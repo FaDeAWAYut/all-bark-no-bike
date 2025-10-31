@@ -20,8 +20,3 @@ func set_speed(speed: float):
 func activate():
 	super.activate()
 	currentSpeed = 0.0
-
-# Check if car is offscreen and return to pool
-func check_offscreen(camera_y_position: float, screen_size_y: float):
-	if position.y > (camera_y_position + screen_size_y + 200):  # 200 pixels below screen
-		return_to_pool()
