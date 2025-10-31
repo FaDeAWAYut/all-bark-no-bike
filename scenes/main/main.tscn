@@ -18,15 +18,19 @@ camStartPosition = Vector2i(448, 252)
 
 [node name="ParallaxBackground" parent="." instance=ExtResource("1_mh4tl")]
 
-[node name="LeftTurnRoad" type="Sprite2D" parent="."]
+[node name="LeftTurnRoad" type="Sprite2D" parent="." node_paths=PackedStringArray("main_scene")]
 texture_filter = 1
-position = Vector2(449, -806)
+position = Vector2(447, -967)
 scale = Vector2(2, 2)
 texture = ExtResource("3_yyfjg")
 centered = false
-offset = Vector2(-403.5, -403.5)
+offset = Vector2(-483.5, -483.5)
 script = ExtResource("4_b1x3f")
-road_spawn_position = Vector2i(449, -806)
+road_spawn_position = Vector2i(447, -967)
+main_scene = NodePath("..")
+
+[node name="Timer" type="Timer" parent="LeftTurnRoad"]
+autostart = true
 
 [node name="TheDawg" parent="." instance=ExtResource("2_631s2")]
 position = Vector2(448, 500)

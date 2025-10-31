@@ -93,9 +93,9 @@ func _physics_process(delta: float):
 	currentSpeed = speedManager.update(delta)
 	gameTime += delta
 	
-	# Update obstacle spawning - pass current speed for obstacle movement
-	obstacleSpawner.update(delta, $Camera2D.position.y, screenSize.x, currentSpeed)
-	obstacleSpawner.cleanup_offscreen_obstacles($Camera2D.position.y, screenSize.y)
+	# Update obstacle spawning
+	# obstacleSpawner.update(delta, $Camera2D.position.y, screenSize.x)
+	# obstacleSpawner.cleanup_offscreen_obstacles($Camera2D.position.y, screenSize.y)
 	
 	#update item drop spawning
 	collectablesManager.update(delta, $Camera2D.position.y, screenSize.x)
