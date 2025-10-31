@@ -62,6 +62,12 @@ animations = [{
 
 [node name="chargebark" type="Node2D"]
 script = ExtResource("2_v23p3")
+speed = null
+damage = null
+fadeInTime = null
+squeezeScaleX = null
+squeezeScaleY = null
+scaleTransitionTime = null
 
 [node name="AnimatedSprite2D" type="Area2D" parent="."]
 texture_filter = 1

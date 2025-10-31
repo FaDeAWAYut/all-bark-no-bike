@@ -1,6 +1,9 @@
-extends Area2D
+extends PoolObject
 
-@onready var anim = $AnimatedSprite2D
+class_name ChargeBark
+
+@onready var anim = $AnimatedSprite2D/AnimatedSprite2D
+@onready var area_2d: Area2D = $AnimatedSprite2D
 
 # Group for basic properties
 @export_group("Basic Properties")
@@ -16,8 +19,46 @@ extends Area2D
 
 var direction = Vector2.UP
 var tween: Tween
+var lifetime_timer: Timer
 
 func _ready() -> void:
+	# Create lifetime timer
+	lifetime_timer = Timer.new()
+	lifetime_timer.wait_time = 3.0
+	lifetime_timer.one_shot = true
+	lifetime_timer.timeout.connect(_on_lifetime_timeout)
+	add_child(lifetime_timer)
+	
+	# Connect the area_entered signal if not connected in the editor
+	if not area_2d.body_entered.is_connected(_on_body_entered):
+		area_2d.body_entered.connect(_on_body_entered)
+		
+	# Start deactivated
+	deactivate()
+
+func activate():
+	super.activate()  # Call parent activate method
+	
+	# Reset properties
+	direction = Vector2.UP
+	# Initialize visual effects
+	setup_visual_effects()
+	
+	# Start lifetime timer
+	lifetime_timer.start()
+
+func deactivate():
+	super.deactivate()  # Call parent deactivate method
+	
+	# Stop timer
+	if lifetime_timer:
+		lifetime_timer.stop()
+	
+	# Stop tween
+	if tween:
+		tween.kill()
+
+func setup_visual_effects():
 	# Initialize tween
 	tween = create_tween()
 	tween.set_parallel(true)  # Run animations in parallel
@@ -34,25 +75,24 @@ func _ready() -> void:
 	
 	# Scale animation: from squeezed to normal with ease-in
 	tween.tween_property(anim, "scale", Vector2(1.0, 1.0), scaleTransitionTime).set_ease(Tween.EASE_IN)
-	
-	# Connect the area_entered signal if not connected in the editor
-	if not body_entered.is_connected(_on_body_entered):
-		body_entered.connect(_on_body_entered)
-	
-	# Auto-destruct after 3 seconds
-	await get_tree().create_timer(3.0).timeout
-	queue_free()
 
 func _physics_process(delta: float) -> void:
+	if not is_active:
+		return
+		
 	# Move upward
 	global_position += direction * speed * delta
 	
 	# Remove if off-screen
 	if global_position.y < -2000:
-		queue_free()
+		return_to_pool()
 
 func _on_body_entered(body: Node2D):
 	if body.is_in_group("enemy"):
 		# Apply damage
 		pass
 		# Play hit effect
+		return_to_pool()
+
+func _on_lifetime_timeout():
+	return_to_pool()
