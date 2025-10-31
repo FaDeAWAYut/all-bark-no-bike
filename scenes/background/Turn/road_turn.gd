@@ -22,6 +22,7 @@ var is_item_drops_cleared: bool = false
 var screen_size: Vector2
 var screen_height: float
 
+var is_initialised: bool = false
 var is_turning: bool = false
 var is_hidden: bool = true
 
@@ -52,13 +53,21 @@ func _process(_delta: float) -> void:
 		is_motorbike_hidden = false
 		is_item_drops_cleared = false
 		trigger_display()
+
+	var current_speed = 0.0
+	if main_scene and main_scene.has_method("get") and "currentSpeed" in main_scene:
+		current_speed = main_scene.currentSpeed
+	
+	# Move road turn downward while visible
+	if is_visible():
+		# Move downward at the current game speed
+		global_position.y += current_speed * _delta
+	
 	if is_turning:
 		# Get the camera position to calculate relative position on screen
 		if camera:
 			# Get current game speed to calculate dynamic pivot trigger point
-			var current_speed = 0.0
-			if main_scene and main_scene.has_method("get") and "currentSpeed" in main_scene:
-				current_speed = main_scene.currentSpeed
+			
 			
 			# Calculate dynamic pivot trigger point - negative means earlier (above screen center)
 			var dynamic_pivot_y = base_pivot_offset - (current_speed * speed_pivot_factor)
@@ -75,11 +84,15 @@ func _on_timer_timeout():
 	if is_visible_in_tree():
 		return
 
+	if is_initialised:
+		return
+
 	# Check probability and display turn if successful
 	if randf() < probability_turn:
 		#check left or right turn
 		print("Turning Left")
 		if randf() < probability_left_turn:
+			is_initialised = true
 			display_turn() 
 
 func display_turn():
@@ -87,12 +100,19 @@ func display_turn():
 	collectables_manager.stop_spawning()
 
 func _on_motorbike_hidden():
+	if is_motorbike_hidden:
+		return
 	is_motorbike_hidden = true
+	print("Motorbike hidden signal received")
 
 func _on_collectables_cleared():
+	if is_item_drops_cleared:
+		return
 	is_item_drops_cleared = true
+	print("Collectables cleared signal received")
 
 func trigger_display():
+	print("Displaying road turn")
 	is_turning = true
 	global_position = Vector2(global_position.x, camera.global_position.y - distance_from_camera)
 	show()
@@ -136,3 +156,4 @@ func reset_turn():
 	hide()
 	global_position += Vector2(turn_offset_x, 0)
 	rotation_degrees = 0.0
+	is_initialised = false
