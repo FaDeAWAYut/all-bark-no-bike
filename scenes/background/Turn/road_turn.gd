@@ -59,8 +59,7 @@ func _process(_delta: float) -> void:
 		trigger_display()
 
 	var current_speed = 0.0
-	if main_scene and main_scene.has_method("get") and "currentSpeed" in main_scene:
-		current_speed = main_scene.currentSpeed
+	current_speed = main_scene.currentSpeed
 	
 	# Move road turn downward while visible
 	if is_visible():
@@ -98,9 +97,7 @@ func _on_timer_timeout():
 func display_turn():
 	motorbike.hide_motorbike()
 	collectables_manager.stop_spawning()
-	# Stop obstacle spawning through main scene
-	if main_scene and main_scene.has_method("get") and "obstacleSpawner" in main_scene:
-		main_scene.obstacleSpawner.stop_spawning()
+	obstacle_spawner.stop_spawning()
 
 func _on_motorbike_hidden():
 	if is_motorbike_hidden:
@@ -130,8 +127,7 @@ func turn_around_pivot():
 	
 	# Get current game speed from main scene to adjust turn duration
 	var current_speed = 0.0
-	if main_scene and main_scene.has_method("get") and "currentSpeed" in main_scene:
-		current_speed = main_scene.currentSpeed
+	current_speed = main_scene.currentSpeed
 	
 	# Calculate dynamic turn duration based on speed
 	var dynamic_turn_duration = base_turn_duration - (current_speed * speed_factor)
@@ -162,9 +158,7 @@ func _start_reset_delay():
 
 func reset_turn():
 	collectables_manager.start_spawning()
-	# Start obstacle spawning through main scene
-	if main_scene and main_scene.has_method("get") and "obstacleSpawner" in main_scene:
-		main_scene.obstacleSpawner.start_spawning()
+	obstacle_spawner.start_spawning()
 	hide()
 	if not flip_h:
 		global_position += Vector2(turn_offset_x, 0)
