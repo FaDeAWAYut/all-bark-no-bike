@@ -4,17 +4,17 @@ extends CharacterBody2D
 var offset_from_camera: Vector2 = Vector2(0, 0)
 
 # Movement settings
-@export var speed_x: float = 120.0
-@export var escape_speed: float = 500.0
-@export var min_x: float = 350.0
-@export var max_x: float = 1600.0
-@export var change_direction_time: float = 2.0
-
+@export var speed_x: float = 200.0
+@export var escape_speed: float = 400.0
+@export var min_x: float = 190.0
+@export var max_x: float = 710.0
+@export var direction_rotation_angle: float = 0.05 # radian
+@export var direction_rotation_speed: float = 40.0
 
 @export var hide_speed_multiplier:= 1.5
 
 # Obstacle detection settings
-@export var obstacle_check_rate: float = 0.2
+@export var obstacle_check_rate: float = 0.1
 
 # Screen boundaries (adjust these based on your camera/screen size)
 @export var screen_top_y: float = 150.0    # Top boundary (pixels from top)
@@ -23,6 +23,7 @@ var offset_from_camera: Vector2 = Vector2(0, 0)
 # Internal variables
 var direction: int = 1
 var timer: float = 0.0
+var change_direction_time: float = 2.0
 var obstacle_timer: float = 0.0
 var current_obstacle: Node2D = null
 var escape_direction: int = 0
@@ -64,6 +65,8 @@ func _physics_process(delta):
 	obstacle_timer += delta
 	
 	currentSpeed = speedManager.update(delta)
+	
+	self.rotation = lerp_angle(self.rotation, direction_rotation_angle * direction, delta * direction_rotation_speed)
 	
 	if is_hiding:
 		# Use increased velocity to speed up the bike when hiding
@@ -119,6 +122,7 @@ func handle_normal_movement():
 	if timer >= change_direction_time:
 		change_direction()
 		timer = 0.0
+		change_direction_time = randf_range(0.5,1.5)
 	
 	# Move only horizontally (no vertical movement since camera is static)
 	velocity.x = direction * speed_x
@@ -126,6 +130,7 @@ func handle_normal_movement():
 
 func handle_obstacle_escape():
 	# Move away from obstacle (only horizontally)
+	direction = escape_direction
 	velocity.x = escape_direction * escape_speed
 	velocity.y = 0  # No vertical movement
 
@@ -165,7 +170,13 @@ func check_for_obstacles():
 			escape_direction = 1 if randf() > 0.5 else -1
 
 func change_direction():
-	direction = 1 if randf() > 0.5 else -1
+	var random_number = randf()
+	if random_number <= 0.33:
+		direction = 1
+	elif random_number <= 0.66:
+		direction = -1
+	else:
+		direction = 0
 
 func enforce_boundaries():
 	# Horizontal boundaries
@@ -201,6 +212,7 @@ func hide_motorbike():
 	# Clear current obstacle state
 	current_obstacle = null
 	escape_direction = 0
+	direction = 0
 	
 	# Disable raycasts
 	if ray_cast_left:
@@ -229,5 +241,6 @@ func show_motorbike():
 	var target = camera_top - screen_size.y  # This puts it one screen height above the top
 
 	global_position = Vector2(global_position.x, target)
+	direction = 0
 	show()
 	is_showing = true
