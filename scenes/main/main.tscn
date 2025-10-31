@@ -26,7 +26,7 @@ texture = ExtResource("3_yyfjg")
 centered = false
 offset = Vector2(-403, -403.5)
 script = ExtResource("4_b1x3f")
-road_spawn_position = Vector2i(448, -679)
+road_spawn_position = Vector2i(448, -806)
 
 [node name="TheDawg" parent="." instance=ExtResource("2_631s2")]
 position = Vector2(448, 500)

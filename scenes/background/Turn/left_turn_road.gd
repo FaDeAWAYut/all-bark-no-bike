@@ -12,7 +12,6 @@ func _ready() -> void:
 	screen_size = get_viewport().get_visible_rect().size
 	screen_height = screen_size.y
 	reset_turn()
-	display_turn()
 
 func _process(_delta: float) -> void:
 	if is_turning:
