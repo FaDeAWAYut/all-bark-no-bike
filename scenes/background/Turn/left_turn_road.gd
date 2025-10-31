@@ -1,4 +1,5 @@
 extends Sprite2D
+@export var probability_turn: float = 0.1 
 @export var probability_left_turn: float = 1.0
 @export var road_spawn_position: Vector2i = Vector2i(560, -500)
 @export var turn_duration: float = 2.0
@@ -45,9 +46,8 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	# Check if conditions are met to trigger display
 	if is_motorbike_hidden:
-		trigger_display()
 		is_motorbike_hidden = false
-	
+		trigger_display()
 	if is_turning:
 		# Get the camera position to calculate relative position on screen
 		if camera:
@@ -72,17 +72,19 @@ func _on_timer_timeout():
 		return
 
 	# Check probability and display turn if successful
-	if randf() < probability_left_turn:
-		display_turn()
+	if randf() < probability_turn:
+		#check left or right turn
+		if randf() < probability_left_turn:
+			display_turn() 
 
 func display_turn():
-	is_turning = true
 	motorbike.hide_motorbike()
 
 func _on_motorbike_hidden():
 	is_motorbike_hidden = true
 
 func trigger_display():
+	is_turning = true
 	global_position = Vector2(global_position.x, camera.global_position.y - distance_from_camera)
 	show()
 
@@ -107,7 +109,7 @@ func turn_around_pivot():
 	
 	# Reposition instantly
 	global_position -= Vector2(turn_offset_x, 0)
-	
+
 	# After turn completes, wait 5 seconds then reset
 	tween.tween_callback(_start_reset_delay)
 
@@ -120,7 +122,7 @@ func _start_reset_delay():
 	delay_tween.tween_callback(reset_turn)
 
 func reset_turn():
+	motorbike.show_motorbike()
 	hide()
-
 	global_position += Vector2(turn_offset_x, 0)
 	rotation_degrees = 0.0

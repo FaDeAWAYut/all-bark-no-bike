@@ -26,11 +26,13 @@ texture = ExtResource("3_yyfjg")
 centered = false
 offset = Vector2(-483.5, -483.5)
 script = ExtResource("4_b1x3f")
+probability_turn = 0.5
 road_spawn_position = Vector2i(447, -967)
 main_scene = NodePath("..")
 motorbike = NodePath("../Motorbike")
 
 [node name="Timer" type="Timer" parent="LeftTurnRoad"]
+wait_time = 10.0
 autostart = true
 
 [node name="TheDawg" parent="." instance=ExtResource("2_631s2")]
@@ -43,8 +45,9 @@ position = Vector2(448, 252)
 [node name="HUD" parent="." instance=ExtResource("4_dwgw2")]
 
 [node name="Motorbike" parent="." instance=ExtResource("5_6q06x")]
-position = Vector2(448, 86.000015)
+position = Vector2(447.99997, 169)
 scale = Vector2(2.5, 2.5)
+spawn_position = Vector2(448, 169)
 max_x = 896.0
 
 [node name="CollectablesManager" type="Node" parent="." node_paths=PackedStringArray("cough_drop_pool")]
