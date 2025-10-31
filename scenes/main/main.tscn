@@ -12,9 +12,9 @@
 
 [node name="Main" type="Node" node_paths=PackedStringArray("collectablesManager")]
 script = ExtResource("1_e2v34")
-collectablesManager = NodePath("CollectablesManager")
 dogStartPosition = Vector2i(448, 400)
 camStartPosition = Vector2i(448, 252)
+collectablesManager = NodePath("CollectablesManager")
 
 [node name="ParallaxBackground" parent="." instance=ExtResource("1_mh4tl")]
 
@@ -33,7 +33,7 @@ motorbike = NodePath("../Motorbike")
 collectables_manager = NodePath("../CollectablesManager")
 
 [node name="Timer" type="Timer" parent="RoadTurn"]
-wait_time = 15.0
+wait_time = 5.0
 autostart = true
 
 [node name="TheDawg" parent="." instance=ExtResource("2_631s2")]
@@ -50,6 +50,7 @@ position = Vector2(447.99997, 169)
 scale = Vector2(2.5, 2.5)
 spawn_position = Vector2(448, 169)
 max_x = 896.0
+hide_speed_multiplier = 0.5
 
 [node name="CollectablesManager" type="Node" parent="." node_paths=PackedStringArray("cough_drop_pool")]
 script = ExtResource("6_ow5a4")

@@ -78,6 +78,7 @@ func _on_timer_timeout():
 	# Check probability and display turn if successful
 	if randf() < probability_turn:
 		#check left or right turn
+		print("Turning Left")
 		if randf() < probability_left_turn:
 			display_turn() 
 
