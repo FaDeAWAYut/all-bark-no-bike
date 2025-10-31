@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://b530dx4s8ydsy" path="res://scenes/background/parallax_background.tscn" id="1_mh4tl"]
 [ext_resource type="PackedScene" uid="uid://dfnmfcww2cu6i" path="res://scenes/dawg/the_dawg.tscn" id="2_631s2"]
 [ext_resource type="Texture2D" uid="uid://cfnqo70bxekfx" path="res://assets/left_turn_placeholder.png" id="3_yyfjg"]
-[ext_resource type="Script" uid="uid://bj3bj0d8skqwt" path="res://scenes/background/Turn/left_turn_road.gd" id="4_b1x3f"]
+[ext_resource type="Script" uid="uid://bj3bj0d8skqwt" path="res://scenes/background/Turn/road_turn.gd" id="4_b1x3f"]
 [ext_resource type="PackedScene" uid="uid://cobth27w6p3ja" path="res://scenes/hud/hud.tscn" id="4_dwgw2"]
 [ext_resource type="PackedScene" uid="uid://d4mchi4q55xdb" path="res://scenes/motorbike/motorbike.tscn" id="5_6q06x"]
 [ext_resource type="Script" uid="uid://w5tembhx3n1a" path="res://scenes/collectable/collectables_manager.gd" id="6_ow5a4"]
@@ -18,7 +18,7 @@ camStartPosition = Vector2i(448, 252)
 
 [node name="ParallaxBackground" parent="." instance=ExtResource("1_mh4tl")]
 
-[node name="LeftTurnRoad" type="Sprite2D" parent="." node_paths=PackedStringArray("main_scene", "motorbike")]
+[node name="RoadTurn" type="Sprite2D" parent="." node_paths=PackedStringArray("main_scene", "motorbike", "collectables_manager")]
 texture_filter = 1
 position = Vector2(447, -967)
 scale = Vector2(2, 2)
@@ -26,12 +26,13 @@ texture = ExtResource("3_yyfjg")
 centered = false
 offset = Vector2(-483.5, -483.5)
 script = ExtResource("4_b1x3f")
-probability_turn = 0.5
+probability_turn = 1.0
 road_spawn_position = Vector2i(447, -967)
 main_scene = NodePath("..")
 motorbike = NodePath("../Motorbike")
+collectables_manager = NodePath("../CollectablesManager")
 
-[node name="Timer" type="Timer" parent="LeftTurnRoad"]
+[node name="Timer" type="Timer" parent="RoadTurn"]
 wait_time = 10.0
 autostart = true
 

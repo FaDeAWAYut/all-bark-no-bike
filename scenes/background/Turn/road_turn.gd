@@ -15,7 +15,9 @@ extends Sprite2D
 
 @export_group("References")
 @export var motorbike: Node
+@export var collectables_manager: CollectablesManager
 var is_motorbike_hidden: bool = false
+var is_item_drops_cleared: bool = false
 
 var screen_size: Vector2
 var screen_height: float
@@ -41,12 +43,14 @@ func _ready() -> void:
 	if motorbike and motorbike.has_signal("motorbike_hidden"):
 		motorbike.motorbike_hidden.connect(_on_motorbike_hidden)
 
+	collectables_manager.collectables_cleared.connect(_on_collectables_cleared)
 	hide()
 
 func _process(_delta: float) -> void:
 	# Check if conditions are met to trigger display
-	if is_motorbike_hidden:
+	if is_motorbike_hidden and is_item_drops_cleared:
 		is_motorbike_hidden = false
+		is_item_drops_cleared = false
 		trigger_display()
 	if is_turning:
 		# Get the camera position to calculate relative position on screen
@@ -79,9 +83,13 @@ func _on_timer_timeout():
 
 func display_turn():
 	motorbike.hide_motorbike()
+	collectables_manager.stop_spawning()
 
 func _on_motorbike_hidden():
 	is_motorbike_hidden = true
+
+func _on_collectables_cleared():
+	is_item_drops_cleared = true
 
 func trigger_display():
 	is_turning = true

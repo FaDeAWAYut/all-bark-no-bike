@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+class_name Motorbike
+
 @export var spawn_position: Vector2 = Vector2(800, 2000)
 var offset_from_camera: Vector2 = Vector2(0, 0)
 
