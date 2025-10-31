@@ -27,6 +27,7 @@ centered = false
 offset = Vector2(-483.5, -483.5)
 script = ExtResource("4_b1x3f")
 probability_turn = 1.0
+probability_left_turn = 0.5
 road_spawn_position = Vector2i(447, -967)
 main_scene = NodePath("..")
 motorbike = NodePath("../Motorbike")

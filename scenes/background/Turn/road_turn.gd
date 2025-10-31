@@ -64,21 +64,12 @@ func _process(_delta: float) -> void:
 		global_position.y += current_speed * _delta
 	
 	if is_turning:
-		# Get the camera position to calculate relative position on screen
 		if camera:
-			# Get current game speed to calculate dynamic pivot trigger point
-			
-			
-			# Calculate dynamic pivot trigger point - negative means earlier (above screen center)
 			var dynamic_pivot_y = base_pivot_offset - (current_speed * speed_pivot_factor)
-			
-			# Calculate where this object appears on screen relative to camera
 			var screen_position = global_position - camera.global_position
-
-			# Check if the object has reached the dynamic pivot point
 			if screen_position.y >= dynamic_pivot_y:
 				turn_around_pivot()
-				is_turning = false  # Prevent multiple calls
+				is_turning = false 
 
 func _on_timer_timeout():
 	if is_visible_in_tree():
@@ -93,11 +84,14 @@ func _on_timer_timeout():
 	# Check probability and display turn if successful
 	if randf() < probability_turn:
 		#check left or right turn
-		print("Turning Left")
+		is_initialised = true
 		if randf() < probability_left_turn:
-			is_initialised = true
-			display_turn() 
-
+			turn_angle_degrees = 90.0
+		else:
+			turn_angle_degrees = -90.0
+			flip_h = true
+			print(turn_offset_x)
+		display_turn() 
 func display_turn():
 	motorbike.hide_motorbike()
 	collectables_manager.stop_spawning()
@@ -118,6 +112,8 @@ func trigger_display():
 	print("Displaying road turn")
 	is_turning = true
 	global_position = Vector2(global_position.x, camera.global_position.y - distance_from_camera)
+	if flip_h:
+		global_position -= Vector2(turn_offset_x, 0)
 	show()
 
 func turn_around_pivot():
@@ -139,13 +135,16 @@ func turn_around_pivot():
 	# Animate rotation with dynamic duration
 	tween.tween_property(self, "rotation_degrees", final_rotation, dynamic_turn_duration)
 	
-	# Reposition instantly
-	global_position -= Vector2(turn_offset_x, 0)
+	if not flip_h:
+		global_position -= Vector2(turn_offset_x, 0)
+	else:
+		global_position += Vector2(turn_offset_x, 0)
 
 	# After turn completes, wait 5 seconds then reset
 	tween.tween_callback(_start_reset_delay)
 
 func _start_reset_delay():
+	motorbike.show_motorbike()
 	# Create a new tween for the delay
 	var delay_tween = create_tween()
 	
@@ -154,9 +153,11 @@ func _start_reset_delay():
 	delay_tween.tween_callback(reset_turn)
 
 func reset_turn():
-	motorbike.show_motorbike()
 	collectables_manager.start_spawning()
 	hide()
-	global_position += Vector2(turn_offset_x, 0)
+	if not flip_h:
+		global_position += Vector2(turn_offset_x, 0)
+	else:
+		flip_h = false
 	rotation_degrees = 0.0
 	is_initialised = false
