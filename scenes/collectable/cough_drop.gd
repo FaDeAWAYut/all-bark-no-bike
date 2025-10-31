@@ -1,4 +1,5 @@
 extends Collectable
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
-	super.collect()
+	if body.is_in_group("player"):
+		super.collect()
