@@ -1,18 +1,41 @@
-[gd_scene load_steps=3 format=3 uid="uid://d4mchi4q55xdb"]
+[gd_scene load_steps=6 format=3 uid="uid://d4mchi4q55xdb"]
 
 [ext_resource type="Script" uid="uid://cnjgaa41oxy3e" path="res://scenes/motorbike/motorbike.gd" id="1_1bwdf"]
-[ext_resource type="Texture2D" uid="uid://00n2thhmcl8x" path="res://assets/motorbike.png" id="1_w1uch"]
+[ext_resource type="Texture2D" uid="uid://dfyu3yb8ljp8g" path="res://assets/motorbike.png" id="1_w1uch"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1bwdf"]
+atlas = ExtResource("1_w1uch")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y1enh"]
+atlas = ExtResource("1_w1uch")
+region = Rect2(32, 0, 32, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3dlxh"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1bwdf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y1enh")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="Motorbike" type="CharacterBody2D"]
 motion_mode = 1
 script = ExtResource("1_1bwdf")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
-texture = ExtResource("1_w1uch")
+sprite_frames = SubResource("SpriteFrames_3dlxh")
+autoplay = "default"
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
-polygon = PackedVector2Array(-2, -31, 2, -31, 5, -28, 6, -23, 9, -19, 10, -11, 17, -6, 14, -5, 10, -6, 8, -3, 11, 3, 11, 10, 9, 19, 3, 22, 3, 31, -3, 31, -3, 22, -10, 18, -12, 9, -11, 2, -8, -4, -11, -7, -11, -7, -11, -7, -14, -5, -17, -6, -10, -11, -9, -19, -6, -23, -5, -28)
+polygon = PackedVector2Array(-2, -31, 2, -31, 5, -28, 5, -22, 9, -19, 10, -11, 15, -6, 15, -4, 11, -4, 9, -3, 11, 3, 12, 6, 10, 19, 3, 24, 3, 31, -3, 31, -3, 24, -10, 19, -12, 6, -11, 2, -9, -3, -11, -4, -15, -4, -15, -6, -10, -11, -9, -19, -5, -22, -5, -28)
 
 [node name="RayCastCenter" type="RayCast2D" parent="."]
 target_position = Vector2(0, -50)
