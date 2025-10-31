@@ -3,6 +3,9 @@ extends Sprite2D
 @export var turn_duration: float = 2.0
 @export var turn_angle_degrees: float = 90.0
 
+@export var turn_offset_x: float = -2.0
+@export var reset_delay: float = 5.0
+
 var screen_size: Vector2
 var screen_height: float
 
@@ -40,6 +43,20 @@ func turn_around_pivot():
 	
 	# Animate rotation
 	tween.tween_property(self, "rotation_degrees", final_rotation, turn_duration)
+	
+	# Reposition instantly
+	global_position += Vector2(turn_offset_x, 0)
+	
+	# After turn completes, wait 5 seconds then reset
+	tween.tween_callback(_start_reset_delay)
+
+func _start_reset_delay():
+	# Create a new tween for the delay
+	var delay_tween = create_tween()
+	
+	# Wait for reset_delay seconds then call reset_turn
+	delay_tween.tween_interval(reset_delay)
+	delay_tween.tween_callback(reset_turn)
 
 func reset_turn():
 	rotation_degrees = 0.0
