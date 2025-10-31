@@ -53,10 +53,11 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	# Check if conditions are met to trigger display
 	if is_motorbike_hidden and is_item_drops_cleared and is_obstacles_cleared:
+		# Trigger display immediately and reset flags
+		trigger_display()
 		is_motorbike_hidden = false
 		is_item_drops_cleared = false
 		is_obstacles_cleared = false
-		trigger_display()
 
 	var current_speed = 0.0
 	current_speed = main_scene.currentSpeed
@@ -166,3 +167,7 @@ func reset_turn():
 		flip_h = false
 	rotation_degrees = 0.0
 	is_initialised = false
+	
+	is_motorbike_hidden = false
+	is_item_drops_cleared = false
+	is_obstacles_cleared = false
