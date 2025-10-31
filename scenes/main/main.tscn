@@ -11,23 +11,29 @@
 [node name="Main" type="Node" node_paths=PackedStringArray("collectablesManager")]
 script = ExtResource("1_e2v34")
 collectablesManager = NodePath("CollectablesManager")
+dogStartPosition = Vector2i(560, 600)
+camStartPosition = Vector2i(560, 500)
 
 [node name="ParallaxBackground" parent="." instance=ExtResource("1_mh4tl")]
 
+[node name="LeftTurnRoad" type="Sprite2D" parent="."]
+
 [node name="TheDawg" parent="." instance=ExtResource("2_631s2")]
-position = Vector2(960, 920)
+position = Vector2(560, 500)
+scale = Vector2(0.3, 0.3)
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(960, 560.055)
+position = Vector2(560, 315)
 
 [node name="HUD" parent="." instance=ExtResource("4_dwgw2")]
 
-[node name="Motorbike" parent="." groups=["enemy"] instance=ExtResource("5_6q06x")]
-position = Vector2(963, 147)
-scale = Vector2(3.7999988, 3.7999988)
+[node name="Motorbike" parent="." instance=ExtResource("5_6q06x")]
+position = Vector2(560, 133)
+scale = Vector2(2.5, 2.5)
 
 [node name="CollectablesManager" type="Node" parent="." node_paths=PackedStringArray("cough_drop_pool")]
 script = ExtResource("6_ow5a4")
 cough_drop_pool = NodePath("CoughDropsPool")
+cough_drop_scale = 0.5
 
 [node name="CoughDropsPool" parent="CollectablesManager" instance=ExtResource("7_hujxm")]

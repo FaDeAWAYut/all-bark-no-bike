@@ -13,10 +13,12 @@ var screenEffects: ScreenEffects
 @export var collectablesManager: CollectablesManager
 
 # Game constants
-const dogStartPosition := Vector2i(960, 920)
-const camStartPosition := Vector2i(960, 560)
+@export var dogStartPosition := Vector2i(960, 920)
+@export var camStartPosition := Vector2i(960, 560)
 var canChargeShoot: bool = true
 @export var currentSpeed: float
+
+@export var car_obstacle_scale: float = 0.5
 
 # Background scrolling settings
 @export var startingBackgroundSpeed: float = 1000.0  # Starting scroll speed
@@ -146,6 +148,7 @@ func reset_background_position():
 func _on_obstacle_spawned(obs: Node):
 	# Add the obstacle to the scene and set up collision
 	add_child(obs)
+	obs.scale = Vector2(car_obstacle_scale, car_obstacle_scale)
 	obstacleSpawner.add_obstacle(obs, _on_obstacle_collision)
 
 func _on_obstacle_collision(body):

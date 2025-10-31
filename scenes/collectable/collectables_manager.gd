@@ -6,6 +6,7 @@ class_name CollectablesManager
 @export var cough_drop_pool: Pool
 @export var min_spawn_interval: float = 1.0
 @export var max_spawn_interval: float = 5.0
+@export var cough_drop_scale: float = 0.2
 var cough_drop_timer: float = 0.0
 var current_spawn_interval: float
 
@@ -28,6 +29,7 @@ func spawn_cough_drops(camera_y_position: float, screen_size_x: float):
 	var drop_y_level = camera_y_position - 1500
 	var drop_x_level = screen_size_x * randf_range(0.3, 0.7)
 	cough_drop.position = Vector2(drop_x_level, drop_y_level)
+	cough_drop.scale = Vector2(cough_drop_scale, cough_drop_scale)
 
 func cleanup_offscreen_collectables(camera_y_position: float, screen_size_y: float):
 	var collectables_to_remove = []
