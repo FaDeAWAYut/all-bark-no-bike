@@ -12,9 +12,9 @@
 
 [node name="Main" type="Node" node_paths=PackedStringArray("collectablesManager")]
 script = ExtResource("1_e2v34")
+collectablesManager = NodePath("CollectablesManager")
 dogStartPosition = Vector2i(448, 400)
 camStartPosition = Vector2i(448, 252)
-collectablesManager = NodePath("CollectablesManager")
 
 [node name="ParallaxBackground" parent="." instance=ExtResource("1_mh4tl")]
 

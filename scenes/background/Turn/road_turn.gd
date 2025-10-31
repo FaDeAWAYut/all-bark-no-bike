@@ -87,6 +87,9 @@ func _on_timer_timeout():
 	if is_initialised:
 		return
 
+	if not motorbike.is_positioned:
+		return
+
 	# Check probability and display turn if successful
 	if randf() < probability_turn:
 		#check left or right turn

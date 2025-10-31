@@ -1,7 +1,5 @@
 extends CharacterBody2D
 
-class_name Motorbike
-
 @export var spawn_position: Vector2 = Vector2(800, 2000)
 var offset_from_camera: Vector2 = Vector2(0, 0)
 
@@ -33,6 +31,7 @@ var currentSpeed: float
 var is_hiding: bool = false
 var is_hidden: bool = false
 var is_showing: bool = false
+var is_positioned: bool = true
 
 signal motorbike_hidden
 
@@ -68,7 +67,6 @@ func _physics_process(delta):
 	
 	if is_hiding:
 		# Use increased velocity to speed up the bike when hiding
-		
 		velocity.x = 0  # Stop horizontal movement
 		velocity.y = -1 * currentSpeed * hide_speed_multiplier
 		
@@ -84,13 +82,14 @@ func _physics_process(delta):
 				motorbike_hidden.emit()
 				is_hiding = false
 				is_hidden = true
+				print("Motorbike is now hidden")
 		
 		move_and_slide()
 		return
 
 	if is_showing:
 		velocity.x = 0  # Stop horizontal movement while showing
-		velocity.y = -currentSpeed * 0.5
+		velocity.y = currentSpeed * hide_speed_multiplier
 		
 		var camera = get_viewport().get_camera_2d()
 		if camera:
@@ -99,6 +98,8 @@ func _physics_process(delta):
 				global_position.y = target_y
 				is_showing = false
 				is_hidden = false
+				is_positioned = true
+				print("Motorbike is now visible")
 		
 		move_and_slide()
 		return
@@ -195,7 +196,11 @@ func hide_motorbike():
 	if is_hidden:
 		return
 
+	if not is_positioned:
+		return
+
 	is_hiding = true
+	is_positioned = false
 	
 	# Clear current obstacle state
 	current_obstacle = null
@@ -213,6 +218,7 @@ func show_motorbike():
 	if not is_hidden:
 		return
 
+	print("Showing motorbike")
 	# Re-enable raycasts
 	if ray_cast_left:
 		ray_cast_left.enabled = true

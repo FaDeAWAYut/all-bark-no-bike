@@ -45,7 +45,7 @@ func move_drop(delta: float):
 
 func spawn_cough_drops(camera_y_position: float, screen_size_x: float):
 	var cough_drop = cough_drop_pool.get_object()
-	var drop_y_level = camera_y_position - spawn_offset_y
+	var drop_y_level = camera_y_position - spawn_offset_y 
 	var drop_x_level = screen_size_x * randf_range(0.3, 0.7)
 	cough_drop.position = Vector2(drop_x_level, drop_y_level)
 	cough_drop.scale = Vector2(cough_drop_scale, cough_drop_scale)
@@ -84,7 +84,5 @@ func check_and_emit_cleared():
 	# Add checks for other pools here when they're added
 	# if other_pool and other_pool.active_objects.size() > 0:
 	#     all_pools_empty = false
-	print("pool size: %d" % cough_drop_pool.active_objects.size())
 	if all_pools_empty:
 		collectables_cleared.emit()
-		print("All collectables cleared, emitting signal")

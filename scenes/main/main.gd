@@ -94,14 +94,16 @@ func _physics_process(delta: float):
 	gameTime += delta
 	
 	# Update obstacle spawning
-	# obstacleSpawner.update(delta, $Camera2D.position.y, screenSize.x)
+	# obstacleSpawner.update(delta, $Camera2D.position.y, screenSize.x, currentSpeed)
 	# obstacleSpawner.cleanup_offscreen_obstacles($Camera2D.position.y, screenSize.y)
 	
 	#update item drop spawning
-	collectablesManager.update(delta, $Camera2D.position.y, screenSize.x)
+	collectablesManager.update(delta, $Camera2D.position.y, screenSize.x, currentSpeed)
 	collectablesManager.cleanup_offscreen_collectables($Camera2D.position.y, screenSize.y)
 	show_hp()
 
+	# Update screen effects
+	screenEffects.update_screen_shake(delta)
 	
 	# Scroll the background instead of moving camera
 	scroll_background(delta)
