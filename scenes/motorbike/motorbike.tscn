@@ -31,20 +31,25 @@ script = ExtResource("1_1bwdf")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
+position = Vector2(0, -32)
 sprite_frames = SubResource("SpriteFrames_3dlxh")
 autoplay = "default"
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+position = Vector2(0, -32)
 polygon = PackedVector2Array(-2, -31, 2, -31, 5, -28, 5, -22, 9, -19, 10, -11, 15, -6, 15, -4, 11, -4, 9, -3, 11, 3, 12, 6, 10, 19, 3, 24, 3, 31, -3, 31, -3, 24, -10, 19, -12, 6, -11, 2, -9, -3, -11, -4, -15, -4, -15, -6, -10, -11, -9, -19, -5, -22, -5, -28)
 
 [node name="RayCastCenter" type="RayCast2D" parent="."]
-target_position = Vector2(0, -50)
+position = Vector2(0, -32)
+target_position = Vector2(0, -60)
 collide_with_areas = true
 
 [node name="RayCastLeft" type="RayCast2D" parent="."]
+position = Vector2(0, -32)
 target_position = Vector2(-19, -40)
 collide_with_areas = true
 
 [node name="RayCastRight" type="RayCast2D" parent="."]
+position = Vector2(0, -32)
 target_position = Vector2(19, -40)
 collide_with_areas = true

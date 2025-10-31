@@ -51,9 +51,8 @@ position = Vector2(448, 252)
 
 [node name="Motorbike" parent="." groups=["enemy"] instance=ExtResource("5_6q06x")]
 position = Vector2(447.99997, 169)
-scale = Vector2(2.5, 2.5)
+scale = Vector2(2, 2)
 spawn_position = Vector2(448, 169)
-max_x = 896.0
 hide_speed_multiplier = 0.5
 
 [node name="CollectablesManager" type="Node" parent="." node_paths=PackedStringArray("cough_drop_pool")]
