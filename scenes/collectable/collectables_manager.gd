@@ -7,6 +7,8 @@ class_name CollectablesManager
 @export var min_spawn_interval: float = 1.0
 @export var max_spawn_interval: float = 5.0
 @export var cough_drop_scale: float = 0.2
+
+var cough_drop_speed: float = 0.0
 var cough_drop_timer: float = 0.0
 var current_spawn_interval: float
 
@@ -17,7 +19,7 @@ signal collectables_cleared
 @export_group("Other Drops")
 # reference to other pools here
 
-func update(delta: float, camera_y_position: float, screen_size_x: float):
+func update(delta: float, camera_y_position: float, screen_size_x: float, current_speed: float):
 	if not spawning_enabled:
 		return
 		
@@ -25,11 +27,20 @@ func update(delta: float, camera_y_position: float, screen_size_x: float):
 		current_spawn_interval = randf_range(min_spawn_interval, max_spawn_interval)
 	
 	cough_drop_timer += delta
-	
+	cough_drop_speed = current_speed
+
 	if cough_drop_timer >= current_spawn_interval:
 		spawn_cough_drops(camera_y_position, screen_size_x)
 		cough_drop_timer = 0.0
 		current_spawn_interval = randf_range(min_spawn_interval, max_spawn_interval)
+	
+	move_drop(delta)
+
+func move_drop(delta: float):
+	for drop in cough_drop_pool.active_objects:
+		if is_instance_valid(drop):
+			# Move obstacle downward at the current speed
+			drop.position.y += cough_drop_speed * delta
 
 func spawn_cough_drops(camera_y_position: float, screen_size_x: float):
 	var cough_drop = cough_drop_pool.get_object()
@@ -39,6 +50,7 @@ func spawn_cough_drops(camera_y_position: float, screen_size_x: float):
 	cough_drop.scale = Vector2(cough_drop_scale, cough_drop_scale)
 
 func stop_spawning():
+	print("Stopping collectable spawning")
 	spawning_enabled = false
 	check_and_emit_cleared()
 
@@ -65,13 +77,13 @@ func check_and_emit_cleared():
 	# Check if all pools have no active items
 	var all_pools_empty = true
 	
-	# Check cough drop pool
 	if cough_drop_pool and cough_drop_pool.active_objects.size() > 0:
 		all_pools_empty = false
 	
 	# Add checks for other pools here when they're added
 	# if other_pool and other_pool.active_objects.size() > 0:
 	#     all_pools_empty = false
-	
+	print("pool size: %d" % cough_drop_pool.active_objects.size())
 	if all_pools_empty:
 		collectables_cleared.emit()
+		print("All collectables cleared, emitting signal")
