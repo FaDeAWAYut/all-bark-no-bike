@@ -75,4 +75,4 @@ polygon = PackedVector2Array(-7.5, -22.5, 7.499998, -22.5, 19.999996, -17.5, 32.
 sprite_frames = SubResource("SpriteFrames_1dcsa")
 animation = &"chargebark"
 
-[connection signal="body_entered" from="AnimatedSprite2D" to="." method="_on_body_entered"]
+[connection signal="body_entered" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_body_entered"]

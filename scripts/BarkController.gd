@@ -3,10 +3,12 @@ extends Node
 class_name BarkController
 
 # Reference to the dog node
-var theDawg: Node2D
+@export var theDawg: Node2D
 
 # Bark spawn offset
 @export var barkSpawnOffset: Vector2 = Vector2(0, -50)
+
+@export var charge_bark_pool: Pool	
 
 # Audio
 var barkSound: AudioStreamPlayer
@@ -28,14 +30,15 @@ func shoot_chargebark():
 		push_error("TheDawg reference not set in BarkController!")
 		return
 		
-	var chargebarkScene = preload("res://scenes/chargebark/chargebark.tscn")
-	var bullet = chargebarkScene.instantiate()
+	if charge_bark_pool == null:
+		push_error("Chargebark pool not initialized!")
+		return
+		
+	# Get chargebark from pool
+	var bullet = charge_bark_pool.get_object()
 	
 	# Position at the dog's position with adjustable offset
 	bullet.global_position = theDawg.global_position + barkSpawnOffset
-	
-	# Add to scene
-	get_tree().current_scene.add_child(bullet)
 	
 	# Play bark sound
 	play_bark_sound()

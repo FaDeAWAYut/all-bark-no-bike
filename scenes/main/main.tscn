@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://p3b5yajekrdr"]
+[gd_scene load_steps=14 format=3 uid="uid://p3b5yajekrdr"]
 
 [ext_resource type="Script" uid="uid://ct048k6rsjfbb" path="res://scenes/main/main.gd" id="1_e2v34"]
 [ext_resource type="PackedScene" uid="uid://b530dx4s8ydsy" path="res://scenes/background/parallax_background.tscn" id="1_mh4tl"]
@@ -10,10 +10,14 @@
 [ext_resource type="Script" uid="uid://w5tembhx3n1a" path="res://scenes/collectable/collectables_manager.gd" id="6_ow5a4"]
 [ext_resource type="PackedScene" uid="uid://778k268328ak" path="res://scenes/collectable/cough_drops/cough_drops_pool.tscn" id="7_hujxm"]
 [ext_resource type="Script" uid="uid://b4ka507v7wq1c" path="res://scripts/ObstacleSpawner.gd" id="10_a8run"]
+[ext_resource type="Script" uid="uid://dddagrng1jobg" path="res://scripts/BarkController.gd" id="11_ouso4"]
+[ext_resource type="Script" uid="uid://ek8hm7xuisk5" path="res://scripts/Pool.gd" id="12_th5th"]
+[ext_resource type="PackedScene" uid="uid://lxglkufg1d0p" path="res://scenes/chargebark/chargebark.tscn" id="13_7smn1"]
 
-[node name="Main" type="Node" node_paths=PackedStringArray("obstacleSpawner", "collectablesManager")]
+[node name="Main" type="Node" node_paths=PackedStringArray("obstacleSpawner", "barkController", "collectablesManager")]
 script = ExtResource("1_e2v34")
 obstacleSpawner = NodePath("ObstacleSpawner")
+barkController = NodePath("BarkController")
 collectablesManager = NodePath("CollectablesManager")
 dogStartPosition = Vector2i(448, 400)
 camStartPosition = Vector2i(448, 252)
@@ -40,7 +44,7 @@ obstacle_spawner = NodePath("../ObstacleSpawner")
 wait_time = 20.0
 autostart = true
 
-[node name="TheDawg" parent="." instance=ExtResource("2_631s2")]
+[node name="TheDawg" parent="." groups=["player"] instance=ExtResource("2_631s2")]
 position = Vector2(448, 500)
 scale = Vector2(0.3, 0.3)
 
@@ -65,5 +69,15 @@ cough_drop_scale = 0.5
 
 [node name="ObstacleSpawner" type="Node" parent="."]
 script = ExtResource("10_a8run")
+
+[node name="BarkController" type="Node" parent="." node_paths=PackedStringArray("theDawg", "charge_bark_pool")]
+script = ExtResource("11_ouso4")
+theDawg = NodePath("../TheDawg")
+charge_bark_pool = NodePath("BarkPool")
+
+[node name="BarkPool" type="Node" parent="BarkController"]
+script = ExtResource("12_th5th")
+object_scene = ExtResource("13_7smn1")
+pool_size = 5
 
 [connection signal="obstacles_cleared" from="ObstacleSpawner" to="RoadTurn" method="_on_obstacles_cleared"]
