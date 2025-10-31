@@ -8,7 +8,7 @@ var theDawg: Node2D
 # Bark spawn offset
 @export var barkSpawnOffset: Vector2 = Vector2(0, -50)
 
-@export var charge_bark_pool: Pool
+@export var charge_bark_pool: Pool	
 
 # Audio
 var barkSound: AudioStreamPlayer
@@ -17,7 +17,6 @@ var chargebarkSFX = preload("res://assets/sfx/chargebarksfx.mp3")
 func setup(dawgNode: Node2D):
 	theDawg = dawgNode
 	setup_audio()
-	setup_pool()
 
 func setup_audio():
 	# Create audio player for bark sounds
@@ -25,15 +24,6 @@ func setup_audio():
 	barkSound.stream = chargebarkSFX
 	barkSound.volume_db = -5.0  # Adjust volume as needed
 	add_child(barkSound)
-
-func setup_pool():
-	# Use the exported charge_bark_pool if it's already assigned
-	if charge_bark_pool == null:
-		# Create pool for chargebark objects if not assigned
-		charge_bark_pool = Pool.new()
-		charge_bark_pool.object_scene = preload("res://scenes/chargebark/chargebark.tscn")
-		charge_bark_pool.pool_size = 20  # Adjust pool size as needed
-		add_child(charge_bark_pool)
 
 func shoot_chargebark():
 	if theDawg == null:
