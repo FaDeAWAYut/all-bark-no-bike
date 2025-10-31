@@ -1,33 +1,69 @@
-[gd_scene load_steps=8 format=3 uid="uid://p3b5yajekrdr"]
+[gd_scene load_steps=11 format=3 uid="uid://p3b5yajekrdr"]
 
 [ext_resource type="Script" uid="uid://ct048k6rsjfbb" path="res://scenes/main/main.gd" id="1_e2v34"]
 [ext_resource type="PackedScene" uid="uid://b530dx4s8ydsy" path="res://scenes/background/parallax_background.tscn" id="1_mh4tl"]
 [ext_resource type="PackedScene" uid="uid://dfnmfcww2cu6i" path="res://scenes/dawg/the_dawg.tscn" id="2_631s2"]
+[ext_resource type="Texture2D" uid="uid://cfnqo70bxekfx" path="res://assets/left_turn_placeholder.png" id="3_yyfjg"]
+[ext_resource type="Script" uid="uid://bj3bj0d8skqwt" path="res://scenes/background/Turn/road_turn.gd" id="4_b1x3f"]
 [ext_resource type="PackedScene" uid="uid://cobth27w6p3ja" path="res://scenes/hud/hud.tscn" id="4_dwgw2"]
 [ext_resource type="PackedScene" uid="uid://d4mchi4q55xdb" path="res://scenes/motorbike/motorbike.tscn" id="5_6q06x"]
 [ext_resource type="Script" uid="uid://w5tembhx3n1a" path="res://scenes/collectable/collectables_manager.gd" id="6_ow5a4"]
 [ext_resource type="PackedScene" uid="uid://778k268328ak" path="res://scenes/collectable/cough_drops/cough_drops_pool.tscn" id="7_hujxm"]
+[ext_resource type="Script" uid="uid://b4ka507v7wq1c" path="res://scripts/ObstacleSpawner.gd" id="10_a8run"]
 
-[node name="Main" type="Node" node_paths=PackedStringArray("collectablesManager")]
+[node name="Main" type="Node" node_paths=PackedStringArray("obstacleSpawner", "collectablesManager")]
 script = ExtResource("1_e2v34")
+obstacleSpawner = NodePath("ObstacleSpawner")
 collectablesManager = NodePath("CollectablesManager")
+dogStartPosition = Vector2i(448, 400)
+camStartPosition = Vector2i(448, 252)
 
 [node name="ParallaxBackground" parent="." instance=ExtResource("1_mh4tl")]
 
+[node name="RoadTurn" type="Sprite2D" parent="." node_paths=PackedStringArray("main_scene", "motorbike", "collectables_manager", "obstacle_spawner")]
+texture_filter = 1
+position = Vector2(447, -967)
+scale = Vector2(2, 2)
+texture = ExtResource("3_yyfjg")
+centered = false
+offset = Vector2(-483.5, -483.5)
+script = ExtResource("4_b1x3f")
+probability_turn = 1.0
+probability_left_turn = 0.5
+road_spawn_position = Vector2i(447, -967)
+main_scene = NodePath("..")
+motorbike = NodePath("../Motorbike")
+collectables_manager = NodePath("../CollectablesManager")
+obstacle_spawner = NodePath("../ObstacleSpawner")
+
+[node name="Timer" type="Timer" parent="RoadTurn"]
+wait_time = 20.0
+autostart = true
+
 [node name="TheDawg" parent="." instance=ExtResource("2_631s2")]
-position = Vector2(960, 920)
+position = Vector2(448, 500)
+scale = Vector2(0.3, 0.3)
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(960, 560.055)
+position = Vector2(448, 252)
 
 [node name="HUD" parent="." instance=ExtResource("4_dwgw2")]
 
 [node name="Motorbike" parent="." groups=["enemy"] instance=ExtResource("5_6q06x")]
-position = Vector2(963, 147)
-scale = Vector2(3.7999988, 3.7999988)
+position = Vector2(447.99997, 169)
+scale = Vector2(2.5, 2.5)
+spawn_position = Vector2(448, 169)
+max_x = 896.0
+hide_speed_multiplier = 0.5
 
 [node name="CollectablesManager" type="Node" parent="." node_paths=PackedStringArray("cough_drop_pool")]
 script = ExtResource("6_ow5a4")
 cough_drop_pool = NodePath("CoughDropsPool")
+cough_drop_scale = 0.5
 
 [node name="CoughDropsPool" parent="CollectablesManager" instance=ExtResource("7_hujxm")]
+
+[node name="ObstacleSpawner" type="Node" parent="."]
+script = ExtResource("10_a8run")
+
+[connection signal="obstacles_cleared" from="ObstacleSpawner" to="RoadTurn" method="_on_obstacles_cleared"]

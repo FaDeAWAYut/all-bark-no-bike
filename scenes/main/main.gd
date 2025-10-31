@@ -5,7 +5,7 @@ var carScene = preload("res://scenes/car/car.tscn")
 
 # Module instances
 var gameManager: GameManager
-var obstacleSpawner: ObstacleSpawner
+@export var obstacleSpawner: ObstacleSpawner
 var speedManager: SpeedManager
 var barkController: BarkController
 var screenEffects: ScreenEffects
@@ -13,10 +13,12 @@ var screenEffects: ScreenEffects
 @export var collectablesManager: CollectablesManager
 
 # Game constants
-const dogStartPosition := Vector2i(960, 920)
-const camStartPosition := Vector2i(960, 560)
+@export var dogStartPosition := Vector2i(960, 920)
+@export var camStartPosition := Vector2i(960, 560)
 var canChargeShoot: bool = true
 @export var currentSpeed: float
+
+@export var car_obstacle_scale: float = 0.5
 
 # Background scrolling settings
 @export var startingBackgroundSpeed: float = 1000.0  # Starting scroll speed
@@ -40,10 +42,15 @@ func initialize_modules():
 	add_child(gameManager)
 	
 	# Create and setup obstacle spawner
-	obstacleSpawner = ObstacleSpawner.new()
 	obstacleSpawner.setup(1.0, -0.5, 5.0)
-	obstacleSpawner.add_obstacle_scene(carScene)
 	add_child(obstacleSpawner)
+	
+	# Create car pool and add to obstacle spawner
+	var car_pool = Pool.new()
+	car_pool.object_scene = carScene
+	car_pool.pool_size = 10
+	add_child(car_pool)
+	obstacleSpawner.add_obstacle_pool(car_pool)
 	
 	# Create and setup speed manager
 	speedManager = SpeedManager.new()
@@ -91,15 +98,16 @@ func _physics_process(delta: float):
 	currentSpeed = speedManager.update(delta)
 	gameTime += delta
 	
-	# Update obstacle spawning - pass current speed for obstacle movement
+	# Update obstacle spawning
 	obstacleSpawner.update(delta, $Camera2D.position.y, screenSize.x, currentSpeed)
-	obstacleSpawner.cleanup_offscreen_obstacles($Camera2D.position.y, screenSize.y)
 	
 	#update item drop spawning
-	collectablesManager.update(delta, $Camera2D.position.y, screenSize.x)
+	collectablesManager.update(delta, $Camera2D.position.y, screenSize.x, currentSpeed)
 	collectablesManager.cleanup_offscreen_collectables($Camera2D.position.y, screenSize.y)
 	show_hp()
 
+	# Update screen effects
+	screenEffects.update_screen_shake(delta)
 	
 	# Scroll the background instead of moving camera
 	scroll_background(delta)
@@ -144,9 +152,12 @@ func reset_background_position():
 				child.motion_offset.y = 0
 
 func _on_obstacle_spawned(obs: Node):
-	# Add the obstacle to the scene and set up collision
-	add_child(obs)
-	obstacleSpawner.add_obstacle(obs, _on_obstacle_collision)
+	# Set up obstacle collision and scaling (obstacle is already managed by pool)
+	obs.scale = Vector2(car_obstacle_scale, car_obstacle_scale)
+	
+	# Connect collision signal if the obstacle has it
+	if obs.has_signal("body_entered"):
+		obs.body_entered.connect(_on_obstacle_collision)
 
 func _on_obstacle_collision(body):
 	if body.name == "TheDawg":
