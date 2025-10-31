@@ -44,8 +44,14 @@ func initialize_modules():
 	# Create and setup obstacle spawner
 	obstacleSpawner = ObstacleSpawner.new()
 	obstacleSpawner.setup(1.0, -0.5, 5.0)
-	obstacleSpawner.add_obstacle_scene(carScene)
 	add_child(obstacleSpawner)
+	
+	# Create car pool and add to obstacle spawner
+	var car_pool = Pool.new()
+	car_pool.object_scene = carScene
+	car_pool.pool_size = 10
+	add_child(car_pool)
+	obstacleSpawner.add_obstacle_pool(car_pool)
 	
 	# Create and setup speed manager
 	speedManager = SpeedManager.new()
@@ -94,8 +100,8 @@ func _physics_process(delta: float):
 	gameTime += delta
 	
 	# Update obstacle spawning
-	# obstacleSpawner.update(delta, $Camera2D.position.y, screenSize.x, currentSpeed)
-	# obstacleSpawner.cleanup_offscreen_obstacles($Camera2D.position.y, screenSize.y)
+	obstacleSpawner.update(delta, $Camera2D.position.y, screenSize.x, currentSpeed)
+	obstacleSpawner.cleanup_offscreen_obstacles($Camera2D.position.y, screenSize.y)
 	
 	#update item drop spawning
 	collectablesManager.update(delta, $Camera2D.position.y, screenSize.x, currentSpeed)
@@ -148,10 +154,12 @@ func reset_background_position():
 				child.motion_offset.y = 0
 
 func _on_obstacle_spawned(obs: Node):
-	# Add the obstacle to the scene and set up collision
-	add_child(obs)
+	# Set up obstacle collision and scaling (obstacle is already managed by pool)
 	obs.scale = Vector2(car_obstacle_scale, car_obstacle_scale)
-	obstacleSpawner.add_obstacle(obs, _on_obstacle_collision)
+	
+	# Connect collision signal if the obstacle has it
+	if obs.has_signal("body_entered"):
+		obs.body_entered.connect(_on_obstacle_collision)
 
 func _on_obstacle_collision(body):
 	if body.name == "TheDawg":
