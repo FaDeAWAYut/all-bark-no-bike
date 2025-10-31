@@ -15,6 +15,7 @@ var cough_drop_timer: float = 0.0
 var current_spawn_interval: float
 
 var spawning_enabled: bool = true
+var cleared_signal_emitted: bool = false
 
 signal collectables_cleared
 
@@ -39,9 +40,10 @@ func update(delta: float, camera_y_position: float, screen_size_x: float, curren
 		current_spawn_interval = randf_range(min_spawn_interval, max_spawn_interval)
 
 func move_drop(delta: float):
-	for drop in cough_drop_pool.active_objects:
-		if is_instance_valid(drop):
-			drop.position.y += cough_drop_speed * delta
+	if cough_drop_pool and cough_drop_pool.active_objects:
+		for drop in cough_drop_pool.active_objects:
+			if is_instance_valid(drop):
+				drop.position.y += cough_drop_speed * delta
 
 func spawn_cough_drops(camera_y_position: float, screen_size_x: float):
 	var cough_drop = cough_drop_pool.get_object()
@@ -52,10 +54,12 @@ func spawn_cough_drops(camera_y_position: float, screen_size_x: float):
 
 func stop_spawning():
 	spawning_enabled = false
+	cleared_signal_emitted = false  
 	check_and_emit_cleared()
 
 func start_spawning():
 	spawning_enabled = true
+	cleared_signal_emitted = false 
 	cough_drop_timer = 0.0
 	current_spawn_interval = 0.0
 
@@ -69,12 +73,13 @@ func cleanup_offscreen_collectables(camera_y_position: float, screen_size_y: flo
 	for collectable in collectables_to_remove:
 		collectable.return_to_pool()
 	
-	# Check if pools are empty after cleanup (only if spawning is disabled)
 	if not spawning_enabled:
 		check_and_emit_cleared()
 
 func check_and_emit_cleared():
-	# Check if all pools have no active items
+	if cleared_signal_emitted:
+		return
+		
 	var all_pools_empty = true
 	
 	if cough_drop_pool and cough_drop_pool.active_objects.size() > 0:
@@ -84,4 +89,5 @@ func check_and_emit_cleared():
 	# if other_pool and other_pool.active_objects.size() > 0:
 	#     all_pools_empty = false
 	if all_pools_empty:
+		cleared_signal_emitted = true  # Set flag before emitting
 		collectables_cleared.emit()
