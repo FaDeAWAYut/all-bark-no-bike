@@ -13,6 +13,11 @@ var obstacleSpawnInterval : float = 2.0
 var minSpawnVariation : float = -0.5
 var maxSpawnVariation : float = 5.0
 
+# Lane settings - 4 lanes, each 64 pixels wide
+var lane_width: float = 64.0*2
+var num_lanes: int = 4
+var lane_positions: Array = []
+
 # Add obstacle movement settings
 var obstacleSpeed: float = 0.0
 var spawning_enabled: bool = true
@@ -20,11 +25,27 @@ var spawning_enabled: bool = true
 func _ready():
 	pass
 
-func setup(spawn_interval: float, min_variation: float, max_variation: float):
+func setup(spawn_interval: float, min_variation: float, max_variation: float, screen_size_x: float):
 	obstacleSpawnInterval = spawn_interval
 	minSpawnVariation = min_variation
 	maxSpawnVariation = max_variation
+	calculate_lane_positions(screen_size_x)
 
+func calculate_lane_positions(screen_size_x: float):
+	# Clear previous positions
+	lane_positions.clear()
+	
+	# Calculate the total width occupied by all lanes
+	var total_lanes_width = num_lanes * lane_width
+	
+	# Calculate starting position to center the lanes on screen
+	var start_x = (screen_size_x - total_lanes_width) / 2
+	
+	# Calculate the center of each lane
+	for i in range(num_lanes):
+		var lane_center = start_x + (i * lane_width) + (lane_width / 2)
+		lane_positions.append(lane_center)
+		
 func add_obstacle_pool(pool: Pool):
 	if not obstacle_pools.has(pool):
 		obstacle_pools.append(pool)
@@ -41,6 +62,10 @@ func start_spawning():
 func update(delta: float, camera_y_position: float, screen_size_x: float, current_speed: float):
 	obstacleSpeed = current_speed  # Update obstacle speed
 	
+	# Calculate lane positions if not done yet or if screen size changed
+	if lane_positions.is_empty():
+		calculate_lane_positions(screen_size_x)
+		
 	# Always update obstacles (movement and cleanup), regardless of spawning state
 	update_obstacles(delta, camera_y_position, screen_size_x)
 	
@@ -87,13 +112,19 @@ func try_spawn_obstacle(camera_y_position: float, screen_size_x: float):
 	if obstacle_pools.is_empty():
 		return
 	
+	# Recalculate lane positions if screen size might have changed
+	if lane_positions.is_empty():
+		calculate_lane_positions(screen_size_x)
+
 	# Pick a random pool to spawn from
 	var pool = obstacle_pools[randi() % obstacle_pools.size()]
 	var obs = pool.get_object()
 	
 	# Spawn just above the top of the screen
 	var spawnY = camera_y_position - spawn_offset_y
-	var spawnX = screen_size_x * randf_range(0.3, 0.7)
+	# Pick a random lane for spawning
+	var random_lane = randi() % num_lanes
+	var spawnX = lane_positions[random_lane]
 	
 	obs.position = Vector2(spawnX, spawnY)
 	
