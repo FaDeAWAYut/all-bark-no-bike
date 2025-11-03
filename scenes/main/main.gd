@@ -1,7 +1,7 @@
 extends Node
 
 # Preload the obstacle scenes
-var carScene = preload("res://scenes/car/car.tscn")
+var carScenes = [preload("res://scenes/car/black_car.tscn"), preload("res://scenes/car/mini_car.tscn"),preload("res://scenes/car/truck_car.tscn")]
 
 # Module instances
 var gameManager: GameManager
@@ -18,7 +18,7 @@ var screenEffects: ScreenEffects
 var canChargeShoot: bool = true
 @export var currentSpeed: float
 
-@export var car_obstacle_scale: float = 0.5
+@export var car_obstacle_scale: float = 1
 
 # Background scrolling settings
 @export var startingBackgroundSpeed: float = 1000.0  # Starting scroll speed
@@ -37,21 +37,25 @@ func _ready():
 	new_game()
 
 func initialize_modules():
-	# Create and setup game manager
 	gameManager = GameManager.new()
 	add_child(gameManager)
-	
-	# Create and setup obstacle spawner
-	obstacleSpawner.setup(1.0, -0.5, 5.0)
-	add_child(obstacleSpawner)
-	
-	# Create car pool and add to obstacle spawner
+
+	# Create car pool and add to obstacle spawner FIRST
 	var car_pool = Pool.new()
-	car_pool.object_scene = carScene
+	add_child(car_pool)  # Add to scene tree FIRST
+
+	# NOW assign the object_scenes
+	car_pool.object_scenes = carScenes
 	car_pool.pool_size = 10
-	add_child(car_pool)
+	car_pool.initialize()
+
+	# Create and setup obstacle spawner
+	obstacleSpawner.setup(1.0, -0.5, 5.0, screenSize.x)
+	add_child(obstacleSpawner)
+
+	# Add the already initialized car pool to obstacle spawner
 	obstacleSpawner.add_obstacle_pool(car_pool)
-	
+
 	# Create and setup speed manager
 	speedManager = SpeedManager.new()
 	add_child(speedManager)
@@ -60,6 +64,26 @@ func initialize_modules():
 	screenEffects = ScreenEffects.new()
 	screenEffects.setup($Camera2D, screenSize, self)
 	add_child(screenEffects)
+	
+	var cough_drop_scenes = [preload("res://scenes/collectable/cough_drop.tscn")]  # Add your actual scene path
+	var cough_drop_pool = Pool.new()
+	add_child(cough_drop_pool)
+	cough_drop_pool.object_scenes = cough_drop_scenes
+	cough_drop_pool.pool_size = 5  # Adjust as needed
+	cough_drop_pool.initialize()
+	
+	# Initialize charge bark pool for BarkController
+	var charge_bark_scenes = [preload("res://scenes/chargebark/chargebark.tscn")]  # Replace with your actual scene path
+	var charge_bark_pool = Pool.new()
+	add_child(charge_bark_pool)
+	charge_bark_pool.object_scenes = charge_bark_scenes
+	charge_bark_pool.pool_size = 5  # Adjust based on how many barks you want available
+	charge_bark_pool.initialize()
+	barkController.charge_bark_pool = charge_bark_pool
+	
+	# Assign to collectables manager
+	collectablesManager.cough_drop_pool = cough_drop_pool
+
 
 func setup_signal_connections():
 	# Connect game manager signals
