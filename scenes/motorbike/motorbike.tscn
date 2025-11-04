@@ -1,7 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://d4mchi4q55xdb"]
+[gd_scene load_steps=10 format=3 uid="uid://d4mchi4q55xdb"]
 
 [ext_resource type="Script" uid="uid://cnjgaa41oxy3e" path="res://scenes/motorbike/motorbike.gd" id="1_1bwdf"]
 [ext_resource type="Texture2D" uid="uid://dfyu3yb8ljp8g" path="res://assets/motorbike.png" id="1_w1uch"]
+[ext_resource type="Script" uid="uid://cknu1cymfg8xl" path="res://scripts/statemachine/driving.gd" id="3_y1enh"]
+[ext_resource type="Script" uid="uid://c2843477cblqo" path="res://scripts/statemachine/turning.gd" id="4_0xr2y"]
+[ext_resource type="Script" uid="uid://ffqrcdp00q8d" path="res://scripts/statemachine/throwing.gd" id="5_6mq4i"]
+[ext_resource type="Script" uid="uid://dcexbr0062jc5" path="res://scripts/statemachine/hurting.gd" id="6_lpxf4"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1bwdf"]
 atlas = ExtResource("1_w1uch")
@@ -53,3 +57,18 @@ collide_with_areas = true
 position = Vector2(0, -32)
 target_position = Vector2(19, -40)
 collide_with_areas = true
+
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource("3_y1enh")
+
+[node name="Driving" type="Node" parent="StateMachine"]
+script = ExtResource("3_y1enh")
+
+[node name="Turning" type="Node" parent="StateMachine"]
+script = ExtResource("4_0xr2y")
+
+[node name="Throwing" type="Node" parent="StateMachine"]
+script = ExtResource("5_6mq4i")
+
+[node name="Hurting" type="Node" parent="StateMachine"]
+script = ExtResource("6_lpxf4")
