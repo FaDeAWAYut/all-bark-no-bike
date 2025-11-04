@@ -56,10 +56,7 @@ func _ready():
 	
 	# Set initial position within screen bounds
 	global_position.x = clamp(global_position.x, min_x, max_x)
-	#global_position.y = randf_range(screen_top_y, screen_bottom_y)
 
 func _physics_process(delta):
 	currentSpeed = speedManager.update(delta)
 	# All movement logic is now handled by the state machine
-
-# All movement and state logic is now handled by the state machine
