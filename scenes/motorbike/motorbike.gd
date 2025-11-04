@@ -22,11 +22,8 @@ var offset_from_camera: Vector2 = Vector2(0, 0)
 
 @export var BossHealthController: Node
 
-# Internal variables
+# Internal variables (accessible by states)
 var direction: int = 1
-var timer: float = 0.0
-var change_direction_time: float = 2.0
-var obstacle_timer: float = 0.0
 var current_obstacle: Node2D = null
 var escape_direction: int = 0
 var currentSpeed: float
@@ -44,6 +41,7 @@ var speedManager: SpeedManager
 @onready var ray_cast_left = $RayCastLeft
 @onready var ray_cast_right = $RayCastRight
 @onready var ray_cast_center = $RayCastCenter
+@onready var state_machine = $StateMachine
 
 func _ready():
 	# Create and setup speed manager
@@ -63,12 +61,7 @@ func _ready():
 	#global_position.y = randf_range(screen_top_y, screen_bottom_y)
 
 func _physics_process(delta):
-	timer += delta
-	obstacle_timer += delta
-	
 	currentSpeed = speedManager.update(delta)
-	
-	self.rotation = lerp_angle(self.rotation, direction_rotation_angle * direction, delta * direction_rotation_speed)
 	
 	if is_hiding:
 		# Use increased velocity to speed up the bike when hiding
@@ -105,101 +98,9 @@ func _physics_process(delta):
 		move_and_slide()
 		return
 	
-	# Check for obstacles periodically
-	if obstacle_timer >= obstacle_check_rate:
-		check_for_obstacles()
-		obstacle_timer = 0.0
-	
-	# Handle movement based on obstacle presence
-	if current_obstacle:
-		handle_obstacle_escape()
-	else:
-		handle_normal_movement()
+	# State machine now handles the driving logic
 
-	enforce_boundaries()
-	move_and_slide()
-
-func handle_normal_movement():
-	# Change direction when timer reaches threshold
-	if timer >= change_direction_time:
-		change_direction()
-		timer = 0.0
-		change_direction_time = randf_range(0.5,1.5)
-	
-	# Move only horizontally (no vertical movement since camera is static)
-	velocity.x = direction * speed_x
-	velocity.y = 0  # No vertical movement
-
-func handle_obstacle_escape():
-	# Move away from obstacle (only horizontally)
-	direction = escape_direction
-	velocity.x = escape_direction * escape_speed
-	velocity.y = 0  # No vertical movement
-
-func check_for_obstacles():
-	current_obstacle = null
-	escape_direction = 0
-	
-	# Check all raycasts for obstacles
-	var obstacles = []
-	
-	if ray_cast_center and ray_cast_center.is_colliding():
-		var obstacle = ray_cast_center.get_collider()
-		if obstacle and obstacle != self:
-			obstacles.append(obstacle)
-			# Determine escape direction based on obstacle position
-			var obstacle_pos = ray_cast_center.get_collision_point()
-			escape_direction = 1 if obstacle_pos.x < global_position.x else -1
-	
-	# Check side raycasts for better decision making
-	if ray_cast_left and ray_cast_left.is_colliding():
-		var obstacle = ray_cast_left.get_collider()
-		if obstacle and obstacle != self:
-			obstacles.append(obstacle)
-			escape_direction = 1  # Move right if obstacle on left
-	
-	if ray_cast_right and ray_cast_right.is_colliding():
-		var obstacle = ray_cast_right.get_collider()
-		if obstacle and obstacle != self:
-			obstacles.append(obstacle)
-			escape_direction = -1  # Move left if obstacle on right
-	
-	# If we found obstacles, set current obstacle
-	if obstacles.size() > 0:
-		current_obstacle = obstacles[0]
-		# If we haven't determined escape direction, choose randomly
-		if escape_direction == 0:
-			escape_direction = 1 if randf() > 0.5 else -1
-
-func change_direction():
-	var random_number = randf()
-	if random_number <= 0.33:
-		direction = 1
-	elif random_number <= 0.66:
-		direction = -1
-	else:
-		direction = 0
-
-func enforce_boundaries():
-	# Horizontal boundaries
-	if global_position.x <= min_x:
-		global_position.x = min_x
-		if direction == -1:
-			direction = 1
-		if escape_direction == -1:
-			escape_direction = 1
-	elif global_position.x >= max_x:
-		global_position.x = max_x
-		if direction == 1:
-			direction = -1
-		if escape_direction == 1:
-			escape_direction = -1
-	
-	# Vertical boundaries (keep within top half of screen)
-	if global_position.y <= screen_top_y:
-		global_position.y = screen_top_y
-	elif global_position.y >= screen_bottom_y:
-		global_position.y = screen_bottom_y
+# Driving logic has been moved to the Driving state
 
 func hide_motorbike():
 	if is_hidden:
@@ -211,7 +112,7 @@ func hide_motorbike():
 	is_hiding = true
 	is_positioned = false
 	
-	# Clear current obstacle state
+	# Clear current obstacle state - these are used by the driving state
 	current_obstacle = null
 	escape_direction = 0
 	direction = 0
