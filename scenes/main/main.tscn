@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://p3b5yajekrdr"]
+[gd_scene load_steps=15 format=3 uid="uid://p3b5yajekrdr"]
 
 [ext_resource type="Script" uid="uid://ct048k6rsjfbb" path="res://scenes/main/main.gd" id="1_e2v34"]
 [ext_resource type="PackedScene" uid="uid://b530dx4s8ydsy" path="res://scenes/background/parallax_background.tscn" id="1_mh4tl"]
@@ -12,6 +12,12 @@
 [ext_resource type="Script" uid="uid://b4ka507v7wq1c" path="res://scripts/ObstacleSpawner.gd" id="10_a8run"]
 [ext_resource type="Script" uid="uid://dddagrng1jobg" path="res://scripts/BarkController.gd" id="11_ouso4"]
 [ext_resource type="Script" uid="uid://ek8hm7xuisk5" path="res://scripts/Pool.gd" id="12_th5th"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_blune"]
+size = Vector2(64, 504)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_th5th"]
+size = Vector2(896, 16)
 
 [node name="Main" type="Node" node_paths=PackedStringArray("obstacleSpawner", "barkController", "collectablesManager")]
 script = ExtResource("1_e2v34")
@@ -46,6 +52,7 @@ autostart = true
 [node name="TheDawg" parent="." groups=["player"] instance=ExtResource("2_631s2")]
 position = Vector2(448, 500)
 scale = Vector2(0.3, 0.3)
+collision_mask = 3
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(448, 252)
@@ -53,7 +60,7 @@ position = Vector2(448, 252)
 [node name="HUD" parent="." instance=ExtResource("4_dwgw2")]
 
 [node name="Motorbike" parent="." groups=["enemy"] instance=ExtResource("5_6q06x")]
-position = Vector2(447.99997, 169)
+position = Vector2(448, 173)
 scale = Vector2(2, 2)
 spawn_position = Vector2(448, 169)
 hide_speed_multiplier = 0.5
@@ -76,5 +83,25 @@ charge_bark_pool = NodePath("BarkPool")
 [node name="BarkPool" type="Node" parent="BarkController"]
 script = ExtResource("12_th5th")
 pool_size = 5
+
+[node name="Boundary" type="StaticBody2D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="BoundaryLeft" type="CollisionShape2D" parent="Boundary"]
+position = Vector2(32, 252)
+shape = SubResource("RectangleShape2D_blune")
+
+[node name="BoundaryRight" type="CollisionShape2D" parent="Boundary"]
+position = Vector2(864, 252)
+shape = SubResource("RectangleShape2D_blune")
+
+[node name="BoundaryTop" type="CollisionShape2D" parent="Boundary"]
+position = Vector2(448, 186)
+shape = SubResource("RectangleShape2D_th5th")
+
+[node name="BoundaryBottom" type="CollisionShape2D" parent="Boundary"]
+position = Vector2(448, 512)
+shape = SubResource("RectangleShape2D_th5th")
 
 [connection signal="obstacles_cleared" from="ObstacleSpawner" to="RoadTurn" method="_on_obstacles_cleared"]
