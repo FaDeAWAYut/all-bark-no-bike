@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://p3b5yajekrdr"]
+[gd_scene load_steps=16 format=3 uid="uid://p3b5yajekrdr"]
 
 [ext_resource type="Script" uid="uid://ct048k6rsjfbb" path="res://scenes/main/main.gd" id="1_e2v34"]
 [ext_resource type="PackedScene" uid="uid://b530dx4s8ydsy" path="res://scenes/background/parallax_background.tscn" id="1_mh4tl"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://d4mchi4q55xdb" path="res://scenes/motorbike/motorbike.tscn" id="5_6q06x"]
 [ext_resource type="Script" uid="uid://w5tembhx3n1a" path="res://scenes/collectable/collectables_manager.gd" id="6_ow5a4"]
 [ext_resource type="PackedScene" uid="uid://778k268328ak" path="res://scenes/collectable/cough_drops/cough_drops_pool.tscn" id="7_hujxm"]
+[ext_resource type="Script" uid="uid://b7ufw4rkm38q4" path="res://scenes/motorbike/boss_health_controller.gd" id="8_th5th"]
 [ext_resource type="Script" uid="uid://b4ka507v7wq1c" path="res://scripts/ObstacleSpawner.gd" id="10_a8run"]
 [ext_resource type="Script" uid="uid://dddagrng1jobg" path="res://scripts/BarkController.gd" id="11_ouso4"]
 [ext_resource type="Script" uid="uid://ek8hm7xuisk5" path="res://scripts/Pool.gd" id="12_th5th"]
@@ -59,11 +60,26 @@ position = Vector2(448, 252)
 
 [node name="HUD" parent="." instance=ExtResource("4_dwgw2")]
 
-[node name="Motorbike" parent="." groups=["enemy"] instance=ExtResource("5_6q06x")]
+[node name="PlaceholderBossHP" type="Label" parent="HUD"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -92.0
+offset_bottom = 23.0
+grow_horizontal = 0
+text = "Boss Health"
+
+[node name="Motorbike" parent="." node_paths=PackedStringArray("BossHealthController") groups=["enemy"] instance=ExtResource("5_6q06x")]
 position = Vector2(448, 173)
 scale = Vector2(2, 2)
 spawn_position = Vector2(448, 169)
 hide_speed_multiplier = 0.5
+BossHealthController = NodePath("BossHealthController")
+
+[node name="BossHealthController" type="Node" parent="Motorbike" node_paths=PackedStringArray("hp_label")]
+script = ExtResource("8_th5th")
+max_health = 200
+hp_label = NodePath("../../HUD/PlaceholderBossHP")
 
 [node name="CollectablesManager" type="Node" parent="." node_paths=PackedStringArray("cough_drop_pool")]
 script = ExtResource("6_ow5a4")
