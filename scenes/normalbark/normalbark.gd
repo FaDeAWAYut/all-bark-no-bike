@@ -89,9 +89,9 @@ func _physics_process(delta: float) -> void:
 
 func _on_body_entered(body: Node2D):
 	if body.is_in_group("enemy"):
-		# Apply damage
-		pass
-   		# Play hit effect
+		var health_controller = body.BossHealthController
+		if health_controller:
+			health_controller.take_damage(damage)
 		return_to_pool()
 
 func _on_lifetime_timeout():

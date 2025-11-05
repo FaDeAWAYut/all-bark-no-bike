@@ -96,7 +96,8 @@ func _on_timer_timeout():
 			flip_h = true
 		display_turn() 
 func display_turn():
-	motorbike.hide_motorbike()
+	# Transition motorbike to turning state
+	motorbike.state_machine._transition_to_next_state("Turning")
 	collectables_manager.stop_spawning()
 	obstacle_spawner.stop_spawning()
 
@@ -149,7 +150,11 @@ func turn_around_pivot():
 	tween.tween_callback(_start_reset_delay)
 
 func _start_reset_delay():
-	motorbike.show_motorbike()
+	# Tell the turning state to start showing the motorbike
+	var turning_state = motorbike.state_machine.get_node("Turning")
+	if turning_state and motorbike.state_machine.state == turning_state:
+		turning_state.start_showing()
+	
 	# Create a new tween for the delay
 	var delay_tween = create_tween()
 	
