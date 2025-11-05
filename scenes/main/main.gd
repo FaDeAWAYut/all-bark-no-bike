@@ -30,6 +30,10 @@ var gameTime: float = 0.0
 
 var screenSize : Vector2i
 
+var hurtSFX = preload("res://assets/sfx/hurtsfx.mp3")
+
+@export var hurtSoundVolume = -5
+
 func _ready():
 	screenSize = get_window().size
 	initialize_modules()
@@ -181,6 +185,20 @@ func _on_obstacle_spawned(obs: Node):
 func _on_obstacle_collision(body):
 	if body.name == "TheDawg":
 		gameManager.reduce_HP(5)
+		screenEffects.screen_shake(5, 0.4)
+		screenEffects.screen_damage_flash(0.2, 0.8)
+		play_hurt_sound()
+		
+func play_hurt_sound():
+	var soundPlayer = AudioStreamPlayer.new()
+	soundPlayer.stream = hurtSFX
+	soundPlayer.volume_db = hurtSoundVolume
+	
+	soundPlayer.finished.connect(soundPlayer.queue_free)
+	
+	add_child(soundPlayer)
+	soundPlayer.play()
+		
 
 func show_hp():
 	$HUD.get_node("HPLabel").text = "HP: " + str(gameManager.playerHp)
@@ -188,7 +206,6 @@ func show_hp():
 
 func _on_hp_changed(new_hp: int):
 	show_hp() 
-	screenEffects.screen_shake(5, 0.5)
 	 
 func _input(event):
 	if gameManager.isGameOver:

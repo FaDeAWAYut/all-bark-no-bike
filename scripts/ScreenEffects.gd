@@ -3,6 +3,7 @@ class_name ScreenEffects
 
 @onready var camera: Camera2D
 @onready var flashOverlay: ColorRect
+@onready var damageOverlay: ColorRect
 
 var shakeIntensity: float = 0.0
 var shakeDuration: float = 0.0
@@ -23,7 +24,14 @@ func setup(targetCamera: Camera2D, screenSize: Vector2, parentNode: Node):
 	flashOverlay.size = screenSize * 2
 	flashOverlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	
+	damageOverlay = ColorRect.new()
+	damageOverlay.color = Color.RED
+	damageOverlay.modulate.a = 0.0
+	damageOverlay.size = screenSize * 2
+	damageOverlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
 	canvasLayer.add_child(flashOverlay)
+	canvasLayer.add_child(damageOverlay)
 	parentNode.add_child(canvasLayer)
 	
 	tween = create_tween()
@@ -59,3 +67,10 @@ func screen_flash(targetOpacity: float, duration: float):
 		tween = create_tween()
 		tween.tween_property(flashOverlay, "modulate:a", targetOpacity, duration * 0.3)
 		tween.tween_property(flashOverlay, "modulate:a", 0.0, duration * 0.7)
+		
+func screen_damage_flash(targetOpacity: float, duration: float):
+	if damageOverlay and tween:
+		tween.kill()
+		tween = create_tween()
+		tween.tween_property(damageOverlay, "modulate:a", targetOpacity, 0)
+		tween.tween_property(damageOverlay, "modulate:a", 0.0, duration * 0.8)

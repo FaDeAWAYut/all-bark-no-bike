@@ -72,6 +72,7 @@ script = ExtResource("10_a8run")
 script = ExtResource("11_ouso4")
 theDawg = NodePath("../TheDawg")
 barkSpawnOffset = Vector2(0, 0)
+normalBarkVolume = -8
 
 [node name="BarkPool" type="Node" parent="BarkController"]
 script = ExtResource("12_th5th")
