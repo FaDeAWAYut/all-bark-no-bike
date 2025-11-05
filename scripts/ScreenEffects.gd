@@ -44,7 +44,12 @@ func update_screen_shake(delta: float):
 		camera.position = originalCameraPosition + shakeOffset
 		
 		shakeDuration -= delta
-		shakeIntensity = lerp(shakeIntensity, 0.0, 1.0 - (shakeDuration / 0.1))
+		
+		if shakeDuration > 0:
+			var progress = 1.0 - (shakeDuration / (shakeDuration + delta))
+			shakeIntensity = lerp(shakeIntensity, 0.0, progress)
+		else:
+			shakeIntensity = 0.0
 	elif camera:
 		camera.position = originalCameraPosition
 

@@ -184,9 +184,11 @@ func _on_obstacle_collision(body):
 
 func show_hp():
 	$HUD.get_node("HPLabel").text = "HP: " + str(gameManager.playerHp)
+	$HUD.get_node("TextureProgressBar").value = gameManager.playerHp
 
 func _on_hp_changed(new_hp: int):
-	show_hp()
+	show_hp() 
+	screenEffects.screen_shake(5, 0.5)
 	 
 func _input(event):
 	if gameManager.isGameOver:
