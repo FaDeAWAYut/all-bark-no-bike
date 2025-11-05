@@ -22,6 +22,8 @@ var offset_from_camera: Vector2 = Vector2(0, 0)
 
 @export var BossHealthController: Node
 
+signal motorbike_hidden
+
 # Internal variables (accessible by states)
 var direction: int = 1
 var current_obstacle: Node2D = null
