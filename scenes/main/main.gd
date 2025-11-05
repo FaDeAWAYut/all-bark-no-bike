@@ -30,11 +30,20 @@ var gameTime: float = 0.0
 
 var screenSize : Vector2i
 
+var hurtSFX = preload("res://assets/sfx/hurtsfx.mp3")
+
+var bgMusic = preload("res://assets/sfx/wipwipwip.mp3")
+
+@export var hurtSoundVolume = -5
+@export var bgMusicVolume = -5
+
+
 func _ready():
 	screenSize = get_window().size
 	initialize_modules()
 	setup_signal_connections()
 	new_game()
+	play_background_music()
 
 func initialize_modules():
 	gameManager = GameManager.new()
@@ -72,14 +81,14 @@ func initialize_modules():
 	cough_drop_pool.pool_size = 5  # Adjust as needed
 	cough_drop_pool.initialize()
 	
-	# Initialize charge bark pool for BarkController
-	var charge_bark_scenes = [preload("res://scenes/chargebark/chargebark.tscn")]  # Replace with your actual scene path
-	var charge_bark_pool = Pool.new()
-	add_child(charge_bark_pool)
-	charge_bark_pool.object_scenes = charge_bark_scenes
-	charge_bark_pool.pool_size = 5  # Adjust based on how many barks you want available
-	charge_bark_pool.initialize()
-	barkController.charge_bark_pool = charge_bark_pool
+	# Initialize normal bark pool for BarkController
+	var normal_bark_scenes = [preload("res://scenes/normalbark/normalbark.tscn")]  # Replace with your actual scene path
+	var normal_bark_pool = Pool.new()
+	add_child(normal_bark_pool)
+	normal_bark_pool.object_scenes = normal_bark_scenes
+	normal_bark_pool.pool_size = 5  # Adjust based on how many barks you want available
+	normal_bark_pool.initialize()
+	barkController.normal_bark_pool = normal_bark_pool
 	
 	# Assign to collectables manager
 	collectablesManager.cough_drop_pool = cough_drop_pool
@@ -87,8 +96,8 @@ func initialize_modules():
 
 func setup_signal_connections():
 	# Connect game manager signals
-	gameManager.hp_changed.connect(_on_hp_changed)
 	gameManager.game_ended.connect(_on_game_ended)
+	gameManager.hp_changed.connect(_on_hp_changed)
 	
 	# Connect obstacle spawner signals
 	obstacleSpawner.obstacle_spawned.connect(_on_obstacle_spawned)
@@ -123,6 +132,7 @@ func _physics_process(delta: float):
 	#update item drop spawning
 	collectablesManager.update(delta, $Camera2D.position.y, screenSize.x, currentSpeed)
 	collectablesManager.cleanup_offscreen_collectables($Camera2D.position.y, screenSize.y)
+	
 	show_hp()
 
 	# Update screen effects
@@ -180,22 +190,46 @@ func _on_obstacle_spawned(obs: Node):
 
 func _on_obstacle_collision(body):
 	if body.name == "TheDawg":
-		gameManager.reduce_HP(10)
-
-func show_hp():
-	$HUD.get_node("HPLabel").text = "HP: " + str(gameManager.playerHp)
-
-func _on_hp_changed(new_hp: int):
-	show_hp()
+		gameManager.reduce_HP(5)
+		screenEffects.screen_shake(5, 0.4)
+		screenEffects.screen_damage_flash(0.2, 0.8)
+		play_hurt_sound()
+		
+func play_hurt_sound():
+	var soundPlayer = AudioStreamPlayer.new()
+	soundPlayer.stream = hurtSFX
+	soundPlayer.volume_db = hurtSoundVolume
 	
+	soundPlayer.finished.connect(soundPlayer.queue_free)
+	
+	add_child(soundPlayer)
+	soundPlayer.play()
+	
+func play_background_music():
+	var music_player = AudioStreamPlayer.new()
+	music_player.stream = bgMusic
+	music_player.volume_db = bgMusicVolume
+	music_player.autoplay = true
+	music_player.name = "BackgroundMusic"
+	
+	# Make it loop
+	music_player.finished.connect(music_player.play)
+	
+	add_child(music_player)
+	 
 func _input(event):
 	if gameManager.isGameOver:
 		return
 		
-	if event.is_action_pressed("shoot") and canChargeShoot:
-		barkController.shoot_chargebark()
+	if event.is_action_pressed("shoot"):
+		barkController.shoot_normalbark()
 		#screenEffects.screen_shake(0.1, 0.2)
 		#screenEffects.screen_flash(0.3, 0.15)
+func show_hp():
+	$HUD.get_node("TextureProgressBar").value = gameManager.playerHp
+
+func _on_hp_changed(new_hp: int):
+	show_hp() 
 
 func _on_game_ended():
 	await get_tree().create_timer(0.1).timeout

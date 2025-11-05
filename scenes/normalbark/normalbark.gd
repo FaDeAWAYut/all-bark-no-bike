@@ -1,6 +1,6 @@
 extends PoolObject
 
-class_name ChargeBark
+class_name NormalBark
 
 @onready var anim = $AnimatedSprite2D/AnimatedSprite2D
 @onready var area_2d: Area2D = $AnimatedSprite2D
@@ -68,7 +68,7 @@ func setup_visual_effects():
 	anim.scale = Vector2(squeezeScaleX, squeezeScaleY)
 	
 	# Play animation
-	anim.play("chargebark")
+	anim.play("normal_bark")
 	
 	# Fade in opacity
 	tween.tween_property(anim, "modulate:a", 1.0, fadeInTime)

@@ -1,0 +1,62 @@
+[gd_scene load_steps=7 format=3 uid="uid://lxglkufg1d0p"]
+
+[ext_resource type="Script" uid="uid://cwaya4k65mxwg" path="res://scenes/normalbark/normalbark.gd" id="1_3vdpl"]
+[ext_resource type="Texture2D" uid="uid://bt8wp51p75c3s" path="res://assets/normal_bark.png" id="2_ixd1p"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qasuo"]
+atlas = ExtResource("2_ixd1p")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b840t"]
+atlas = ExtResource("2_ixd1p")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ow3o5"]
+atlas = ExtResource("2_ixd1p")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1dcsa"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qasuo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b840t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ow3o5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ow3o5")
+}],
+"loop": false,
+"name": &"normal_bark",
+"speed": 8.0
+}]
+
+[node name="chargebark" type="Node2D"]
+position = Vector2(-2, 0)
+script = ExtResource("1_3vdpl")
+speed = 800
+fadeInTime = 0.0
+squeezeScaleX = 1.0
+squeezeScaleY = 1.0
+
+[node name="AnimatedSprite2D" type="Area2D" parent="."]
+texture_filter = 1
+position = Vector2(3.8146973e-06, 3.8146973e-06)
+scale = Vector2(3.2, 3.2)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="AnimatedSprite2D"]
+position = Vector2(0.12992525, 1.2193098)
+scale = Vector2(1.277174, 1.3392857)
+polygon = PackedVector2Array(-4.0625005, -9.0625, 3.1249986, -9.0625, 3.1249986, 1.8749986, -4.0625005, 1.8749986)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="AnimatedSprite2D"]
+position = Vector2(-1.1920928e-06, -1.1920928e-06)
+scale = Vector2(1.2109374, 1.2109375)
+sprite_frames = SubResource("SpriteFrames_1dcsa")
+animation = &"normal_bark"
+
+[connection signal="body_entered" from="AnimatedSprite2D" to="." method="_on_body_entered"]
