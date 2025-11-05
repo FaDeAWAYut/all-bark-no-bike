@@ -91,8 +91,8 @@ func initialize_modules():
 
 func setup_signal_connections():
 	# Connect game manager signals
-	gameManager.hp_changed.connect(_on_hp_changed)
 	gameManager.game_ended.connect(_on_game_ended)
+	gameManager.hp_changed.connect(_on_hp_changed)
 	
 	# Connect obstacle spawner signals
 	obstacleSpawner.obstacle_spawned.connect(_on_obstacle_spawned)
@@ -127,6 +127,7 @@ func _physics_process(delta: float):
 	#update item drop spawning
 	collectablesManager.update(delta, $Camera2D.position.y, screenSize.x, currentSpeed)
 	collectablesManager.cleanup_offscreen_collectables($Camera2D.position.y, screenSize.y)
+	
 	show_hp()
 
 	# Update screen effects
@@ -198,14 +199,6 @@ func play_hurt_sound():
 	
 	add_child(soundPlayer)
 	soundPlayer.play()
-		
-
-func show_hp():
-	$HUD.get_node("HPLabel").text = "HP: " + str(gameManager.playerHp)
-	$HUD.get_node("TextureProgressBar").value = gameManager.playerHp
-
-func _on_hp_changed(new_hp: int):
-	show_hp() 
 	 
 func _input(event):
 	if gameManager.isGameOver:
@@ -215,6 +208,11 @@ func _input(event):
 		barkController.shoot_normalbark()
 		#screenEffects.screen_shake(0.1, 0.2)
 		#screenEffects.screen_flash(0.3, 0.15)
+func show_hp():
+	$HUD.get_node("TextureProgressBar").value = gameManager.playerHp
+
+func _on_hp_changed(new_hp: int):
+	show_hp() 
 
 func _on_game_ended():
 	await get_tree().create_timer(0.1).timeout

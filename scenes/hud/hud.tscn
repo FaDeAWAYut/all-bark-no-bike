@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://cobth27w6p3ja"]
 
-[ext_resource type="FontFile" uid="uid://7ba5y644lx4p" path="res://assets/font/DTM-Sans.otf" id="1_gist6"]
+[ext_resource type="Script" uid="uid://b0dlfsughup2x" path="res://scenes/hud/hud.gd" id="1_v7mo4"]
 [ext_resource type="Texture2D" uid="uid://ckkisvsq4v73e" path="res://assets/healthbar_under.png" id="2_0bx4p"]
 [ext_resource type="Texture2D" uid="uid://cclkhhc6fxbum" path="res://assets/healthbar_heart.png" id="3_mgtrf"]
 [ext_resource type="Texture2D" uid="uid://gi0qn4rtxekp" path="res://assets/healthbar_progress.png" id="4_v7mo4"]
@@ -8,18 +8,8 @@
 [ext_resource type="Script" uid="uid://k7f4pa1wk31v" path="res://scenes/hud/panel.gd" id="5_v7mo4"]
 
 [node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_v7mo4")
 metadata/_edit_vertical_guides_ = [448.0]
-
-[node name="HPLabel" type="Label" parent="."]
-visible = false
-offset_left = 32.0
-offset_right = 161.0
-offset_bottom = 121.0
-theme_override_fonts/font = ExtResource("1_gist6")
-theme_override_font_sizes/font_size = 100
-text = "HP:"
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="TextureProgressBar" type="TextureProgressBar" parent="."]
 texture_filter = 1
