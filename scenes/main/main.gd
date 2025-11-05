@@ -32,7 +32,7 @@ var screenSize : Vector2i
 
 var hurtSFX = preload("res://assets/sfx/hurtsfx.mp3")
 
-var bgMusic = preload("res://assets/sfx/wipwipwip.mp3")
+var bgMusic = preload("res://assets/sfx/wipwipwip2.mp3")
 
 @export var hurtSoundVolume = -5
 @export var bgMusicVolume = -5
