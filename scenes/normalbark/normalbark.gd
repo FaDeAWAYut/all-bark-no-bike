@@ -1,6 +1,6 @@
 extends PoolObject
 
-class_name ChargeBark
+class_name NormalBark
 
 @onready var anim = $AnimatedSprite2D/AnimatedSprite2D
 @onready var area_2d: Area2D = $AnimatedSprite2D
@@ -68,7 +68,7 @@ func setup_visual_effects():
 	anim.scale = Vector2(squeezeScaleX, squeezeScaleY)
 	
 	# Play animation
-	anim.play("chargebark")
+	anim.play("normal_bark")
 	
 	# Fade in opacity
 	tween.tween_property(anim, "modulate:a", 1.0, fadeInTime)
@@ -91,7 +91,7 @@ func _on_body_entered(body: Node2D):
 	if body.is_in_group("enemy"):
 		# Apply damage
 		pass
-		# Play hit effect
+   		# Play hit effect
 		return_to_pool()
 
 func _on_lifetime_timeout():

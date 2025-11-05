@@ -72,14 +72,14 @@ func initialize_modules():
 	cough_drop_pool.pool_size = 5  # Adjust as needed
 	cough_drop_pool.initialize()
 	
-	# Initialize charge bark pool for BarkController
-	var charge_bark_scenes = [preload("res://scenes/chargebark/chargebark.tscn")]  # Replace with your actual scene path
-	var charge_bark_pool = Pool.new()
-	add_child(charge_bark_pool)
-	charge_bark_pool.object_scenes = charge_bark_scenes
-	charge_bark_pool.pool_size = 5  # Adjust based on how many barks you want available
-	charge_bark_pool.initialize()
-	barkController.charge_bark_pool = charge_bark_pool
+	# Initialize normal bark pool for BarkController
+	var normal_bark_scenes = [preload("res://scenes/normalbark/normalbark.tscn")]  # Replace with your actual scene path
+	var normal_bark_pool = Pool.new()
+	add_child(normal_bark_pool)
+	normal_bark_pool.object_scenes = normal_bark_scenes
+	normal_bark_pool.pool_size = 5  # Adjust based on how many barks you want available
+	normal_bark_pool.initialize()
+	barkController.normal_bark_pool = normal_bark_pool
 	
 	# Assign to collectables manager
 	collectablesManager.cough_drop_pool = cough_drop_pool
@@ -180,20 +180,20 @@ func _on_obstacle_spawned(obs: Node):
 
 func _on_obstacle_collision(body):
 	if body.name == "TheDawg":
-		gameManager.reduce_HP(10)
+		gameManager.reduce_HP(5)
 
 func show_hp():
 	$HUD.get_node("HPLabel").text = "HP: " + str(gameManager.playerHp)
 
 func _on_hp_changed(new_hp: int):
 	show_hp()
-	
+	 
 func _input(event):
 	if gameManager.isGameOver:
 		return
 		
-	if event.is_action_pressed("shoot") and canChargeShoot:
-		barkController.shoot_chargebark()
+	if event.is_action_pressed("shoot"):
+		barkController.shoot_normalbark()
 		#screenEffects.screen_shake(0.1, 0.2)
 		#screenEffects.screen_flash(0.3, 0.15)
 

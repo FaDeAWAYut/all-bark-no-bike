@@ -20,6 +20,11 @@ barkController = NodePath("BarkController")
 collectablesManager = NodePath("CollectablesManager")
 dogStartPosition = Vector2i(448, 400)
 camStartPosition = Vector2i(448, 252)
+currentSpeed = null
+car_obstacle_scale = null
+startingBackgroundSpeed = null
+maxBackgroundSpeed = null
+timeToMaxSpeed = null
 
 [node name="ParallaxBackground" parent="." instance=ExtResource("1_mh4tl")]
 
@@ -68,10 +73,10 @@ cough_drop_scale = 0.5
 [node name="ObstacleSpawner" type="Node" parent="."]
 script = ExtResource("10_a8run")
 
-[node name="BarkController" type="Node" parent="." node_paths=PackedStringArray("theDawg")]
+[node name="BarkController" type="Node" parent="." node_paths=PackedStringArray("theDawg", "charge_bark_pool")]
 script = ExtResource("11_ouso4")
 theDawg = NodePath("../TheDawg")
-barkSpawnOffset = Vector2(0, 0)
+charge_bark_pool = NodePath("BarkPool")
 
 [node name="BarkPool" type="Node" parent="BarkController"]
 script = ExtResource("12_th5th")
