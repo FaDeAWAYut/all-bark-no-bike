@@ -32,13 +32,18 @@ var screenSize : Vector2i
 
 var hurtSFX = preload("res://assets/sfx/hurtsfx.mp3")
 
+var bgMusic = preload("res://assets/sfx/wipwipwip.mp3")
+
 @export var hurtSoundVolume = -5
+@export var bgMusicVolume = -5
+
 
 func _ready():
 	screenSize = get_window().size
 	initialize_modules()
 	setup_signal_connections()
 	new_game()
+	play_background_music()
 
 func initialize_modules():
 	gameManager = GameManager.new()
@@ -199,6 +204,18 @@ func play_hurt_sound():
 	
 	add_child(soundPlayer)
 	soundPlayer.play()
+	
+func play_background_music():
+	var music_player = AudioStreamPlayer.new()
+	music_player.stream = bgMusic
+	music_player.volume_db = bgMusicVolume
+	music_player.autoplay = true
+	music_player.name = "BackgroundMusic"
+	
+	# Make it loop
+	music_player.finished.connect(music_player.play)
+	
+	add_child(music_player)
 	 
 func _input(event):
 	if gameManager.isGameOver:
