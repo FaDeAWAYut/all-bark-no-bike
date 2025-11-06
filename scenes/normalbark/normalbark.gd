@@ -37,10 +37,16 @@ func _ready() -> void:
 	deactivate()
 
 func activate():
-	super.activate()  # Call parent activate method
+	super.activate()
 	
 	# Reset properties
 	direction = Vector2.UP
+	
+	# Enable collision detection
+	if area_2d:
+		area_2d.monitoring = true
+		area_2d.monitorable = true
+	
 	# Initialize visual effects
 	setup_visual_effects()
 	
@@ -48,7 +54,7 @@ func activate():
 	lifetime_timer.start()
 
 func deactivate():
-	super.deactivate()  # Call parent deactivate method
+	super.deactivate()
 	
 	# Stop timer
 	if lifetime_timer:
@@ -57,6 +63,11 @@ func deactivate():
 	# Stop tween
 	if tween:
 		tween.kill()
+	
+	# DISABLE collision detection when deactivated
+	if area_2d:
+		area_2d.monitoring = false
+		area_2d.monitorable = false
 
 func setup_visual_effects():
 	# Initialize tween
@@ -89,9 +100,13 @@ func _physics_process(delta: float) -> void:
 
 func _on_body_entered(body: Node2D):
 	if body.is_in_group("enemy"):
-		var health_controller = body.BossHealthController
-		if health_controller:
-			health_controller.take_damage(damage)
+		# Apply damage to the boss if it's the motorbike
+		if body.has_method("take_damage"):
+			print("take damage")
+			body.take_damage(damage)
+		elif body.BossHealthController and body.BossHealthController.has_method("take_damage"):
+			body.BossHealthController.take_damage(damage)
+		
 		return_to_pool()
 
 func _on_lifetime_timeout():
