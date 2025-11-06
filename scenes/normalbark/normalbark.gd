@@ -24,7 +24,7 @@ var lifetime_timer: Timer
 func _ready() -> void:
 	# Create lifetime timer
 	lifetime_timer = Timer.new()
-	lifetime_timer.wait_time = 3.0
+	lifetime_timer.wait_time = 0.6
 	lifetime_timer.one_shot = true
 	lifetime_timer.timeout.connect(_on_lifetime_timeout)
 	add_child(lifetime_timer)
@@ -46,6 +46,8 @@ func activate():
 	if area_2d:
 		area_2d.monitoring = true
 		area_2d.monitorable = true
+		area_2d.collision_layer = 1
+		area_2d.collision_mask = 1
 	
 	# Initialize visual effects
 	setup_visual_effects()
@@ -68,6 +70,8 @@ func deactivate():
 	if area_2d:
 		area_2d.monitoring = false
 		area_2d.monitorable = false
+		area_2d.collision_layer = 0
+		area_2d.collision_mask = 0
 
 func setup_visual_effects():
 	# Initialize tween
@@ -95,7 +99,7 @@ func _physics_process(delta: float) -> void:
 	global_position += direction * speed * delta
 	
 	# Remove if off-screen
-	if global_position.y < -2000:
+	if global_position.y < -50:
 		return_to_pool()
 
 func _on_body_entered(body: Node2D):
