@@ -1,15 +1,15 @@
 [gd_scene load_steps=16 format=3 uid="uid://p3b5yajekrdr"]
 
 [ext_resource type="Script" uid="uid://ct048k6rsjfbb" path="res://scenes/main/main.gd" id="1_e2v34"]
-[ext_resource type="PackedScene" uid="uid://b530dx4s8ydsy" path="res://scenes/background/parallax_background.tscn" id="1_mh4tl"]
+[ext_resource type="Texture2D" uid="uid://doon5fdjxf56p" path="res://assets/bg.png" id="2_7smn1"]
 [ext_resource type="PackedScene" uid="uid://dfnmfcww2cu6i" path="res://scenes/dawg/the_dawg.tscn" id="2_631s2"]
-[ext_resource type="Texture2D" uid="uid://cfnqo70bxekfx" path="res://assets/left_turn_placeholder.png" id="3_yyfjg"]
+[ext_resource type="Texture2D" uid="uid://b3nl81j60fh8g" path="res://assets/bg_turn.png" id="3_th5th"]
 [ext_resource type="Script" uid="uid://bj3bj0d8skqwt" path="res://scenes/background/Turn/road_turn.gd" id="4_b1x3f"]
 [ext_resource type="PackedScene" uid="uid://cobth27w6p3ja" path="res://scenes/hud/hud.tscn" id="4_dwgw2"]
 [ext_resource type="PackedScene" uid="uid://d4mchi4q55xdb" path="res://scenes/motorbike/motorbike.tscn" id="5_6q06x"]
 [ext_resource type="Script" uid="uid://w5tembhx3n1a" path="res://scenes/collectable/collectables_manager.gd" id="6_ow5a4"]
 [ext_resource type="PackedScene" uid="uid://778k268328ak" path="res://scenes/collectable/cough_drops/cough_drops_pool.tscn" id="7_hujxm"]
-[ext_resource type="Script" path="res://scenes/motorbike/boss_health_controller.gd" id="8_th5th"]
+[ext_resource type="Script" uid="uid://b7ufw4rkm38q4" path="res://scenes/motorbike/boss_health_controller.gd" id="8_th5th"]
 [ext_resource type="Script" uid="uid://b4ka507v7wq1c" path="res://scripts/ObstacleSpawner.gd" id="10_a8run"]
 [ext_resource type="Script" uid="uid://dddagrng1jobg" path="res://scripts/BarkController.gd" id="11_ouso4"]
 [ext_resource type="Script" uid="uid://ek8hm7xuisk5" path="res://scripts/Pool.gd" id="12_th5th"]
@@ -28,13 +28,25 @@ collectablesManager = NodePath("CollectablesManager")
 dogStartPosition = Vector2i(448, 400)
 camStartPosition = Vector2i(448, 252)
 
-[node name="ParallaxBackground" parent="." instance=ExtResource("1_mh4tl")]
+[node name="ParallaxBG" type="Node2D" parent="."]
+scale = Vector2(2, 2)
+
+[node name="Parallax2D" type="Parallax2D" parent="ParallaxBG"]
+repeat_size = Vector2(0, 256)
+repeat_times = 2
+follow_viewport = false
+ignore_camera_scroll = true
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBG/Parallax2D"]
+texture_filter = 1
+texture = ExtResource("2_7smn1")
+centered = false
 
 [node name="RoadTurn" type="Sprite2D" parent="." node_paths=PackedStringArray("main_scene", "motorbike", "collectables_manager", "obstacle_spawner")]
 texture_filter = 1
 position = Vector2(447, -967)
 scale = Vector2(2, 2)
-texture = ExtResource("3_yyfjg")
+texture = ExtResource("3_th5th")
 centered = false
 offset = Vector2(-483.5, -483.5)
 script = ExtResource("4_b1x3f")
@@ -47,7 +59,7 @@ collectables_manager = NodePath("../CollectablesManager")
 obstacle_spawner = NodePath("../ObstacleSpawner")
 
 [node name="Timer" type="Timer" parent="RoadTurn"]
-wait_time = 20.0
+wait_time = 3.0
 autostart = true
 
 [node name="TheDawg" parent="." groups=["player"] instance=ExtResource("2_631s2")]
