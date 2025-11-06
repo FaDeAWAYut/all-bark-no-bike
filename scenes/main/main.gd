@@ -21,11 +21,6 @@ var canChargeShoot: bool = true
 @export var car_obstacle_scale: float = 1
 
 # Background scrolling settings
-@export var startingBackgroundSpeed: float = 1000.0  # Starting scroll speed
-@export var maxBackgroundSpeed: float = 1500.0  # Maximum scroll speed
-@export var timeToMaxSpeed: float = 30.0       # Time in seconds to reach max speed
-var backgroundScrollSpeed: float = 0.0
-var totalBackgroundOffset: float = 0.0
 var gameTime: float = 0.0
 
 var screenSize : Vector2i
@@ -37,6 +32,7 @@ var bgMusic = preload("res://assets/sfx/wipwipwip2.mp3")
 @export var hurtSoundVolume = -5
 @export var bgMusicVolume = -5
 
+@onready var parallax = $ParallaxBG/Parallax2D
 
 func _ready():
 	screenSize = get_window().size
@@ -114,10 +110,7 @@ func new_game():
 	$Camera2D.position = camStartPosition
 	
 	# Reset background scrolling
-	totalBackgroundOffset = 0.0
-	backgroundScrollSpeed = 0.0
 	gameTime = 0.0
-	reset_background_position()
 
 func _physics_process(delta: float):
 	if gameManager.isGameOver:
@@ -142,44 +135,10 @@ func _physics_process(delta: float):
 	scroll_background(delta)
 
 func scroll_background(delta: float):
-	if has_node("ParallaxBackground"):
-		var parallax = $ParallaxBackground
+	#var targetSpeed = calculate_background_speed()
+	# TODO: add more Parallax2D nodes for more layers? may not be necessary
+	parallax.autoscroll.y = currentSpeed
 		
-		# Calculate current background speed with acceleration
-		var targetSpeed = calculate_background_speed()
-		backgroundScrollSpeed = targetSpeed * delta
-		totalBackgroundOffset += backgroundScrollSpeed
-		
-		# Apply scrolling to the parallax background (single layer)
-		# If you have ParallaxLayer children, use this:
-		for child in parallax.get_children():
-			if child is ParallaxLayer:
-				child.motion_offset.y += backgroundScrollSpeed
-				
-				# Reset offset when it exceeds mirroring distance to create seamless loop
-				var mirror_y = child.motion_mirroring.y
-				if mirror_y > 0 and child.motion_offset.y >= mirror_y:
-					child.motion_offset.y = 0
-		
-		# If your ParallaxBackground doesn't have layers and scrolls directly, use this:
-		# parallax.scroll_offset.y += backgroundScrollSpeed
-
-func calculate_background_speed() -> float:
-	# Calculate speed based on game time, accelerating from start to max speed
-	if timeToMaxSpeed <= 0:
-		return maxBackgroundSpeed
-	
-	# Linear interpolation from startingBackgroundSpeed to maxBackgroundSpeed
-	var progress = min(gameTime / timeToMaxSpeed, 1.0)
-	return lerp(startingBackgroundSpeed, maxBackgroundSpeed, progress)
-
-func reset_background_position():
-	if has_node("ParallaxBackground"):
-		var parallax = $ParallaxBackground
-		for child in parallax.get_children():
-			if child is ParallaxLayer:
-				child.motion_offset.y = 0
-
 func _on_obstacle_spawned(obs: Node):
 	# Set up obstacle collision and scaling (obstacle is already managed by pool)
 	obs.scale = Vector2(car_obstacle_scale, car_obstacle_scale)

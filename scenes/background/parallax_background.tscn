@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b530dx4s8ydsy"]
 
-[ext_resource type="Texture2D" uid="uid://bww2j6afo1e43" path="res://assets/straight_road_placeholder.png" id="1_pn103"]
+[ext_resource type="Texture2D" uid="uid://be54jk4sipgse" path="res://assets/bg_252_debug.png" id="1_pn103"]
 
 [node name="ParallaxBackground" type="ParallaxBackground"]
 
