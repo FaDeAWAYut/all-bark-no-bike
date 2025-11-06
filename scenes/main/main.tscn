@@ -59,7 +59,7 @@ collectables_manager = NodePath("../CollectablesManager")
 obstacle_spawner = NodePath("../ObstacleSpawner")
 
 [node name="Timer" type="Timer" parent="RoadTurn"]
-wait_time = 3.0
+wait_time = 20.0
 autostart = true
 
 [node name="TheDawg" parent="." groups=["player"] instance=ExtResource("2_631s2")]
