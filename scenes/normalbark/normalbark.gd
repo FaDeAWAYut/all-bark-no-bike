@@ -104,12 +104,15 @@ func _physics_process(delta: float) -> void:
 
 func _on_body_entered(body: Node2D):
 	if body.is_in_group("enemy"):
+		# Store the collision position
+		var collision_position = global_position
+		
 		# Apply damage to the boss if it's the motorbike
 		if body.has_method("take_damage"):
 			print("take damage")
-			body.take_damage(damage)
+			body.take_damage(damage, collision_position)  # Pass the position
 		elif body.BossHealthController and body.BossHealthController.has_method("take_damage"):
-			body.BossHealthController.take_damage(damage)
+			body.BossHealthController.take_damage(damage, collision_position)  # Pass the position
 		
 		return_to_pool()
 

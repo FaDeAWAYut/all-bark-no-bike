@@ -11,6 +11,8 @@ var hurtSounds: Array = [
 ]
 @export var hurt_volume_db: float = -5.0
 
+var small_impact_scene = preload("res://scenes/impact/small_impact.tscn")
+
 signal health_changed(new_health: int)
 signal died
 
@@ -18,12 +20,20 @@ func _ready():
 	current_health = max_health
 	update_hp_label()
 
-func take_damage(damage_amount: int):
+func take_damage(damage_amount: int, impact_position: Vector2 = Vector2.ZERO):
 	current_health = max(0, current_health - damage_amount)
 	health_changed.emit(current_health)
 	update_hp_label()
 	
 	play_random_hurt_sound()
+	
+	# Create impact effect at the hit position
+	if impact_position != Vector2.ZERO:
+		spawn_small_impact_effect(impact_position)
+	
+	# Trigger motorbike visual effects
+	if get_parent() and get_parent().has_method("trigger_hit_effects"):
+		get_parent().trigger_hit_effects()
 
 	if current_health <= 0:
 		died.emit()
@@ -56,3 +66,9 @@ func play_random_hurt_sound():
 	
 	get_tree().current_scene.add_child(sound_player)
 	sound_player.play()
+	
+func spawn_small_impact_effect(position: Vector2):
+	if small_impact_scene:
+		var impact = small_impact_scene.instantiate()
+		impact.global_position = position + Vector2(0,-50) # + some offset
+		get_tree().current_scene.add_child(impact)

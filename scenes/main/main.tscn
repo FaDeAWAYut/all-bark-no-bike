@@ -87,6 +87,7 @@ scale = Vector2(2, 2)
 spawn_position = Vector2(448, 169)
 hide_speed_multiplier = 0.5
 BossHealthController = NodePath("BossHealthController")
+hit_flash_duration = 1.0
 
 [node name="BossHealthController" type="Node" parent="Motorbike" node_paths=PackedStringArray("hp_label")]
 script = ExtResource("8_th5th")
