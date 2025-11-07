@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://cobth27w6p3ja"]
+[gd_scene load_steps=10 format=3 uid="uid://cobth27w6p3ja"]
 
 [ext_resource type="Script" uid="uid://b0dlfsughup2x" path="res://scenes/hud/hud.gd" id="1_v7mo4"]
 [ext_resource type="Texture2D" uid="uid://ckkisvsq4v73e" path="res://assets/healthbar_under.png" id="2_0bx4p"]
@@ -6,6 +6,9 @@
 [ext_resource type="Texture2D" uid="uid://gi0qn4rtxekp" path="res://assets/healthbar_progress.png" id="4_v7mo4"]
 [ext_resource type="FontFile" uid="uid://dwsdgysguaw0b" path="res://assets/font/PixeloidSans-E40en.ttf" id="5_mgtrf"]
 [ext_resource type="Script" uid="uid://k7f4pa1wk31v" path="res://scenes/hud/panel.gd" id="5_v7mo4"]
+[ext_resource type="Texture2D" uid="uid://c7377oys2r6rn" path="res://assets/chargebar_under.png" id="7_mq0y1"]
+[ext_resource type="Texture2D" uid="uid://dk14hh4hsqh7h" path="res://assets/chargebar_progress.png" id="8_go0ap"]
+[ext_resource type="Texture2D" uid="uid://xd7nj3xmyw5k" path="res://assets/chargebar_bluefire.png" id="9_go0ap"]
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_v7mo4")
@@ -33,10 +36,10 @@ script = ExtResource("5_v7mo4")
 [node name="MinutesLabel" type="Label" parent="Panel"]
 texture_filter = 1
 layout_mode = 0
-offset_left = 392.0
-offset_top = 24.0
-offset_right = 454.0
-offset_bottom = 73.0
+offset_left = 47.0
+offset_top = 75.0
+offset_right = 109.0
+offset_bottom = 124.0
 theme_override_fonts/font = ExtResource("5_mgtrf")
 theme_override_font_sizes/font_size = 30
 text = "00:"
@@ -45,11 +48,27 @@ horizontal_alignment = 2
 [node name="SecondsLabel" type="Label" parent="Panel"]
 texture_filter = 1
 layout_mode = 0
-offset_left = 450.0
-offset_top = 24.0
-offset_right = 494.0
-offset_bottom = 73.0
+offset_left = 105.0
+offset_top = 75.0
+offset_right = 149.0
+offset_bottom = 124.0
 theme_override_fonts/font = ExtResource("5_mgtrf")
 theme_override_font_sizes/font_size = 30
 text = "00"
 horizontal_alignment = 2
+
+[node name="TextureProgressBarCharge" type="TextureProgressBar" parent="."]
+texture_filter = 1
+offset_left = 597.0
+offset_top = 426.99997
+offset_right = 927.90906
+offset_bottom = 518.0
+nine_patch_stretch = true
+texture_under = ExtResource("7_mq0y1")
+texture_progress = ExtResource("8_go0ap")
+
+[node name="Sprite2DCharge" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(767.00006, 471)
+scale = Vector2(3, 3)
+texture = ExtResource("9_go0ap")

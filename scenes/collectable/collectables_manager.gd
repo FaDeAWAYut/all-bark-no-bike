@@ -10,6 +10,8 @@ class_name CollectablesManager
 @export var max_spawn_interval: float = 5.0
 @export var cough_drop_scale: float = 0.2
 
+@export var gameManager: GameManager
+
 var cough_drop_speed: float = 0.0
 var cough_drop_timer: float = 0.0
 var current_spawn_interval: float
@@ -18,9 +20,6 @@ var spawning_enabled: bool = true
 var cleared_signal_emitted: bool = false
 
 signal collectables_cleared
-
-@export_group("Other Drops")
-# reference to other pools here
 
 func update(delta: float, camera_y_position: float, screen_size_x: float, current_speed: float):
 	move_drop(delta)
@@ -51,6 +50,15 @@ func spawn_cough_drops(camera_y_position: float, screen_size_x: float):
 	var drop_x_level = screen_size_x * randf_range(0.3, 0.7)
 	cough_drop.position = Vector2(drop_x_level, drop_y_level)
 	cough_drop.scale = Vector2(cough_drop_scale, cough_drop_scale)
+	
+	# NEW: Connect the coughdrop_collected signal
+	if not cough_drop.coughdrop_collected.is_connected(_on_cough_drop_collected):
+		cough_drop.coughdrop_collected.connect(_on_cough_drop_collected)
+
+# NEW: Handle cough drop collection using your existing signal
+func _on_cough_drop_collected():
+	if gameManager and gameManager.has_method("add_charge"):
+		gameManager.add_charge(1)
 
 func stop_spawning():
 	spawning_enabled = false
@@ -85,9 +93,6 @@ func check_and_emit_cleared():
 	if cough_drop_pool and cough_drop_pool.active_objects.size() > 0:
 		all_pools_empty = false
 	
-	# Add checks for other pools here when they're added
-	# if other_pool and other_pool.active_objects.size() > 0:
-	#     all_pools_empty = false
 	if all_pools_empty:
-		cleared_signal_emitted = true  # Set flag before emitting
+		cleared_signal_emitted = true
 		collectables_cleared.emit()

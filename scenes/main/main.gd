@@ -29,8 +29,15 @@ var hurtSFX = preload("res://assets/sfx/hurtsfx.mp3")
 
 var bgMusic = preload("res://assets/sfx/wipwipwip2.mp3")
 
+var coughDropSounds: Array = [
+	preload("res://assets/sfx/cough_drop_eating1.mp3"),
+	preload("res://assets/sfx/cough_drop_eating2.mp3"),
+	preload("res://assets/sfx/cough_drop_eating3.mp3")
+]
+
 @export var hurtSoundVolume = -5
 @export var bgMusicVolume = -5
+@export var coughDropVolume: float = -5.0
 
 @onready var parallax = $ParallaxBG/Parallax2D
 
@@ -47,7 +54,7 @@ func initialize_modules():
 
 	# Create car pool and add to obstacle spawner FIRST
 	var car_pool = Pool.new()
-	add_child(car_pool)  # Add to scene tree FIRST
+	add_child(car_pool)
 
 	# NOW assign the object_scenes
 	car_pool.object_scenes = carScenes
@@ -70,30 +77,38 @@ func initialize_modules():
 	screenEffects.setup($Camera2D, screenSize, self)
 	add_child(screenEffects)
 	
-	var cough_drop_scenes = [preload("res://scenes/collectable/cough_drop.tscn")]  # Add your actual scene path
+	var cough_drop_scenes = [preload("res://scenes/collectable/cough_drop.tscn")]
 	var cough_drop_pool = Pool.new()
 	add_child(cough_drop_pool)
 	cough_drop_pool.object_scenes = cough_drop_scenes
-	cough_drop_pool.pool_size = 5  # Adjust as needed
+	cough_drop_pool.pool_size = 5
 	cough_drop_pool.initialize()
 	
 	# Initialize normal bark pool for BarkController
-	var normal_bark_scenes = [preload("res://scenes/normalbark/normalbark.tscn")]  # Replace with your actual scene path
+	var normal_bark_scenes = [preload("res://scenes/normalbark/normalbark.tscn")]
 	var normal_bark_pool = Pool.new()
 	add_child(normal_bark_pool)
 	normal_bark_pool.object_scenes = normal_bark_scenes
-	normal_bark_pool.pool_size = 5  # Adjust based on how many barks you want available
+	normal_bark_pool.pool_size = 5
 	normal_bark_pool.initialize()
 	barkController.normal_bark_pool = normal_bark_pool
 	
 	# Assign to collectables manager
 	collectablesManager.cough_drop_pool = cough_drop_pool
+	collectablesManager.gameManager = gameManager
+	
+	# NEW: Connect existing cough drops to the collectables manager
+	for cough_drop in cough_drop_pool.get_children():
+		if cough_drop.has_signal("coughdrop_collected"):
+			if not cough_drop.coughdrop_collected.is_connected(collectablesManager._on_cough_drop_collected):
+				cough_drop.coughdrop_collected.connect(collectablesManager._on_cough_drop_collected)
 
 
 func setup_signal_connections():
 	# Connect game manager signals
 	gameManager.game_ended.connect(_on_game_ended)
 	gameManager.hp_changed.connect(_on_hp_changed)
+	gameManager.charge_changed.connect(_on_charge_changed)
 	
 	# Connect obstacle spawner signals
 	obstacleSpawner.obstacle_spawned.connect(_on_obstacle_spawned)
@@ -188,7 +203,32 @@ func show_hp():
 	$HUD.get_node("TextureProgressBar").value = gameManager.playerHp
 
 func _on_hp_changed(new_hp: int):
-	show_hp() 
+	show_hp()
+	
+func show_charge():
+	var charge_percentage = (float(gameManager.currentCharge) / float(gameManager.maxCharge)) * 100.0
+	$HUD.get_node("TextureProgressBarCharge").value = charge_percentage
+
+func _on_charge_changed(current_charge: int, max_charge: int):
+	show_charge()
+	
+	# NEW: Play collection sound based on charge level
+	play_cough_drop_sound(current_charge)
+
+# NEW: Function to play the appropriate cough drop sound
+func play_cough_drop_sound(charge_level: int):
+	if charge_level < 1 or charge_level > coughDropSounds.size():
+		return
+	
+	# Play sound corresponding to the charge level (1 = first sound, 2 = second, etc.)
+	var sound_index = charge_level - 1
+	if sound_index < coughDropSounds.size():
+		var sound_player = AudioStreamPlayer.new()
+		sound_player.stream = coughDropSounds[sound_index]
+		sound_player.volume_db = coughDropVolume
+		sound_player.finished.connect(sound_player.queue_free)
+		add_child(sound_player)
+		sound_player.play()
 
 func _on_game_ended():
 	await get_tree().create_timer(0.1).timeout
