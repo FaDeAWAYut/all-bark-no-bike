@@ -83,7 +83,7 @@ func setup_visual_effects():
 	anim.scale = Vector2(squeezeScaleX, squeezeScaleY)
 	
 	# Play animation
-	anim.play("normal_bark")
+	anim.play("charge_bark")
 	
 	# Fade in opacity
 	tween.tween_property(anim, "modulate:a", 1.0, fadeInTime)

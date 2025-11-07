@@ -36,11 +36,14 @@ animations = [{
 }],
 "loop": true,
 "name": &"charge_bark",
-"speed": 10.0
+"speed": 15.0
 }]
 
 [node name="chargebark" type="Node2D"]
 script = ExtResource("1_h0bgj")
+damage = 150
+squeezeScaleY = 1.0
+scaleTransitionTime = 0.3
 
 [node name="AnimatedSprite2D" type="Area2D" parent="."]
 texture_filter = 1
@@ -57,4 +60,5 @@ position = Vector2(-1.1920928e-06, -1.1920928e-06)
 scale = Vector2(1.2109374, 1.2109375)
 sprite_frames = SubResource("SpriteFrames_j5v7d")
 animation = &"charge_bark"
-frame_progress = 0.11585837
+frame = 3
+frame_progress = 0.868241
