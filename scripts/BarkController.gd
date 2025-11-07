@@ -8,41 +8,53 @@ class_name BarkController
 # Bark spawn offset
 @export var barkSpawnOffset: Vector2 = Vector2(0, -50)
 
-@export var charge_bark_pool: Pool	
+@export var normal_bark_pool: Pool	
 
-# Audio
-var barkSound: AudioStreamPlayer
-var chargebarkSFX = preload("res://assets/sfx/chargebarksfx.mp3")
+@export var normalBarkVolume = -5
+
+var barkSounds: Array = [
+	preload("res://assets/sfx/normalbark1.mp3"),
+	preload("res://assets/sfx/normalbark2.mp3"),
+	preload("res://assets/sfx/normalbark3.mp3")
+]
 
 func setup(dawgNode: Node2D):
 	theDawg = dawgNode
-	setup_audio()
 
-func setup_audio():
-	# Create audio player for bark sounds
-	barkSound = AudioStreamPlayer.new()
-	barkSound.stream = chargebarkSFX
-	barkSound.volume_db = -5.0  # Adjust volume as needed
-	add_child(barkSound)
-
-func shoot_chargebark():
+func shoot_normalbark():
 	if theDawg == null:
 		push_error("TheDawg reference not set in BarkController!")
 		return
 		
-	if charge_bark_pool == null:
+	if normal_bark_pool == null:
 		push_error("Chargebark pool not initialized!")
 		return
 		
 	# Get chargebark from pool
-	var bullet = charge_bark_pool.get_object()
+	var bullet = normal_bark_pool.get_object()
 	
 	# Position at the dog's position with adjustable offset
 	bullet.global_position = theDawg.global_position + barkSpawnOffset
 	
-	# Play bark sound
-	play_bark_sound()
+	# Play random bark sound
+	play_random_bark_sound()
 
-func play_bark_sound():
-	if barkSound and barkSound.stream:
-		barkSound.play()
+func play_random_bark_sound():
+	if barkSounds.is_empty():
+		push_warning("No bark sounds loaded!")
+		return
+	
+	# Select random sound from the array
+	var randomIndex = randi() % barkSounds.size()
+	var selectedSound = barkSounds[randomIndex]
+	
+	# Create one-shot audio player
+	var soundPlayer = AudioStreamPlayer.new()
+	soundPlayer.stream = selectedSound
+	soundPlayer.volume_db = normalBarkVolume
+	
+	# Auto-delete when finished
+	soundPlayer.finished.connect(soundPlayer.queue_free)
+	
+	add_child(soundPlayer)
+	soundPlayer.play()

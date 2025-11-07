@@ -5,7 +5,7 @@ extends Sprite2D
 @export var turn_duration: float = 2.0
 @export var turn_angle_degrees: float = 90.0
 @export var base_turn_duration: float = 2.0
-@export var speed_factor: float = 0.0005  # How much speed affects turn duration
+@export var speed_factor: float = 0.002  # How much speed affects turn duration
 
 @export var turn_offset_x: float = -2.0
 @export var reset_delay: float = 3.0
@@ -60,12 +60,12 @@ func _process(_delta: float) -> void:
 		is_obstacles_cleared = false
 
 	var current_speed = 0.0
-	current_speed = main_scene.currentSpeed
+	current_speed = main_scene.currentSpeed 
 	
 	# Move road turn downward while visible
 	if is_visible():
 		# Move downward at the current game speed
-		global_position.y += current_speed * _delta
+		global_position.y += current_speed * _delta * 2
 	
 	if is_turning:
 		if camera:
@@ -96,7 +96,8 @@ func _on_timer_timeout():
 			flip_h = true
 		display_turn() 
 func display_turn():
-	motorbike.hide_motorbike()
+	# Transition motorbike to turning state
+	motorbike.state_machine._transition_to_next_state("Turning")
 	collectables_manager.stop_spawning()
 	obstacle_spawner.stop_spawning()
 
@@ -149,7 +150,11 @@ func turn_around_pivot():
 	tween.tween_callback(_start_reset_delay)
 
 func _start_reset_delay():
-	motorbike.show_motorbike()
+	# Tell the turning state to start showing the motorbike
+	var turning_state = motorbike.state_machine.get_node("Turning")
+	if turning_state and motorbike.state_machine.state == turning_state:
+		turning_state.start_showing()
+	
 	# Create a new tween for the delay
 	var delay_tween = create_tween()
 	
