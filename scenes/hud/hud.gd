@@ -34,6 +34,8 @@ func _process(delta):
 	var healthBarFloatOffset = sin(time * floatFrequency * TAU) * floatAmplitude
 	healthBar.position.y = healthBarOriginalPosition.y + healthBarFloatOffset
 	chargeBar.position.y = chargeOriginalPosition.y + healthBarFloatOffset
+	#timer.position.y = timerOriginalPosition.y + healthBarFloatOffset
+	#idontlikethetimer floating lmfao
 	
 	var heartFloatOffset = sin(time * floatFrequency * TAU - 1) * floatAmplitude
 	heart.position.y = heartOriginalPosition.y + heartFloatOffset

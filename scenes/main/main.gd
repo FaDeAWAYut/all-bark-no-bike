@@ -91,18 +91,34 @@ func initialize_modules():
 	normal_bark_pool.object_scenes = normal_bark_scenes
 	normal_bark_pool.pool_size = 5
 	normal_bark_pool.initialize()
+	
+	# Initialize charge bark pool for BarkController
+	var charge_bark_scenes = [preload("res://scenes/chargebark/chargebark.tscn")]
+	var charge_bark_pool = Pool.new()
+	add_child(charge_bark_pool)
+	charge_bark_pool.object_scenes = charge_bark_scenes
+	charge_bark_pool.pool_size = 3
+	charge_bark_pool.initialize()
+	
+	# UPDATED: Pass GameManager to BarkController
+	barkController.setup($"TheDawg", gameManager)
 	barkController.normal_bark_pool = normal_bark_pool
+	barkController.charge_bark_pool = charge_bark_pool
+	
+	barkController.hud = $HUD
+	
+	# NEW: Pass screenEffects to BarkController
+	barkController.screenEffects = screenEffects
 	
 	# Assign to collectables manager
 	collectablesManager.cough_drop_pool = cough_drop_pool
 	collectablesManager.gameManager = gameManager
 	
-	# NEW: Connect existing cough drops to the collectables manager
+	# Connect existing cough drops to the collectables manager
 	for cough_drop in cough_drop_pool.get_children():
 		if cough_drop.has_signal("coughdrop_collected"):
 			if not cough_drop.coughdrop_collected.is_connected(collectablesManager._on_cough_drop_collected):
 				cough_drop.coughdrop_collected.connect(collectablesManager._on_cough_drop_collected)
-
 
 func setup_signal_connections():
 	# Connect game manager signals
@@ -196,9 +212,12 @@ func _input(event):
 		return
 		
 	if event.is_action_pressed("shoot"):
-		barkController.shoot_normalbark()
-		#screenEffects.screen_shake(0.1, 0.2)
-		#screenEffects.screen_flash(0.3, 0.15)
+		# Start charging when space is pressed
+		barkController.start_charging()
+		
+	if event.is_action_released("shoot"):
+		# Release charge when space is released
+		barkController.release_charge()
 func show_hp():
 	$HUD.get_node("TextureProgressBar").value = gameManager.playerHp
 
