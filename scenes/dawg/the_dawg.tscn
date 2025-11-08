@@ -1,20 +1,58 @@
-[gd_scene load_steps=4 format=3 uid="uid://dfnmfcww2cu6i"]
+[gd_scene load_steps=9 format=3 uid="uid://dfnmfcww2cu6i"]
 
 [ext_resource type="Script" uid="uid://bg5sn4uhfhgto" path="res://TheDawg.gd" id="1_jfyaa"]
 [ext_resource type="Texture2D" uid="uid://b7wcsauy7nqkt" path="res://assets/TheDawg.png" id="2_eavk6"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_lcpkc"]
-size = Vector2(96, 168)
+[sub_resource type="AtlasTexture" id="AtlasTexture_xr6vp"]
+atlas = ExtResource("2_eavk6")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8fyta"]
+atlas = ExtResource("2_eavk6")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ry4lc"]
+atlas = ExtResource("2_eavk6")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mk2tq"]
+atlas = ExtResource("2_eavk6")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_u1vlm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xr6vp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8fyta")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ry4lc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mk2tq")
+}],
+"loop": true,
+"name": &"run",
+"speed": 10.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xr6vp"]
+radius = 5.0
+height = 22.0
 
 [node name="The Dawg" type="CharacterBody2D"]
 z_index = 1
 script = ExtResource("1_jfyaa")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
-scale = Vector2(6.95, 6.95)
-texture = ExtResource("2_eavk6")
+sprite_frames = SubResource("SpriteFrames_u1vlm")
+animation = &"run"
+autoplay = "run"
+frame_progress = 0.11201086
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 4)
-shape = SubResource("RectangleShape2D_lcpkc")
+shape = SubResource("CapsuleShape2D_xr6vp")
