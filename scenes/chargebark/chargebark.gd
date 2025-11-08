@@ -8,7 +8,7 @@ class_name ChargeBark
 # Group for basic properties
 @export_group("Basic Properties")
 @export var speed = 1200
-@export var damage = 100
+@export var damage = 200
 
 # Group for appearance customization
 @export_group("Appearance Settings")

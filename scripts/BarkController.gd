@@ -52,7 +52,6 @@ func _process(delta: float):
 		# Only update progress for the first 1.5 seconds
 		if elapsed_time <= charge_duration:
 			current_charge_progress = max(0.0, 1.0 - (elapsed_time / charge_duration))
-			print("Charging: ", int(current_charge_progress * 100), "%")  # Debug output
 		else:
 			# Charge is ready, keep it at 0%
 			current_charge_progress = 0.0
@@ -73,7 +72,6 @@ func start_charging():
 	if not gameManager.has_full_charge():
 		# Not enough charges, just shoot normal bark
 		shoot_normalbark()
-		print("Not enough charges (", gameManager.currentCharge, "/", gameManager.maxCharge, "), firing normal bark")
 		return
 	
 	# Start charging (player has full charge)
@@ -81,7 +79,6 @@ func start_charging():
 	is_charge_ready = false  # Reset charge ready flag
 	charge_start_time = Time.get_ticks_msec()
 	current_charge_progress = 1.0  # Start at 100%
-	print("Started charging bark with full charge...")
 
 func release_charge():
 	if not is_charging:
@@ -96,7 +93,6 @@ func release_charge():
 	else:
 		# Released too early, fire normal bark and reset charge bar
 		shoot_normalbark()
-		print("Released too early (", int(current_charge_progress * 100), "%), firing normal bark")
 		
 		# Reset charge bar to show current charges
 		reset_charge_bar()
@@ -107,12 +103,10 @@ func release_charge():
 func fire_charge_bark():
 	if gameManager.use_charge(gameManager.maxCharge):  # Use all 3 charges
 		shoot_chargebark()
-		print("Fired charge bark! Used all charges")
 		reset_charge_bar()
 	else:
 		# Should not happen if we checked properly
 		shoot_normalbark()
-		print("Failed to use charges, firing normal bark")
 
 func shoot_normalbark():
 	if theDawg == null:
