@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://p3b5yajekrdr"]
+[gd_scene load_steps=17 format=3 uid="uid://p3b5yajekrdr"]
 
 [ext_resource type="Script" uid="uid://ct048k6rsjfbb" path="res://scenes/main/main.gd" id="1_e2v34"]
 [ext_resource type="PackedScene" uid="uid://dfnmfcww2cu6i" path="res://scenes/dawg/the_dawg.tscn" id="2_631s2"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" uid="uid://b4ka507v7wq1c" path="res://scripts/ObstacleSpawner.gd" id="10_a8run"]
 [ext_resource type="Script" uid="uid://dddagrng1jobg" path="res://scripts/BarkController.gd" id="11_ouso4"]
 [ext_resource type="Script" uid="uid://ek8hm7xuisk5" path="res://scripts/Pool.gd" id="12_th5th"]
+[ext_resource type="AudioStream" uid="uid://cotg1jtn26twy" path="res://assets/sfx/chargebarksfx.mp3" id="13_7smn1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_blune"]
 size = Vector2(64, 504)
@@ -75,10 +76,11 @@ scale = Vector2(2, 2)
 spawn_position = Vector2(448, 169)
 hide_speed_multiplier = 0.5
 BossHealthController = NodePath("BossHealthController")
+hit_flash_duration = 1.0
 
 [node name="BossHealthController" type="Node" parent="Motorbike" node_paths=PackedStringArray("hp_label")]
 script = ExtResource("8_th5th")
-max_health = 200
+max_health = 2000
 hp_label = NodePath("../../HUD/PlaceholderBossHP")
 
 [node name="CollectablesManager" type="Node" parent="." node_paths=PackedStringArray("cough_drop_pool")]
@@ -95,7 +97,8 @@ script = ExtResource("10_a8run")
 script = ExtResource("11_ouso4")
 theDawg = NodePath("../TheDawg")
 barkSpawnOffset = Vector2(0, 0)
-normalBarkVolume = -8
+normalBarkVolume = -10
+charge_bark_sound = ExtResource("13_7smn1")
 
 [node name="BarkPool" type="Node" parent="BarkController"]
 script = ExtResource("12_th5th")

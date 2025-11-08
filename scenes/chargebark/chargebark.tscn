@@ -1,0 +1,64 @@
+[gd_scene load_steps=8 format=3 uid="uid://caalugaqqsp66"]
+
+[ext_resource type="Script" uid="uid://c14u82h0f72j3" path="res://scenes/chargebark/chargebark.gd" id="1_h0bgj"]
+[ext_resource type="Texture2D" uid="uid://bilmvxmic10y8" path="res://assets/chargebark.png" id="1_hxq8q"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h0bgj"]
+atlas = ExtResource("1_hxq8q")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qasuo"]
+atlas = ExtResource("1_hxq8q")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b840t"]
+atlas = ExtResource("1_hxq8q")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ow3o5"]
+atlas = ExtResource("1_hxq8q")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_j5v7d"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h0bgj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qasuo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b840t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ow3o5")
+}],
+"loop": true,
+"name": &"charge_bark",
+"speed": 15.0
+}]
+
+[node name="chargebark" type="Node2D"]
+script = ExtResource("1_h0bgj")
+damage = 150
+squeezeScaleY = 1.0
+scaleTransitionTime = 0.3
+
+[node name="AnimatedSprite2D" type="Area2D" parent="."]
+texture_filter = 1
+position = Vector2(3.8146973e-06, 3.8146973e-06)
+scale = Vector2(3.2, 3.2)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="AnimatedSprite2D"]
+position = Vector2(0.4823377, -6.1272235)
+scale = Vector2(3.6956527, 2.6428576)
+polygon = PackedVector2Array(-3.512868, -9.151184, -0.13051523, -10.451859, 3.2518373, -8.086995, 5.19669, -4.5396986, 5.873161, 1.2542188, -0.045956418, 2.3184078, -5.7959557, 1.4907053, -5.8805146, -5.4856443)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="AnimatedSprite2D"]
+position = Vector2(-1.1920928e-06, -1.1920928e-06)
+scale = Vector2(1.2109374, 1.2109375)
+sprite_frames = SubResource("SpriteFrames_j5v7d")
+animation = &"charge_bark"
+frame = 3
+frame_progress = 0.868241
