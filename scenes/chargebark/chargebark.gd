@@ -8,7 +8,7 @@ class_name ChargeBark
 # Group for basic properties
 @export_group("Basic Properties")
 @export var speed = 1200
-@export var damage = 200
+@export var damage = 100
 
 # Group for appearance customization
 @export_group("Appearance Settings")
@@ -83,7 +83,7 @@ func setup_visual_effects():
 	anim.scale = Vector2(squeezeScaleX, squeezeScaleY)
 	
 	# Play animation
-	anim.play("charge_bark")
+	anim.play("normal_bark")
 	
 	# Fade in opacity
 	tween.tween_property(anim, "modulate:a", 1.0, fadeInTime)
@@ -109,10 +109,12 @@ func _on_body_entered(body: Node2D):
 		
 		# Apply damage to the boss if it's the motorbike
 		if body.has_method("take_damage"):
-			print("take damage")
-			body.take_damage(damage, collision_position)  # Pass the position
+			print("take damage from charge bark")
+			# UPDATED: Pass "charge" as bark_type
+			body.take_damage(damage, collision_position, "charge")  # Pass the position and bark type
 		elif body.BossHealthController and body.BossHealthController.has_method("take_damage"):
-			body.BossHealthController.take_damage(damage, collision_position)  # Pass the position
+			# UPDATED: Pass "charge" as bark_type
+			body.BossHealthController.take_damage(damage, collision_position, "charge")  # Pass the position and bark type
 		
 		return_to_pool()
 

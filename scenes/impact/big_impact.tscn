@@ -1,0 +1,77 @@
+[gd_scene load_steps=12 format=3 uid="uid://lblo1m308lw1"]
+
+[ext_resource type="Script" uid="uid://isf7h2xxfwa7" path="res://big_impact.gd" id="1_8bsf1"]
+[ext_resource type="Texture2D" uid="uid://cwcabsxr23d15" path="res://assets/bigimpact.png" id="2_d8ub2"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4yfel"]
+atlas = ExtResource("2_d8ub2")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dy6ex"]
+atlas = ExtResource("2_d8ub2")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8ejqy"]
+atlas = ExtResource("2_d8ub2")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mmj76"]
+atlas = ExtResource("2_d8ub2")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l618m"]
+atlas = ExtResource("2_d8ub2")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0aha6"]
+atlas = ExtResource("2_d8ub2")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g4muq"]
+atlas = ExtResource("2_d8ub2")
+region = Rect2(384, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_raagc"]
+atlas = ExtResource("2_d8ub2")
+region = Rect2(448, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_6uhr0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4yfel")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dy6ex")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8ejqy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mmj76")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l618m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0aha6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g4muq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_raagc")
+}],
+"loop": false,
+"name": &"big_impact",
+"speed": 18.0
+}]
+
+[node name="big_impact" type="Node2D"]
+script = ExtResource("1_8bsf1")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(3, 3)
+sprite_frames = SubResource("SpriteFrames_6uhr0")
+animation = &"big_impact"

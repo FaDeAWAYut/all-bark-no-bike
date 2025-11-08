@@ -180,7 +180,7 @@ func _on_obstacle_spawned(obs: Node):
 
 func _on_obstacle_collision(body):
 	if body.name == "TheDawg":
-		gameManager.reduce_HP(5)
+		gameManager.reduce_HP(10)
 		screenEffects.screen_shake(5, 0.4)
 		screenEffects.screen_damage_flash(0.2, 0.8)
 		play_hurt_sound()
