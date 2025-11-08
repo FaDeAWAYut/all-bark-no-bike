@@ -1,6 +1,6 @@
 extends PoolObject
 
-class_name NormalBark
+class_name ChargeBark
 
 @onready var anim = $AnimatedSprite2D/AnimatedSprite2D
 @onready var area_2d: Area2D = $AnimatedSprite2D
@@ -8,7 +8,7 @@ class_name NormalBark
 # Group for basic properties
 @export_group("Basic Properties")
 @export var speed = 1200
-@export var damage = 10
+@export var damage = 100
 
 # Group for appearance customization
 @export_group("Appearance Settings")
@@ -109,10 +109,12 @@ func _on_body_entered(body: Node2D):
 		
 		# Apply damage to the boss if it's the motorbike
 		if body.has_method("take_damage"):
-			print("take damage from normal bark")
-			body.take_damage(damage, collision_position, "normal")  # Pass "normal" as bark_type
+			print("take damage from charge bark")
+			# UPDATED: Pass "charge" as bark_type
+			body.take_damage(damage, collision_position, "charge")  # Pass the position and bark type
 		elif body.BossHealthController and body.BossHealthController.has_method("take_damage"):
-			body.BossHealthController.take_damage(damage, collision_position, "normal")  # Pass "normal" as bark_type
+			# UPDATED: Pass "charge" as bark_type
+			body.BossHealthController.take_damage(damage, collision_position, "charge")  # Pass the position and bark type
 		
 		return_to_pool()
 
