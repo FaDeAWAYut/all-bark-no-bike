@@ -11,6 +11,17 @@ class_name BarkController
 @export var normal_bark_pool: Pool	
 @export var charge_bark_pool: Pool
 
+# Charge orb properties
+@export var charge_orb_scene: PackedScene = preload("res://scenes/chargeorb/charge_orb.tscn")
+@export var charge_orb_offset: Vector2 = Vector2(0, -50)  # Y offset from dog position
+var charge_orb_instance: Node2D = null
+var charge_orb_tween: Tween = null
+
+# NEW: Charging sound properties
+@export var charging_sound: AudioStream = preload("res://assets/sfx/chargingsfx.mp3")
+@export var charging_sound_volume_db: float = -5.0
+var charging_sound_player: AudioStreamPlayer = null
+
 # Charging properties
 var is_charging: bool = false
 var charge_start_time: float = 0.0
@@ -37,7 +48,7 @@ var gameManager: GameManager
 # Reference to HUD
 @onready var hud = get_tree().get_first_node_in_group("hud")
 
-# NEW: Reference to ScreenEffects
+# Reference to ScreenEffects
 var screenEffects: ScreenEffects
 
 func setup(dawgNode: Node2D, game_manager: GameManager):
@@ -52,10 +63,18 @@ func _process(delta: float):
 		# Only update progress for the first 1.5 seconds
 		if elapsed_time <= charge_duration:
 			current_charge_progress = max(0.0, 1.0 - (elapsed_time / charge_duration))
+			# Update charge orb scale during charging
+			update_charge_orb_scale(current_charge_progress)
 		else:
 			# Charge is ready, keep it at 0%
 			current_charge_progress = 0.0
 			is_charge_ready = true
+			# Ensure orb is at full scale when ready
+			if charge_orb_instance:
+				charge_orb_instance.scale = Vector2.ONE
+		
+		# Update charge orb position to follow the dog
+		update_charge_orb_position()
 		
 		# Update HUD charge bar to show charging progress
 		update_charge_bar()
@@ -79,12 +98,24 @@ func start_charging():
 	is_charge_ready = false  # Reset charge ready flag
 	charge_start_time = Time.get_ticks_msec()
 	current_charge_progress = 1.0  # Start at 100%
+	
+	# Create and show charge orb
+	spawn_charge_orb()
+	
+	# NEW: Start playing charging sound
+	play_charging_sound()
 
 func release_charge():
 	if not is_charging:
 		return
 		
 	is_charging = false
+	
+	# NEW: Stop charging sound
+	stop_charging_sound()
+	
+	# Remove charge orb immediately
+	remove_charge_orb()
 	
 	# Check if charge is ready (reached 0% and player can hold indefinitely)
 	if is_charge_ready:
@@ -107,6 +138,83 @@ func fire_charge_bark():
 	else:
 		# Should not happen if we checked properly
 		shoot_normalbark()
+
+# NEW: Play charging sound (looping)
+func play_charging_sound():
+	if charging_sound == null:
+		push_warning("No charging sound loaded!")
+		return
+	
+	# Stop any existing charging sound
+	stop_charging_sound()
+	
+	# Create and configure audio player
+	charging_sound_player = AudioStreamPlayer.new()
+	charging_sound_player.stream = charging_sound
+	charging_sound_player.volume_db = charging_sound_volume_db
+	charging_sound_player.autoplay = true
+	
+	# Make it loop
+	charging_sound_player.finished.connect(_on_charging_sound_finished)
+	
+	add_child(charging_sound_player)
+	charging_sound_player.play()
+
+# NEW: Handle charging sound loop
+func _on_charging_sound_finished():
+	if charging_sound_player and is_charging:
+		# Restart the sound if we're still charging
+		charging_sound_player.play()
+
+# NEW: Stop charging sound
+func stop_charging_sound():
+	if charging_sound_player:
+		charging_sound_player.finished.disconnect(_on_charging_sound_finished)
+		charging_sound_player.stop()
+		charging_sound_player.queue_free()
+		charging_sound_player = null
+
+# Spawn charge orb
+func spawn_charge_orb():
+	if charge_orb_scene == null:
+		push_warning("Charge orb scene not loaded!")
+		return
+	
+	# Remove existing orb if any
+	remove_charge_orb()
+	
+	# Create new orb instance
+	charge_orb_instance = charge_orb_scene.instantiate()
+	get_tree().current_scene.add_child(charge_orb_instance)
+	
+	# Set initial position and scale
+	update_charge_orb_position()
+	charge_orb_instance.scale = Vector2.ZERO
+	
+	# Create tween for scale animation
+	charge_orb_tween = create_tween()
+	charge_orb_tween.tween_property(charge_orb_instance, "scale", Vector2.ONE, charge_duration).set_ease(Tween.EASE_OUT)
+
+# Update charge orb position to follow the dog
+func update_charge_orb_position():
+	if charge_orb_instance and theDawg:
+		charge_orb_instance.global_position = theDawg.global_position + charge_orb_offset
+
+# Update charge orb scale based on charging progress
+func update_charge_orb_scale(progress: float):
+	if charge_orb_instance:
+		# Progress goes from 1.0 to 0.0, but we want scale from 0.0 to 1.0
+		var target_scale = 1.0 - progress
+		charge_orb_instance.scale = Vector2(target_scale, target_scale)
+
+# Remove charge orb
+func remove_charge_orb():
+	if charge_orb_instance:
+		if charge_orb_tween:
+			charge_orb_tween.kill()
+			charge_orb_tween = null
+		charge_orb_instance.queue_free()
+		charge_orb_instance = null
 
 func shoot_normalbark():
 	if theDawg == null:
@@ -144,7 +252,7 @@ func shoot_chargebark():
 	# Play charge bark sound
 	play_charge_bark_sound()
 	
-	# NEW: Add screen shake and blue flash effect for charge bark
+	# Add screen shake and blue flash effect for charge bark
 	if screenEffects:
 		screenEffects.screen_shake(8.0, 0.5)  # Stronger shake for charge bark
 		screenEffects.screen_charge_flash(0.1, 0.5)  # Blue flash for charge bark
