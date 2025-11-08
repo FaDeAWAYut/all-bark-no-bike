@@ -1,6 +1,6 @@
 [gd_scene load_steps=12 format=3 uid="uid://lblo1m308lw1"]
 
-[ext_resource type="Script" uid="uid://isf7h2xxfwa7" path="res://big_impact.gd" id="1_8bsf1"]
+[ext_resource type="Script" uid="uid://isf7h2xxfwa7" path="res://scenes/impact/big_impact.gd" id="1_8bsf1"]
 [ext_resource type="Texture2D" uid="uid://cwcabsxr23d15" path="res://assets/bigimpact.png" id="2_d8ub2"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4yfel"]
