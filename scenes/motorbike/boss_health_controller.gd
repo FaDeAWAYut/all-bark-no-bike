@@ -15,6 +15,14 @@ var hurtSounds: Array = [
 var big_damage_sound: AudioStream = preload("res://assets/sfx/bigdamage.mp3")
 @export var big_damage_volume_db: float = -5.0  # Volume for big damage sound
 
+var bikerSounds: Array = [
+	preload("res://assets/sfx/biker1.mp3"),
+	preload("res://assets/sfx/biker2.mp3"),
+	preload("res://assets/sfx/biker3.mp3"),
+	preload("res://assets/sfx/biker4.mp3"),
+]
+@export var biker_volume_db: float = 0
+
 var small_impact_scene = preload("res://scenes/impact/small_impact.tscn")
 var big_impact_scene = preload("res://scenes/impact/big_impact.tscn")  # Big impact for charge bark
 
@@ -30,6 +38,8 @@ func take_damage(damage_amount: int, impact_position: Vector2 = Vector2.ZERO, ba
 	current_health = max(0, current_health - damage_amount)
 	health_changed.emit(current_health)
 	update_hp_label()
+	
+	play_biker_sound(current_health)
 	
 	# UPDATED: Play different sound based on bark type
 	if bark_type == "charge":
@@ -110,3 +120,22 @@ func spawn_big_impact_effect(position: Vector2):
 		var impact = big_impact_scene.instantiate()
 		impact.global_position = position + Vector2(0,-150) # + some offset
 		get_tree().current_scene.add_child(impact)
+
+func play_biker_sound(current_health):
+	var sound_player = AudioStreamPlayer.new()
+	var selected_sound
+	# CAN ADJUST ACCORDING TO THE STATE MACHINE NA
+	if current_health == 1990:
+		selected_sound = bikerSounds[0] #เห้ย อะไรวะ
+	elif current_health == 1500:
+		selected_sound = bikerSounds[1] #ไอหมาส้ม หยุด
+	elif current_health == 1000:
+		selected_sound = bikerSounds[2] #ไอหมาเวน
+	elif current_health == 500:
+		selected_sound = bikerSounds[3] #เห่าเหี้ยไรนักหนา
+	
+	sound_player.stream = selected_sound
+	sound_player.volume_db = biker_volume_db
+	sound_player.finished.connect(sound_player.queue_free)
+	get_tree().current_scene.add_child(sound_player)
+	sound_player.play()
