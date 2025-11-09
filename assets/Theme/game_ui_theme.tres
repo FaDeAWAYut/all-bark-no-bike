@@ -1,0 +1,80 @@
+[gd_resource type="Theme" load_steps=11 format=3 uid="uid://dm051kf62our1"]
+
+[ext_resource type="FontFile" uid="uid://dwsdgysguaw0b" path="res://assets/font/PixeloidSans-E40en.ttf" id="1_hrmb3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uc3km"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a1gyq"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lbybg"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 0.78431374)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hrmb3"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lbybg"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hrmb3"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_a1gyq"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_uc3km"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nknhm"]
+bg_color = Color(0, 0, 0, 0.5882353)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+
+[resource]
+default_font = ExtResource("1_hrmb3")
+default_font_size = 18
+Button/styles/focus = SubResource("StyleBoxFlat_uc3km")
+Button/styles/hover = SubResource("StyleBoxFlat_a1gyq")
+Button/styles/normal = SubResource("StyleBoxFlat_lbybg")
+Button/styles/pressed = SubResource("StyleBoxFlat_hrmb3")
+FlatButton/styles/focus = SubResource("StyleBoxEmpty_lbybg")
+FlatButton/styles/hover = SubResource("StyleBoxEmpty_hrmb3")
+FlatButton/styles/hover_pressed = SubResource("StyleBoxEmpty_a1gyq")
+FlatButton/styles/pressed = SubResource("StyleBoxEmpty_uc3km")
+Panel/styles/panel = SubResource("StyleBoxFlat_nknhm")

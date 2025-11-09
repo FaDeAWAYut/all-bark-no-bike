@@ -12,7 +12,7 @@ func enter(_previous_state_path: String, _data := {}) -> void:
 	obstacle_timer = 0.0
 	
 	# Set initial direction
-	boss.direction = 1 if randf() > 0.5 else -1
+	boss.direction = 0
 
 func physics_update(delta: float) -> void:
 	if not boss:
