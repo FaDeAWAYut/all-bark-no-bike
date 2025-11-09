@@ -27,7 +27,7 @@ var screenSize : Vector2i
 
 var hurtSFX = preload("res://assets/sfx/hurtsfx.mp3")
 
-var bgMusic = preload("res://assets/sfx/wipwipwip2.mp3")
+var bgMusic = preload("res://assets/sfx/AllBark.mp3")
 
 var coughDropSounds: Array = [
 	preload("res://assets/sfx/cough_drop_eating1.mp3"),
