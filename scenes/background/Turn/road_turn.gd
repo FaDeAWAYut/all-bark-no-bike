@@ -1,4 +1,5 @@
 extends Sprite2D
+@export var timer_duration: float = 20.0
 @export var probability_turn: float = 0.1 
 @export var probability_left_turn: float = 1.0
 @export var road_spawn_position: Vector2i = Vector2i(560, -500)
@@ -14,6 +15,7 @@ extends Sprite2D
 @export var speed_pivot_factor: float = 0.5  # How much speed affects when pivot starts
 
 @export_group("References")
+@export var mainScene: Node
 @export var motorbike: Node
 @export var collectables_manager: CollectablesManager
 @export var obstacle_spawner: ObstacleSpawner
@@ -34,6 +36,7 @@ var distance_from_camera: float
 @onready var timer: Timer = $Timer
 
 func _ready() -> void:
+	timer.wait_time = timer_duration
 	screen_size = get_viewport().get_visible_rect().size
 	screen_height = screen_size.y
 	camera = get_viewport().get_camera_2d()

@@ -1,24 +1,49 @@
-[gd_scene load_steps=3 format=3 uid="uid://b6ntqpksjtv5q"]
+[gd_scene load_steps=7 format=3 uid="uid://kj3vytv8yexd"]
 
-[ext_resource type="Texture2D" uid="uid://cfnqo70bxekfx" path="res://assets/left_turn_placeholder.png" id="1_roox5"]
+[ext_resource type="Texture2D" uid="uid://b3nl81j60fh8g" path="res://assets/bg_turn.png" id="1_roox5"]
 [ext_resource type="Script" uid="uid://bj3bj0d8skqwt" path="res://scenes/background/Turn/road_turn.gd" id="2_1oaxq"]
+[ext_resource type="Script" uid="uid://gnkga6vrr3kb" path="res://scenes/background/Turn/barrier_colliders.gd" id="3_1oaxq"]
 
-[node name="Node2D" type="Node2D"]
-script = ExtResource("2_1oaxq")
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1ir2d"]
+size = Vector2(260.5, 288)
 
-[node name="LeftTurnRoad" type="Sprite2D" parent="."]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lho0t"]
+size = Vector2(286.5, 958.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hvcyl"]
+size = Vector2(287.5, 280.5)
+
+[node name="RoadTurn" type="Sprite2D"]
 texture_filter = 1
-position = Vector2(428, 0)
 scale = Vector2(2, 2)
 texture = ExtResource("1_roox5")
 centered = false
-offset = Vector2(-550, -336)
+offset = Vector2(-483.5, -483.5)
+script = ExtResource("2_1oaxq")
+probability_turn = 1.0
+probability_left_turn = 0.5
+road_spawn_position = Vector2i(447, -967)
 
-[node name="RightTurnRoad" type="Sprite2D" parent="."]
-visible = false
-texture_filter = 1
-position = Vector2(1284, 0)
-scale = Vector2(4, 4)
-texture = ExtResource("1_roox5")
-centered = false
-offset = Vector2(-550, -336)
+[node name="Timer" type="Timer" parent="."]
+wait_time = 20.0
+autostart = true
+
+[node name="BarrierColliders" type="Area2D" parent="."]
+script = ExtResource("3_1oaxq")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="BarrierColliders"]
+polygon = PackedVector2Array(13.5, -73.5, -183, -201, -191.5, -273.5, 15, -145.5, 191.5, 35, 179.5, 111.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BarrierColliders"]
+position = Vector2(-343.75, -331.5)
+shape = SubResource("RectangleShape2D_1ir2d")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="BarrierColliders"]
+position = Vector2(340.25, -1.75)
+shape = SubResource("RectangleShape2D_lho0t")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="BarrierColliders"]
+position = Vector2(-340.75, 337.75)
+shape = SubResource("RectangleShape2D_hvcyl")
+
+[connection signal="body_entered" from="BarrierColliders" to="BarrierColliders" method="_on_body_entered"]

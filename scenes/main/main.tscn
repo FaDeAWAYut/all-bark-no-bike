@@ -1,10 +1,9 @@
-[gd_scene load_steps=17 format=3 uid="uid://p3b5yajekrdr"]
+[gd_scene load_steps=16 format=3 uid="uid://p3b5yajekrdr"]
 
 [ext_resource type="Script" uid="uid://ct048k6rsjfbb" path="res://scenes/main/main.gd" id="1_e2v34"]
 [ext_resource type="PackedScene" uid="uid://dfnmfcww2cu6i" path="res://scenes/dawg/the_dawg.tscn" id="2_631s2"]
 [ext_resource type="PackedScene" uid="uid://bsf3igehijgig" path="res://scenes/main/parallax_bg.tscn" id="2_th5th"]
-[ext_resource type="Texture2D" uid="uid://b3nl81j60fh8g" path="res://assets/bg_turn.png" id="3_th5th"]
-[ext_resource type="Script" uid="uid://bj3bj0d8skqwt" path="res://scenes/background/Turn/road_turn.gd" id="4_b1x3f"]
+[ext_resource type="PackedScene" uid="uid://kj3vytv8yexd" path="res://scenes/main/road_turn.tscn" id="3_th5th"]
 [ext_resource type="PackedScene" uid="uid://cobth27w6p3ja" path="res://scenes/hud/hud.tscn" id="4_dwgw2"]
 [ext_resource type="PackedScene" uid="uid://d4mchi4q55xdb" path="res://scenes/motorbike/motorbike.tscn" id="5_6q06x"]
 [ext_resource type="Script" uid="uid://w5tembhx3n1a" path="res://scenes/collectable/collectables_manager.gd" id="6_ow5a4"]
@@ -31,25 +30,14 @@ camStartPosition = Vector2i(448, 252)
 
 [node name="ParallaxBG" parent="." instance=ExtResource("2_th5th")]
 
-[node name="RoadTurn" type="Sprite2D" parent="." node_paths=PackedStringArray("main_scene", "motorbike", "collectables_manager", "obstacle_spawner")]
-texture_filter = 1
+[node name="RoadTurn" parent="." node_paths=PackedStringArray("main_scene", "mainScene", "motorbike", "collectables_manager", "obstacle_spawner") instance=ExtResource("3_th5th")]
 position = Vector2(447, -967)
-scale = Vector2(2, 2)
-texture = ExtResource("3_th5th")
-centered = false
-offset = Vector2(-483.5, -483.5)
-script = ExtResource("4_b1x3f")
-probability_turn = 1.0
-probability_left_turn = 0.5
-road_spawn_position = Vector2i(447, -967)
+timer_duration = 5.0
 main_scene = NodePath("..")
+mainScene = NodePath("..")
 motorbike = NodePath("../Motorbike")
 collectables_manager = NodePath("../CollectablesManager")
 obstacle_spawner = NodePath("../ObstacleSpawner")
-
-[node name="Timer" type="Timer" parent="RoadTurn"]
-wait_time = 20.0
-autostart = true
 
 [node name="TheDawg" parent="." groups=["player"] instance=ExtResource("2_631s2")]
 position = Vector2(448, 500)
@@ -123,5 +111,3 @@ shape = SubResource("RectangleShape2D_th5th")
 [node name="BoundaryBottom" type="CollisionShape2D" parent="Boundary"]
 position = Vector2(448, 512)
 shape = SubResource("RectangleShape2D_th5th")
-
-[connection signal="obstacles_cleared" from="ObstacleSpawner" to="RoadTurn" method="_on_obstacles_cleared"]
