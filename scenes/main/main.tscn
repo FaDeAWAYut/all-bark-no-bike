@@ -30,10 +30,11 @@ camStartPosition = Vector2i(448, 252)
 
 [node name="ParallaxBG" parent="." instance=ExtResource("2_th5th")]
 
-[node name="RoadTurn" parent="." node_paths=PackedStringArray("main_scene", "motorbike", "collectables_manager", "obstacle_spawner") instance=ExtResource("3_th5th")]
+[node name="RoadTurn" parent="." node_paths=PackedStringArray("main_scene", "mainScene", "motorbike", "collectables_manager", "obstacle_spawner") instance=ExtResource("3_th5th")]
 position = Vector2(447, -967)
 timer_duration = 5.0
 main_scene = NodePath("..")
+mainScene = NodePath("..")
 motorbike = NodePath("../Motorbike")
 collectables_manager = NodePath("../CollectablesManager")
 obstacle_spawner = NodePath("../ObstacleSpawner")

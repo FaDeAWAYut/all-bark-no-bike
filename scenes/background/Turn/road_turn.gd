@@ -15,6 +15,7 @@ extends Sprite2D
 @export var speed_pivot_factor: float = 0.5  # How much speed affects when pivot starts
 
 @export_group("References")
+@export var mainScene: Node
 @export var motorbike: Node
 @export var collectables_manager: CollectablesManager
 @export var obstacle_spawner: ObstacleSpawner

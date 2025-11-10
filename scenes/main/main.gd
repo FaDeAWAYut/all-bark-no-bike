@@ -180,10 +180,13 @@ func _on_obstacle_spawned(obs: Node):
 
 func _on_obstacle_collision(body):
 	if body.name == "TheDawg":
-		gameManager.reduce_HP(10)
-		screenEffects.screen_shake(5, 0.4)
-		screenEffects.screen_damage_flash(0.2, 0.8)
-		play_hurt_sound()
+		player_take_damage()
+		
+func player_take_damage():
+	gameManager.reduce_HP(10)
+	screenEffects.screen_shake(5, 0.4)
+	screenEffects.screen_damage_flash(0.2, 0.8)
+	play_hurt_sound()
 		
 func play_hurt_sound():
 	var soundPlayer = AudioStreamPlayer.new()
