@@ -74,7 +74,6 @@ hp_label = NodePath("../../HUD/PlaceholderBossHP")
 [node name="CollectablesManager" type="Node" parent="." node_paths=PackedStringArray("cough_drop_pool")]
 script = ExtResource("6_ow5a4")
 cough_drop_pool = NodePath("CoughDropsPool")
-cough_drop_scale = 0.5
 
 [node name="CoughDropsPool" parent="CollectablesManager" instance=ExtResource("7_hujxm")]
 
