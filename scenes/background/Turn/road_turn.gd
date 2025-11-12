@@ -34,8 +34,8 @@ var camera: Camera2D
 var distance_from_camera: float
 
 @onready var timer: Timer = $Timer
-@onready var parallaxBGBuilding:Sprite2D = self.get_parent().get_node_or_null(^"ParallaxBG/Parallax2D/building")
-var timeToChangeZIndex:float = 0
+@onready var parallaxBGBuilding: Sprite2D = self.get_parent().get_node_or_null(^"ParallaxBG/Parallax2D/building")
+var timeToChangeZIndex: float = 0
 
 func _ready() -> void:
 	timer.wait_time = timer_duration
