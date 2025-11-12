@@ -20,7 +20,7 @@ size = Vector2(64, 504)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_th5th"]
 size = Vector2(896, 16)
 
-[node name="Main" type="Node" node_paths=PackedStringArray("obstacleSpawner", "barkController", "collectablesManager")]
+[node name="Phase1" type="Node" node_paths=PackedStringArray("obstacleSpawner", "barkController", "collectablesManager")]
 script = ExtResource("1_e2v34")
 obstacleSpawner = NodePath("ObstacleSpawner")
 barkController = NodePath("BarkController")

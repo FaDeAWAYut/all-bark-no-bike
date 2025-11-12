@@ -58,3 +58,7 @@ func has_full_charge() -> bool:
 func end_game():
 	isGameOver = true
 	game_ended.emit()
+	
+func _on_boss_died():
+	get_tree().change_scene_to_file("res://scenes/main/phase2.tscn")
+	
