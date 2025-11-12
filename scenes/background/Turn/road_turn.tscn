@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://kj3vytv8yexd"]
+[gd_scene load_steps=8 format=3 uid="uid://kj3vytv8yexd"]
 
-[ext_resource type="Texture2D" uid="uid://b3nl81j60fh8g" path="res://assets/bg_turn.png" id="1_roox5"]
 [ext_resource type="Script" uid="uid://bj3bj0d8skqwt" path="res://scenes/background/Turn/road_turn.gd" id="2_1oaxq"]
 [ext_resource type="Script" uid="uid://gnkga6vrr3kb" path="res://scenes/background/Turn/barrier_colliders.gd" id="3_1oaxq"]
+[ext_resource type="Texture2D" uid="uid://cqhusipk24l8m" path="res://assets/bg_turn_road.png" id="3_oh7qs"]
+[ext_resource type="Texture2D" uid="uid://c0o0j1pmvmffx" path="res://assets/bg_turn_building.png" id="4_tlsb1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1ir2d"]
 size = Vector2(260.5, 288)
@@ -13,16 +14,25 @@ size = Vector2(286.5, 958.5)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hvcyl"]
 size = Vector2(287.5, 280.5)
 
-[node name="RoadTurn" type="Sprite2D"]
+[node name="RoadTurn" type="Node2D"]
 texture_filter = 1
 scale = Vector2(2, 2)
-texture = ExtResource("1_roox5")
-centered = false
-offset = Vector2(-483.5, -483.5)
 script = ExtResource("2_1oaxq")
 probability_turn = 1.0
 probability_left_turn = 0.5
 road_spawn_position = Vector2i(447, -967)
+
+[node name="turnRoad" type="Sprite2D" parent="."]
+z_index = 1
+texture_filter = 1
+position = Vector2(-71, 0)
+texture = ExtResource("3_oh7qs")
+
+[node name="turnBuilding" type="Sprite2D" parent="."]
+z_index = 2
+texture_filter = 1
+position = Vector2(-71, 0)
+texture = ExtResource("4_tlsb1")
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 20.0

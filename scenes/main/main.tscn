@@ -59,6 +59,7 @@ grow_horizontal = 0
 text = "Boss Health"
 
 [node name="Motorbike" parent="." node_paths=PackedStringArray("BossHealthController") groups=["enemy"] instance=ExtResource("5_6q06x")]
+z_index = 1
 position = Vector2(448, 173)
 scale = Vector2(2, 2)
 spawn_position = Vector2(448, 169)

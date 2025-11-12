@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://bsf3igehijgig"]
+[gd_scene load_steps=3 format=3 uid="uid://bsf3igehijgig"]
 
-[ext_resource type="Texture2D" uid="uid://doon5fdjxf56p" path="res://assets/bg.png" id="1_71d7n"]
+[ext_resource type="Texture2D" uid="uid://d0arwye03fl52" path="res://assets/bg_straight_road.png" id="1_ktctb"]
+[ext_resource type="Texture2D" uid="uid://c185q63u8nubr" path="res://assets/bg_straight_building.png" id="2_8ujw5"]
 
 [node name="ParallaxBG" type="Node2D"]
 scale = Vector2(2, 2)
@@ -11,7 +12,14 @@ repeat_times = 2
 follow_viewport = false
 ignore_camera_scroll = true
 
-[node name="Sprite2D" type="Sprite2D" parent="Parallax2D"]
+[node name="road" type="Sprite2D" parent="Parallax2D"]
+z_index = -1
 texture_filter = 1
-texture = ExtResource("1_71d7n")
+texture = ExtResource("1_ktctb")
+centered = false
+
+[node name="building" type="Sprite2D" parent="Parallax2D"]
+z_index = 2
+texture_filter = 1
+texture = ExtResource("2_8ujw5")
 centered = false
