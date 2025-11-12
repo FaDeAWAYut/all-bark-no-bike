@@ -15,7 +15,7 @@ func _process(_delta: float) -> void:
 	var currentAnimationPos = self.current_animation_position
 
 	if currentAnimationPos >= self.current_animation_length:
-		get_tree().change_scene_to_file("res://scenes/main/main.tscn")
+		get_tree().change_scene_to_file("res://scenes/main/phase1.tscn")
 	
 	if currentAnimationPos >= scrollChangeEndTime:
 		pass

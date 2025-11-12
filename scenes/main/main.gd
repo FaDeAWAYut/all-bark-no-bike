@@ -12,6 +12,8 @@ var screenEffects: ScreenEffects
 
 @export var collectablesManager: CollectablesManager
 
+@onready var isPhaseOne = self.name == "Phase1"
+
 # Game constants
 @export var dogStartPosition := Vector2i(960, 920)
 @export var camStartPosition := Vector2i(960, 560)
@@ -40,6 +42,7 @@ var coughDropSounds: Array = [
 @export var coughDropVolume: float = -5.0
 
 @onready var parallax = $ParallaxBG/Parallax2D
+@onready var bossHealthController = $Motorbike/BossHealthController
 
 func _ready():
 	screenSize = get_window().size
@@ -125,6 +128,7 @@ func setup_signal_connections():
 	gameManager.game_ended.connect(_on_game_ended)
 	gameManager.hp_changed.connect(_on_hp_changed)
 	gameManager.charge_changed.connect(_on_charge_changed)
+	bossHealthController.died.connect(gameManager._on_boss_died)
 	
 	# Connect obstacle spawner signals
 	obstacleSpawner.obstacle_spawned.connect(_on_obstacle_spawned)
