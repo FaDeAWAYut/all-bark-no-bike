@@ -8,7 +8,7 @@ class_name CollectablesManager
 @export var cough_drop_pool: Pool
 @export var min_spawn_interval: float = 1.0
 @export var max_spawn_interval: float = 5.0
-@export var cough_drop_scale: float = 0.2
+@export var cough_drop_scale: float = 2
 
 @export var gameManager: GameManager
 

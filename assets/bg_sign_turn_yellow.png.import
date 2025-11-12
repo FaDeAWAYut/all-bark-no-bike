@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://be54jk4sipgse"
-path="res://.godot/imported/bg_252_debug.png-e6dcb0c4d75f96c231a0f04ea877f96b.ctex"
+uid="uid://dd37wpdmraem6"
+path="res://.godot/imported/bg_sign_turn_yellow.png-1cf054f7bdb03992d1160d1086c065df.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/bg_252_debug.png"
-dest_files=["res://.godot/imported/bg_252_debug.png-e6dcb0c4d75f96c231a0f04ea877f96b.ctex"]
+source_file="res://assets/bg_sign_turn_yellow.png"
+dest_files=["res://.godot/imported/bg_sign_turn_yellow.png-1cf054f7bdb03992d1160d1086c065df.ctex"]
 
 [params]
 
