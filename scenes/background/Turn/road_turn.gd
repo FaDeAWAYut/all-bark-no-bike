@@ -1,4 +1,4 @@
-extends Sprite2D
+extends Node2D
 @export var timer_duration: float = 20.0
 @export var probability_turn: float = 0.1 
 @export var probability_left_turn: float = 1.0
@@ -34,6 +34,8 @@ var camera: Camera2D
 var distance_from_camera: float
 
 @onready var timer: Timer = $Timer
+@onready var parallaxBGBuilding: Sprite2D = self.get_parent().get_node_or_null(^"ParallaxBG/Parallax2D/building")
+var timeToChangeZIndex: float = 0
 
 func _ready() -> void:
 	timer.wait_time = timer_duration
@@ -70,6 +72,7 @@ func _process(_delta: float) -> void:
 		# Move downward at the current game speed
 		global_position.y += current_speed * _delta * 2
 	
+	var parentGameTime = self.get_parent().gameTime
 	if is_turning:
 		if camera:
 			var dynamic_pivot_y = base_pivot_offset - (current_speed * speed_pivot_factor)
@@ -77,6 +80,19 @@ func _process(_delta: float) -> void:
 			if screen_position.y >= dynamic_pivot_y:
 				turn_around_pivot()
 				is_turning = false 
+		
+		# set when to move building z_index down
+		# so that the building in ParallaxBG is below RoadTurn road
+		if parentGameTime:
+			timeToChangeZIndex = parentGameTime + 2
+	
+	if parallaxBGBuilding:
+		if parentGameTime >= timeToChangeZIndex:
+			# move building z_index up
+			parallaxBGBuilding.z_index = 2
+		else:
+			# move building z_index down
+			parallaxBGBuilding.z_index = 0
 
 func _on_timer_timeout():
 	if is_visible_in_tree():
@@ -96,7 +112,7 @@ func _on_timer_timeout():
 			turn_angle_degrees = 90.0
 		else:
 			turn_angle_degrees = -90.0
-			flip_h = true
+			scale.x = -2
 		display_turn() 
 func display_turn():
 	# Transition motorbike to turning state
@@ -122,7 +138,7 @@ func _on_obstacles_cleared():
 func trigger_display():
 	is_turning = true
 	global_position = Vector2(global_position.x, camera.global_position.y - distance_from_camera)
-	if flip_h:
+	if scale.x < 0:
 		global_position -= Vector2(turn_offset_x, 0)
 	show()
 
@@ -144,7 +160,7 @@ func turn_around_pivot():
 	# Animate rotation with dynamic duration
 	tween.tween_property(self, "rotation_degrees", final_rotation, dynamic_turn_duration)
 	
-	if not flip_h:
+	if scale.x >= 0:
 		global_position -= Vector2(turn_offset_x, 0)
 	else:
 		global_position += Vector2(turn_offset_x, 0)
@@ -169,10 +185,10 @@ func reset_turn():
 	collectables_manager.start_spawning()
 	obstacle_spawner.start_spawning()
 	hide()
-	if not flip_h:
+	if scale.x >= 0:
 		global_position += Vector2(turn_offset_x, 0)
 	else:
-		flip_h = false
+		scale.x = 2
 	rotation_degrees = 0.0
 	is_initialised = false
 	
