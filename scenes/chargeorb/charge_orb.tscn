@@ -29,6 +29,7 @@ animations = [{
 script = ExtResource("1_7ewri")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 1
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_i3im1")
 animation = &"charge_orb"

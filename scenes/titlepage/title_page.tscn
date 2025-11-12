@@ -42,7 +42,7 @@ theme_override_constants/separation = 30
 layout_mode = 2
 theme = SubResource("Theme_k57g0")
 text = "All Bark!
-No Bite!"
+No Bike!"
 horizontal_alignment = 1
 
 [node name="MenuOptions" type="VBoxContainer" parent="MainMenu"]

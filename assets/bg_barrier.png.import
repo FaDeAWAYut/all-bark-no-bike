@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://0l7avrhtuxmt"
-path="res://.godot/imported/sign-2.png-d108b269b48a56bdd3f66973b602274e.ctex"
+uid="uid://bvohuvwhigav4"
+path="res://.godot/imported/bg_barrier.png-61aafbc53ba5b98994796e2d4f8b8fd8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sign-2.png"
-dest_files=["res://.godot/imported/sign-2.png-d108b269b48a56bdd3f66973b602274e.ctex"]
+source_file="res://assets/bg_barrier.png"
+dest_files=["res://.godot/imported/bg_barrier.png-61aafbc53ba5b98994796e2d4f8b8fd8.ctex"]
 
 [params]
 
