@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://cslgo50esooie"]
+
+[ext_resource type="Script" uid="uid://bq6174vokxytw" path="res://scenes/motorbike/interruption/throw/cigarette/cigarette.gd" id="1_x75ap"]
+[ext_resource type="Texture2D" uid="uid://c2u3cw6e3booh" path="res://assets/cigarette.png" id="2_5w6i1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8d6nm"]
+size = Vector2(83, 64)
+
+[node name="Cigarette" type="Area2D"]
+script = ExtResource("1_x75ap")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(5.5, -10)
+shape = SubResource("RectangleShape2D_8d6nm")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-0.9999962, -9.536743e-07)
+scale = Vector2(0.175, 0.175)
+texture = ExtResource("2_5w6i1")

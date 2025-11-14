@@ -1,11 +1,15 @@
-[gd_scene load_steps=10 format=3 uid="uid://d4mchi4q55xdb"]
+[gd_scene load_steps=14 format=3 uid="uid://d4mchi4q55xdb"]
 
 [ext_resource type="Script" uid="uid://cnjgaa41oxy3e" path="res://scenes/motorbike/motorbike.gd" id="1_1bwdf"]
 [ext_resource type="Texture2D" uid="uid://dfyu3yb8ljp8g" path="res://assets/motorbike.png" id="1_w1uch"]
+[ext_resource type="PackedScene" uid="uid://yh12dv5s23ef" path="res://scenes/motorbike/interruption/smoke/smoke.tscn" id="2_78t68"]
+[ext_resource type="PackedScene" uid="uid://cslgo50esooie" path="res://scenes/motorbike/interruption/throw/cigarette/cigarette.tscn" id="3_aa8o7"]
 [ext_resource type="Script" uid="uid://y2jsbpc2gabf" path="res://scripts/statemachine/state_machine.gd" id="3_y1enh"]
 [ext_resource type="Script" uid="uid://c2843477cblqo" path="res://scripts/statemachine/turning.gd" id="4_0xr2y"]
+[ext_resource type="PackedScene" uid="uid://bpxo314ab5eav" path="res://rock.tscn" id="4_2q7yv"]
 [ext_resource type="Script" uid="uid://cknu1cymfg8xl" path="res://scripts/statemachine/driving.gd" id="4_6mq4i"]
 [ext_resource type="Script" uid="uid://ffqrcdp00q8d" path="res://scripts/statemachine/throwing.gd" id="5_6mq4i"]
+[ext_resource type="PackedScene" uid="uid://c22gh5obgnvfy" path="res://scenes/motorbike/interruption/throw/ball/ball.tscn" id="5_ocqm2"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1bwdf"]
 atlas = ExtResource("1_w1uch")
@@ -32,6 +36,11 @@ animations = [{
 [node name="Motorbike" type="CharacterBody2D"]
 motion_mode = 1
 script = ExtResource("1_1bwdf")
+smoke_scene = ExtResource("2_78t68")
+level = 2
+cigarette_scene = ExtResource("3_aa8o7")
+rock_scene = ExtResource("4_2q7yv")
+bouncy_ball_scene = ExtResource("5_ocqm2")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
@@ -70,3 +79,8 @@ script = ExtResource("4_0xr2y")
 
 [node name="Throwing" type="Node" parent="StateMachine"]
 script = ExtResource("5_6mq4i")
+
+[node name="SmokeTimer" type="Timer" parent="."]
+
+[node name="ThrowTimer" type="Timer" parent="."]
+wait_time = 1.7999999999999998

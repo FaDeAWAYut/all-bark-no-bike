@@ -1,14 +1,16 @@
 [gd_scene load_steps=4 format=3 uid="uid://co7c2okay1p8l"]
 
-[ext_resource type="Script" uid="uid://qfgedqy0voe2" path="res://scenes/motorbike/throw/rock/rock.gd" id="1_f2cia"]
+[ext_resource type="Script" uid="uid://qfgedqy0voe2" path="res://scenes/motorbike/interruption/throw/rock/rock.gd" id="1_f2cia"]
 [ext_resource type="Texture2D" uid="uid://knu0lgrhj3ov" path="res://assets/rock.png" id="2_bd7ix"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_f2cia"]
+radius = 255.04901
 
 [node name="Rock" type="Area2D"]
 script = ExtResource("1_f2cia")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(14, -10)
 shape = SubResource("CircleShape2D_f2cia")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

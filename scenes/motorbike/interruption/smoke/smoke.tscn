@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://yh12dv5s23ef"]
+
+[ext_resource type="Script" uid="uid://bvm6oomk7xbv1" path="res://scenes/motorbike/interruption/smoke/smoke.gd" id="1_aoj1c"]
+[ext_resource type="Texture2D" uid="uid://c6trm8l1l3dtq" path="res://assets/smoke2.png" id="2_iseor"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c5f3a"]
+
+[node name="Smoke" type="Area2D"]
+script = ExtResource("1_aoj1c")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_c5f3a")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 3
+texture = ExtResource("2_iseor")
+lifetime = 1.5
+
+[node name="Timer" type="Timer" parent="."]
