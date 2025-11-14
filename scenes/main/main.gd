@@ -22,6 +22,10 @@ var canChargeShoot: bool = true
 
 @export var car_obstacle_scale: float = 1
 
+@export var dogInvincibleDuration: float = 2.0
+var invincibleTimer: Timer = Timer.new()
+@export var dogIsInvincible: bool = false
+
 # Background scrolling settings
 var gameTime: float = 0.0
 
@@ -63,6 +67,10 @@ func initialize_modules():
 	car_pool.object_scenes = carScenes
 	car_pool.pool_size = 10
 	car_pool.initialize()
+	
+	# Create and setup invincible timer
+	add_child(invincibleTimer)
+	invincibleTimer.timeout.connect(_on_invincible_timer_timeout)
 
 	# Create and setup obstacle spawner
 	obstacleSpawner.setup(1.0, -0.5, 5.0, screenSize.x)
@@ -187,11 +195,19 @@ func _on_obstacle_collision(body):
 		player_take_damage()
 		
 func player_take_damage():
-	gameManager.reduce_HP(10)
-	screenEffects.screen_shake(5, 0.4)
-	screenEffects.screen_damage_flash(0.2, 0.8)
-	play_hurt_sound()
-		
+	if !dogIsInvincible:
+		gameManager.reduce_HP(10)
+		screenEffects.screen_shake(5, 0.4)
+		screenEffects.screen_damage_flash(0.2, 0.8)
+		play_hurt_sound()
+		dogIsInvincible = true
+		$TheDawg/InvincibleAnimation.play("invincible")
+		invincibleTimer.start(dogInvincibleDuration)
+
+func _on_invincible_timer_timeout():
+	$TheDawg/InvincibleAnimation.stop()
+	dogIsInvincible = false
+
 func play_hurt_sound():
 	var soundPlayer = AudioStreamPlayer.new()
 	soundPlayer.stream = hurtSFX
