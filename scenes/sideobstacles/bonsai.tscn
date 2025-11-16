@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://beyqxeesb7kmr"]
+
+[ext_resource type="Script" uid="uid://5wt38jyaksy4" path="res://scenes/sideobstacles/sideobstacles.gd" id="1_pvrux"]
+[ext_resource type="Texture2D" uid="uid://dlmnrxf0nsfqg" path="res://assets/bonsai.png" id="2_1p3gn"]
+
+[node name="Bonsai" type="Area2D"]
+script = ExtResource("1_pvrux")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(0.053333335, 0.05333335)
+texture = ExtResource("2_1p3gn")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(-7, 5, -4, 14, 5, 14, 8, 5, 4, 2, 10, 0, 12, -2, 12, -5, 11, -9, 4, -12, -3, -8, -2, -6, 1, -6, -4, -2, -9, -4, -13, -2, -10, 0, -11, 4)

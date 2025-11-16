@@ -1,6 +1,6 @@
 extends Collectable
 
-var collectable_type: String = "coughdrop"
+var collectable_type: String = "shield"
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):

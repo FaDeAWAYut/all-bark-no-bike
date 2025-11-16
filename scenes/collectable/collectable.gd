@@ -1,7 +1,7 @@
 extends PoolObject
 
 class_name Collectable
-signal coughdrop_collected
+signal coughdrop_collected(collectable)
 
 var is_collected: bool = false
 
@@ -18,7 +18,7 @@ func collect():
 		area_2d.monitorable = false
 	visible = false
 	
-	coughdrop_collected.emit() 
+	coughdrop_collected.emit(self) 
 	return_to_pool()
 
 func activate():

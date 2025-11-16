@@ -2,6 +2,7 @@ extends Node
 
 # Preload the obstacle scenes
 var carScenes = [preload("res://scenes/car/black_car.tscn"), preload("res://scenes/car/mini_car.tscn"),preload("res://scenes/car/truck_car.tscn")]
+var sideScenes = [preload("res://scenes/sideobstacles/meow.tscn"), preload("res://scenes/sideobstacles/banner.tscn"), preload("res://scenes/sideobstacles/bonsai.tscn")]
 
 # Module instances
 var gameManager: GameManager
@@ -19,8 +20,10 @@ var screenEffects: ScreenEffects
 @export var camStartPosition := Vector2i(960, 560)
 var canChargeShoot: bool = true
 @export var currentSpeed: float
+@export var backgroundSpeed: float = 0.0
 
 @export var car_obstacle_scale: float = 1
+@export var side_obstacle_scale: float = 1.5
 
 @export var dogInvincibleDuration: float = 2.0
 var invincibleTimer: Timer = Timer.new()
@@ -41,12 +44,19 @@ var coughDropSounds: Array = [
 	preload("res://assets/sfx/cough_drop_eating3.mp3")
 ]
 
+var shieldSFX = preload("res://assets/sfx/shieldmonk.mp3")
+var healingSFX = preload("res://assets/sfx/healingsfx.mp3")
+
 @export var hurtSoundVolume = -5
 @export var bgMusicVolume = -5
 @export var coughDropVolume: float = -5.0
+@export var shieldSoundVolume: float = -5.0
+@export var healingSoundVolume: float = -5.0 
 
 @onready var parallax = $ParallaxBG/Parallax2D
 @onready var bossHealthController = $Motorbike/BossHealthController
+
+var previousHP: int = 100
 
 func _ready():
 	screenSize = get_window().size
@@ -54,6 +64,8 @@ func _ready():
 	setup_signal_connections()
 	new_game()
 	play_background_music()
+	
+	previousHP = gameManager.playerHp
 
 func initialize_modules():
 	gameManager = GameManager.new()
@@ -71,13 +83,20 @@ func initialize_modules():
 	# Create and setup invincible timer
 	add_child(invincibleTimer)
 	invincibleTimer.timeout.connect(_on_invincible_timer_timeout)
+	# Create side obstacle pool
+	var side_pool = Pool.new()
+	add_child(side_pool)
+	side_pool.object_scenes = sideScenes
+	side_pool.pool_size = 8 
+	side_pool.initialize()
 
 	# Create and setup obstacle spawner
 	obstacleSpawner.setup(1.0, -0.5, 5.0, screenSize.x)
 	add_child(obstacleSpawner)
 
-	# Add the already initialized car pool to obstacle spawner
+	# Add the already initialized car pool/side pool to obstacle spawner
 	obstacleSpawner.add_obstacle_pool(car_pool)
+	obstacleSpawner.add_obstacle_pool(side_pool)
 
 	# Create and setup speed manager
 	speedManager = SpeedManager.new()
@@ -94,6 +113,13 @@ func initialize_modules():
 	cough_drop_pool.object_scenes = cough_drop_scenes
 	cough_drop_pool.pool_size = 5
 	cough_drop_pool.initialize()
+	
+	var upgrade_scenes = [preload("res://scenes/collectable/bone.tscn"), preload("res://scenes/collectable/necklace_monk.tscn")]
+	var upgrade_pool = Pool.new()
+	add_child(upgrade_pool)
+	upgrade_pool.object_scenes = upgrade_scenes
+	upgrade_pool.pool_size = 3
+	upgrade_pool.initialize()
 	
 	# Initialize normal bark pool for BarkController
 	var normal_bark_scenes = [preload("res://scenes/normalbark/normalbark.tscn")]
@@ -123,6 +149,7 @@ func initialize_modules():
 	
 	# Assign to collectables manager
 	collectablesManager.cough_drop_pool = cough_drop_pool
+	collectablesManager.upgrade_pool = upgrade_pool
 	collectablesManager.gameManager = gameManager
 	
 	# Connect existing cough drops to the collectables manager
@@ -130,6 +157,11 @@ func initialize_modules():
 		if cough_drop.has_signal("coughdrop_collected"):
 			if not cough_drop.coughdrop_collected.is_connected(collectablesManager._on_cough_drop_collected):
 				cough_drop.coughdrop_collected.connect(collectablesManager._on_cough_drop_collected)
+	
+	for upgrade in upgrade_pool.get_children():
+		if upgrade.has_signal("coughdrop_collected"):
+			if not upgrade.coughdrop_collected.is_connected(collectablesManager._on_cough_drop_collected):
+				upgrade.coughdrop_collected.connect(collectablesManager._on_cough_drop_collected)
 
 func setup_signal_connections():
 	# Connect game manager signals
@@ -137,6 +169,7 @@ func setup_signal_connections():
 	gameManager.hp_changed.connect(_on_hp_changed)
 	gameManager.charge_changed.connect(_on_charge_changed)
 	bossHealthController.died.connect(gameManager._on_boss_died)
+	gameManager.shield_changed.connect(_on_shield_changed)
 	
 	# Connect obstacle spawner signals
 	obstacleSpawner.obstacle_spawned.connect(_on_obstacle_spawned)
@@ -154,6 +187,8 @@ func new_game():
 	
 	# Reset background scrolling
 	gameTime = 0.0
+	# Reset previous HP
+	previousHP = gameManager.playerHp
 
 func _physics_process(delta: float):
 	if gameManager.isGameOver:
@@ -163,7 +198,7 @@ func _physics_process(delta: float):
 	gameTime += delta
 	
 	# Update obstacle spawning
-	obstacleSpawner.update(delta, $Camera2D.position.y, screenSize.x, currentSpeed)
+	obstacleSpawner.update(delta, $Camera2D.position.y, screenSize.x, currentSpeed, parallax.autoscroll.y)
 	
 	#update item drop spawning
 	collectablesManager.update(delta, $Camera2D.position.y, screenSize.x, currentSpeed)
@@ -174,6 +209,7 @@ func _physics_process(delta: float):
 	# Update screen effects
 	screenEffects.update_screen_shake(delta)
 	
+	update_shield_blink(delta)
 	# Scroll the background instead of moving camera
 	scroll_background(delta)
 
@@ -183,8 +219,10 @@ func scroll_background(delta: float):
 	parallax.autoscroll.y = currentSpeed
 		
 func _on_obstacle_spawned(obs: Node):
+	if obs is SidewalkObstacle:
+		obs.scale = Vector2(side_obstacle_scale, side_obstacle_scale)
 	# Set up obstacle collision and scaling (obstacle is already managed by pool)
-	obs.scale = Vector2(car_obstacle_scale, car_obstacle_scale)
+	else: obs.scale = Vector2(car_obstacle_scale, car_obstacle_scale)
 	
 	# Connect collision signal if the obstacle has it
 	if obs.has_signal("body_entered"):
@@ -195,6 +233,8 @@ func _on_obstacle_collision(body):
 		player_take_damage()
 		
 func player_take_damage():
+	if gameManager.has_active_shield():
+		return
 	if !dogIsInvincible:
 		gameManager.reduce_HP(10)
 		screenEffects.screen_shake(5, 0.4)
@@ -217,6 +257,27 @@ func play_hurt_sound():
 	
 	add_child(soundPlayer)
 	soundPlayer.play()
+
+func play_shield_sound():
+	var soundPlayer = AudioStreamPlayer.new()
+	soundPlayer.stream = shieldSFX
+	soundPlayer.volume_db = shieldSoundVolume
+	
+	soundPlayer.finished.connect(soundPlayer.queue_free)
+	
+	add_child(soundPlayer)
+	soundPlayer.play()
+
+func play_hp_gain_sound():
+	var soundPlayer = AudioStreamPlayer.new()
+	soundPlayer.stream = healingSFX
+	soundPlayer.volume_db = healingSoundVolume
+	
+	soundPlayer.finished.connect(soundPlayer.queue_free)
+	
+	add_child(soundPlayer)
+	soundPlayer.play()
+
 	
 func play_background_music():
 	var music_player = AudioStreamPlayer.new()
@@ -245,7 +306,32 @@ func show_hp():
 	$HUD.get_node("TextureProgressBar").value = gameManager.playerHp
 
 func _on_hp_changed(new_hp: int):
+	if new_hp >= previousHP:
+		play_hp_gain_sound()
+	
+	previousHP = new_hp
 	show_hp()
+
+func _on_shield_changed(has_shield: bool):
+	if has_shield:
+		play_shield_sound()
+
+	var shield_icon = $HUD.get_node("TextureRect")
+	if shield_icon:
+		shield_icon.visible = has_shield
+
+func update_shield_blink(delta: float):
+	var shield_icon = $HUD.get_node("TextureRect")
+	if not shield_icon or not gameManager.has_active_shield():
+		return
+	
+	var time_remaining = gameManager.get_shield_time_remaining()
+	
+	# Start blinking when 3 seconds or less remain
+	if time_remaining <= 3.0:
+		shield_icon.visible = (int(Time.get_ticks_msec() * 0.005) % 2 == 0)
+	else:
+		shield_icon.visible = true
 	
 func show_charge():
 	var charge_percentage = (float(gameManager.currentCharge) / float(gameManager.maxCharge)) * 100.0

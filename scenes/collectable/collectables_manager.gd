@@ -6,8 +6,10 @@ class_name CollectablesManager
 
 @export_group("Cough Drops")
 @export var cough_drop_pool: Pool
+@export var upgrade_pool: Pool
 @export var min_spawn_interval: float = 1.0
 @export var max_spawn_interval: float = 5.0
+@export var upgrade_spawn_chance: float = 0.3
 @export var cough_drop_scale: float = 2
 
 @export var gameManager: GameManager
@@ -43,22 +45,48 @@ func move_drop(delta: float):
 		for drop in cough_drop_pool.active_objects:
 			if is_instance_valid(drop):
 				drop.position.y += cough_drop_speed * delta
-
+	
+	if upgrade_pool:
+		for upgrade in upgrade_pool.active_objects:
+			if is_instance_valid(upgrade):
+				upgrade.position.y += cough_drop_speed * delta
+				
 func spawn_cough_drops(camera_y_position: float, screen_size_x: float):
-	var cough_drop = cough_drop_pool.get_object()
 	var drop_y_level = camera_y_position - spawn_offset_y 
 	var drop_x_level = screen_size_x * randf_range(0.3, 0.7)
-	cough_drop.position = Vector2(drop_x_level, drop_y_level)
-	cough_drop.scale = Vector2(cough_drop_scale, cough_drop_scale)
+	var random_value = randf()
 	
-	# NEW: Connect the coughdrop_collected signal
-	if not cough_drop.coughdrop_collected.is_connected(_on_cough_drop_collected):
-		cough_drop.coughdrop_collected.connect(_on_cough_drop_collected)
+	if random_value < upgrade_spawn_chance and upgrade_pool:
+		# Spawn bone
+		var upgrade = upgrade_pool.get_object()
+		upgrade.position = Vector2(drop_x_level, drop_y_level)
+		upgrade.scale = Vector2(1.5, 1.5)
+		
+		if upgrade.has_signal("coughdrop_collected"):
+			if not upgrade.coughdrop_collected.is_connected(_on_cough_drop_collected):
+				upgrade.coughdrop_collected.connect(_on_cough_drop_collected)
+			
+	else:
+		# Spawn cough drop (more frequent)
+		if cough_drop_pool:
+			var cough_drop = cough_drop_pool.get_object()
+			cough_drop.position = Vector2(drop_x_level, drop_y_level)
+			cough_drop.scale = Vector2(cough_drop_scale, cough_drop_scale)
+			
+			# Connect signal if not already connected
+			if cough_drop.has_signal("collectable_collected") and not cough_drop.coughdrop_collected.is_connected(_on_cough_drop_collected):
+				cough_drop.coughdrop_collected.connect(_on_cough_drop_collected)
 
 # NEW: Handle cough drop collection using your existing signal
-func _on_cough_drop_collected():
+func _on_cough_drop_collected(collectable):
 	if gameManager and gameManager.has_method("add_charge"):
-		gameManager.add_charge(1)
+		# Check what type was collected
+		if collectable.collectable_type == "coughdrop":
+			gameManager.add_charge(1)
+		elif collectable.collectable_type == "health":
+			gameManager.add_health(10)
+		elif collectable.collectable_type == "shield":
+			gameManager.use_shield(10.0)
 
 func stop_spawning():
 	spawning_enabled = false
@@ -81,6 +109,14 @@ func cleanup_offscreen_collectables(camera_y_position: float, screen_size_y: flo
 	for collectable in collectables_to_remove:
 		collectable.return_to_pool()
 	
+	var upgrades_to_remove = []
+	for collectable in upgrade_pool.active_objects:
+		if collectable.position.y > (camera_y_position + screen_size_y):
+			upgrades_to_remove.append(collectable)
+	
+	for collectable in upgrades_to_remove:
+		collectable.return_to_pool()
+			
 	if not spawning_enabled:
 		check_and_emit_cleared()
 
@@ -91,6 +127,9 @@ func check_and_emit_cleared():
 	var all_pools_empty = true
 	
 	if cough_drop_pool and cough_drop_pool.active_objects.size() > 0:
+		all_pools_empty = false
+	
+	if upgrade_pool and upgrade_pool.active_objects.size() > 0:
 		all_pools_empty = false
 	
 	if all_pools_empty:
