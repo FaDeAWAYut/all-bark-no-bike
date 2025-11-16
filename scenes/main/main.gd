@@ -275,11 +275,11 @@ func play_cough_drop_sound(charge_level: int):
 		sound_player.play()
 
 func _on_game_ended():
+	$GameOver.show()
 	Engine.time_scale = 0.1
 	await get_tree().create_timer(0.05).timeout
 	Engine.time_scale = 1.0
 	get_tree().paused = true
-	$GameOver.show()
 
 func _on_speed_changed(new_speed: float):
 	# Handle speed change events if needed
