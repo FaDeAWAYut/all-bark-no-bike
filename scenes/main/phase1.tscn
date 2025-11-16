@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://p3b5yajekrdr"]
+[gd_scene load_steps=16 format=3 uid="uid://dfordplumd5qk"]
 
 [ext_resource type="Script" uid="uid://ct048k6rsjfbb" path="res://scenes/main/main.gd" id="1_e2v34"]
 [ext_resource type="PackedScene" uid="uid://dfnmfcww2cu6i" path="res://scenes/dawg/the_dawg.tscn" id="2_631s2"]
