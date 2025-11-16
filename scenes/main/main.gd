@@ -49,6 +49,7 @@ var coughDropSounds: Array = [
 @onready var bossHealthController = $Motorbike/BossHealthController
 
 func _ready():
+	get_tree().paused = false # unpause from gameover
 	screenSize = get_window().size
 	initialize_modules()
 	setup_signal_connections()
@@ -87,6 +88,7 @@ func initialize_modules():
 	screenEffects = ScreenEffects.new()
 	screenEffects.setup($Camera2D, screenSize, self)
 	add_child(screenEffects)
+	screenEffects.process_mode = Node.PROCESS_MODE_ALWAYS # let screenEffects run when pause tree
 	
 	var cough_drop_scenes = [preload("res://scenes/collectable/cough_drop.tscn")]
 	var cough_drop_pool = Pool.new()
@@ -273,8 +275,11 @@ func play_cough_drop_sound(charge_level: int):
 		sound_player.play()
 
 func _on_game_ended():
-	await get_tree().create_timer(0.1).timeout
+	Engine.time_scale = 0.1
+	await get_tree().create_timer(0.05).timeout
+	Engine.time_scale = 1.0
 	get_tree().paused = true
+	$GameOver.show()
 
 func _on_speed_changed(new_speed: float):
 	# Handle speed change events if needed
