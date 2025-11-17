@@ -9,9 +9,9 @@ signal obstacles_cleared
 @export var obstacle_pools: Array[Pool] = []
 @export var spawn_offset_y: float = 1000.0
 var obstacleTimer : float = 0.0
-var obstacleSpawnInterval : float = 2.0
+var obstacleSpawnInterval : float = 0.5
 var minSpawnVariation : float = -0.5
-var maxSpawnVariation : float = 5.0
+var maxSpawnVariation : float = 0.2
 
 # Lane settings - 4 lanes, each 64 pixels wide
 var lane_width: float = 64.0*2
