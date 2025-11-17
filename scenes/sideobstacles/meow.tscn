@@ -1,0 +1,47 @@
+[gd_scene load_steps=7 format=3 uid="uid://d2iynpas88y4o"]
+
+[ext_resource type="Script" uid="uid://5wt38jyaksy4" path="res://scenes/sideobstacles/sideobstacles.gd" id="1_dafwj"]
+[ext_resource type="Texture2D" uid="uid://b78ip7scvf0w8" path="res://assets/meow.png" id="2_3qlb2"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fp2hn"]
+atlas = ExtResource("2_3qlb2")
+region = Rect2(0, 0, 18, 29)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s0q17"]
+atlas = ExtResource("2_3qlb2")
+region = Rect2(19, 0, 18, 29)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_30005"]
+atlas = ExtResource("2_3qlb2")
+region = Rect2(38, 0, 18, 29)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_vow1l"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fp2hn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s0q17")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_30005")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Meow" type="Node2D"]
+script = ExtResource("1_dafwj")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_vow1l")
+frame = 1
+frame_progress = 0.74444306
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+polygon = PackedVector2Array(-8, 0, -4, -3, -1, -7, 4, -7, 4, -9, 1, -9, -2, -8, -5, -9, -5, -12, 0, -14, 5, -14, 7, -10, 8, -6, 9, 0, 7, 8, 4, 14, -7, 13)

@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://cj0ptvwct8cv"]
+
+[ext_resource type="Script" uid="uid://caq7kurbau7jt" path="res://scenes/collectable/bone.gd" id="1_ccrg2"]
+[ext_resource type="Texture2D" uid="uid://c73uk6o2p5jgd" path="res://assets/bone.png" id="1_utr1g"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ccrg2"]
+radius = 20.615528
+
+[node name="Bone" type="Node2D"]
+script = ExtResource("1_ccrg2")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(0.05333334, 0.053333327)
+texture = ExtResource("1_utr1g")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_ccrg2")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

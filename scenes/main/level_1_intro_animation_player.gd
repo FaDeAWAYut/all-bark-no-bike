@@ -10,7 +10,6 @@ var scrollChangeEndTime = 7 # when to reach start speed of level 1
 func _ready() -> void:
 	parallaxBG.scroll_offset.y = 35 # makes the intro bg align with level 1
 
-
 func _process(_delta: float) -> void:
 	var currentAnimationPos = self.current_animation_position
 

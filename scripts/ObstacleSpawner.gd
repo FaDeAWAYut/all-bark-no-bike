@@ -17,9 +17,11 @@ var maxSpawnVariation : float = 5.0
 var lane_width: float = 64.0*2
 var num_lanes: int = 4
 var lane_positions: Array = []
+var sidewalk_positions: Array = []
 
 # Add obstacle movement settings
 var obstacleSpeed: float = 0.0
+var backgroundSpeed: float
 var spawning_enabled: bool = true
 
 func _ready():
@@ -34,6 +36,7 @@ func setup(spawn_interval: float, min_variation: float, max_variation: float, sc
 func calculate_lane_positions(screen_size_x: float):
 	# Clear previous positions
 	lane_positions.clear()
+	sidewalk_positions.clear()
 	
 	# Calculate the total width occupied by all lanes
 	var total_lanes_width = num_lanes * lane_width
@@ -45,6 +48,12 @@ func calculate_lane_positions(screen_size_x: float):
 	for i in range(num_lanes):
 		var lane_center = start_x + (i * lane_width) + (lane_width / 2)
 		lane_positions.append(lane_center)
+	
+	var side_lane = 32
+	sidewalk_positions.append(64+side_lane)
+	sidewalk_positions.append(64+(3*side_lane))
+	sidewalk_positions.append(screen_size_x-(64+side_lane))
+	sidewalk_positions.append(screen_size_x-(64+(3*side_lane)))
 		
 func add_obstacle_pool(pool: Pool):
 	if not obstacle_pools.has(pool):
@@ -59,11 +68,12 @@ func start_spawning():
 	# Reset timer to start spawning immediately or after a fresh interval
 	obstacleTimer = 0.0
 
-func update(delta: float, camera_y_position: float, screen_size_x: float, current_speed: float):
+func update(delta: float, camera_y_position: float, screen_size_x: float, current_speed: float, bg_speed: float):
 	obstacleSpeed = current_speed  # Update obstacle speed
+	backgroundSpeed = bg_speed     # For side obstacles
 	
 	# Calculate lane positions if not done yet or if screen size changed
-	if lane_positions.is_empty():
+	if lane_positions.is_empty() or sidewalk_positions.is_empty():
 		calculate_lane_positions(screen_size_x)
 		
 	# Always update obstacles (movement and cleanup), regardless of spawning state
@@ -113,7 +123,7 @@ func try_spawn_obstacle(camera_y_position: float, screen_size_x: float):
 		return
 	
 	# Recalculate lane positions if screen size might have changed
-	if lane_positions.is_empty():
+	if lane_positions.is_empty() or sidewalk_positions.is_empty():
 		calculate_lane_positions(screen_size_x)
 
 	# Pick a random pool to spawn from
@@ -122,15 +132,29 @@ func try_spawn_obstacle(camera_y_position: float, screen_size_x: float):
 	
 	# Spawn just above the top of the screen
 	var spawnY = camera_y_position - spawn_offset_y
-	# Pick a random lane for spawning
-	var random_lane = randi() % num_lanes
-	var spawnX = lane_positions[random_lane]
+	var spawnX: float
+	
+	# check if obstacle is car or sideobs
+	var is_side_obstacle = false
+	
+	if obs is SidewalkObstacle:
+		is_side_obstacle = true
+	
+	if is_side_obstacle:
+		# Pick a random sidewalk position (0-3 for the 4 fixed points)
+		var random_sidewalk = randi() % sidewalk_positions.size()
+		spawnX = sidewalk_positions[random_sidewalk]
+		if obs.has_method("set_speed"):
+			obs.set_speed(backgroundSpeed)
+	else:
+		# Spawn cars in road lanes (your existing code)
+		var random_lane = randi() % num_lanes
+		spawnX = lane_positions[random_lane]
+		# Set initial speed
+		if obs.has_method("set_speed"):
+			obs.set_speed(obstacleSpeed)
 	
 	obs.position = Vector2(spawnX, spawnY)
-	
-	# Set initial speed
-	if obs.has_method("set_speed"):
-		obs.set_speed(obstacleSpeed)
 	
 	obstacle_spawned.emit(obs)
 
