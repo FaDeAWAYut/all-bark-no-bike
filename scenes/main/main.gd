@@ -114,12 +114,19 @@ func initialize_modules():
 	cough_drop_pool.pool_size = 5
 	cough_drop_pool.initialize()
 	
-	var upgrade_scenes = [preload("res://scenes/collectable/bone.tscn"), preload("res://scenes/collectable/necklace_monk.tscn")]
-	var upgrade_pool = Pool.new()
-	add_child(upgrade_pool)
-	upgrade_pool.object_scenes = upgrade_scenes
-	upgrade_pool.pool_size = 3
-	upgrade_pool.initialize()
+	var upgrade_scene_1 = [preload("res://scenes/collectable/bone.tscn")]
+	var upgrade_pool_1 = Pool.new()
+	add_child(upgrade_pool_1)
+	upgrade_pool_1.object_scenes = upgrade_scene_1
+	upgrade_pool_1.pool_size = 3
+	upgrade_pool_1.initialize()
+	
+	var upgrade_scene_2 = [preload("res://scenes/collectable/necklace_monk.tscn")]
+	var upgrade_pool_2 = Pool.new()
+	add_child(upgrade_pool_2)
+	upgrade_pool_2.object_scenes = upgrade_scene_2
+	upgrade_pool_2.pool_size = 3
+	upgrade_pool_2.initialize()
 	
 	# Initialize normal bark pool for BarkController
 	var normal_bark_scenes = [preload("res://scenes/normalbark/normalbark.tscn")]
@@ -149,7 +156,8 @@ func initialize_modules():
 	
 	# Assign to collectables manager
 	collectablesManager.cough_drop_pool = cough_drop_pool
-	collectablesManager.upgrade_pool = upgrade_pool
+	collectablesManager.upgrade_pool_1 = upgrade_pool_1
+	collectablesManager.upgrade_pool_2 = upgrade_pool_2
 	collectablesManager.gameManager = gameManager
 	
 	# Connect existing cough drops to the collectables manager
@@ -158,7 +166,12 @@ func initialize_modules():
 			if not cough_drop.coughdrop_collected.is_connected(collectablesManager._on_cough_drop_collected):
 				cough_drop.coughdrop_collected.connect(collectablesManager._on_cough_drop_collected)
 	
-	for upgrade in upgrade_pool.get_children():
+	for upgrade in upgrade_pool_1.get_children():
+		if upgrade.has_signal("coughdrop_collected"):
+			if not upgrade.coughdrop_collected.is_connected(collectablesManager._on_cough_drop_collected):
+				upgrade.coughdrop_collected.connect(collectablesManager._on_cough_drop_collected)
+	
+	for upgrade in upgrade_pool_2.get_children():
 		if upgrade.has_signal("coughdrop_collected"):
 			if not upgrade.coughdrop_collected.is_connected(collectablesManager._on_cough_drop_collected):
 				upgrade.coughdrop_collected.connect(collectablesManager._on_cough_drop_collected)
