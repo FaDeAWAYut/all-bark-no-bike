@@ -138,13 +138,16 @@ func setup_signal_connections():
 	gameManager.game_ended.connect(_on_game_ended)
 	gameManager.hp_changed.connect(_on_hp_changed)
 	gameManager.charge_changed.connect(_on_charge_changed)
-	bossHealthController.died.connect(gameManager._on_boss_died)
+	bossHealthController.died.connect(_on_boss_died)  # Connect to local handler first
 	
 	# Connect obstacle spawner signals
 	obstacleSpawner.obstacle_spawned.connect(_on_obstacle_spawned)
 	
 	# Connect speed manager signals
 	speedManager.speed_changed.connect(_on_speed_changed)
+
+func _on_boss_died():
+	transition_to_phase_transition()
 
 func new_game():
 	gameManager.start_new_game()
@@ -284,3 +287,8 @@ func _on_game_ended():
 func _on_speed_changed(new_speed: float):
 	# Handle speed change events if needed
 	pass
+	
+func transition_to_phase_transition():
+	# Capture current positions and state
+	# Load transition scene
+	get_tree().change_scene_to_file("res://scenes/main/transistion_phase.tscn")

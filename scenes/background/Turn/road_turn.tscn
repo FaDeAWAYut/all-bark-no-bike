@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=3 uid="uid://kj3vytv8yexd"]
 
 [ext_resource type="Script" uid="uid://bj3bj0d8skqwt" path="res://scenes/background/Turn/road_turn.gd" id="2_1oaxq"]
-[ext_resource type="Script" uid="uid://gnkga6vrr3kb" path="res://scenes/background/Turn/barrier_colliders.gd" id="3_1oaxq"]
+[ext_resource type="Script" path="res://scenes/background/Turn/barrier_colliders.gd" id="3_1oaxq"]
 [ext_resource type="Texture2D" uid="uid://cqhusipk24l8m" path="res://assets/bg_turn_road.png" id="3_oh7qs"]
 [ext_resource type="Texture2D" uid="uid://c0o0j1pmvmffx" path="res://assets/bg_turn_building.png" id="4_tlsb1"]
 [ext_resource type="Texture2D" uid="uid://cxv7pfghove5" path="res://assets/bg_turn_barrier.png" id="4_xnrlv"]
@@ -16,7 +16,7 @@ size = Vector2(260.5, 288)
 size = Vector2(286.5, 958.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hvcyl"]
-size = Vector2(287.5, 280.5)
+size = Vector2(288.75, 291)
 
 [node name="RoadTurn" type="Node2D"]
 texture_filter = 1
@@ -81,7 +81,7 @@ position = Vector2(340.25, -1.75)
 shape = SubResource("RectangleShape2D_lho0t")
 
 [node name="CollisionShape2D3" type="CollisionShape2D" parent="BarrierColliders"]
-position = Vector2(-200.5, 326)
+position = Vector2(-335.875, 338)
 shape = SubResource("RectangleShape2D_hvcyl")
 
 [connection signal="body_entered" from="BarrierColliders" to="BarrierColliders" method="_on_body_entered"]
