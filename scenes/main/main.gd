@@ -199,7 +199,8 @@ func setup_signal_connections():
 	speedManager.speed_changed.connect(_on_speed_changed)
 
 func _on_boss_died():
-	transition_to_phase_transition()
+	if isPhaseOne:
+		transition_to_phase_transition()
 
 func new_game():
 	gameManager.start_new_game()
