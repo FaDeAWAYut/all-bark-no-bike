@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://p3b5yajekrdr"]
+[gd_scene load_steps=18 format=3 uid="uid://p3b5yajekrdr"]
 
 [ext_resource type="Script" uid="uid://ct048k6rsjfbb" path="res://scenes/main/main.gd" id="1_e2v34"]
 [ext_resource type="PackedScene" uid="uid://dfnmfcww2cu6i" path="res://scenes/dawg/the_dawg.tscn" id="2_631s2"]
@@ -14,6 +14,7 @@
 [ext_resource type="Script" uid="uid://ek8hm7xuisk5" path="res://scripts/Pool.gd" id="12_th5th"]
 [ext_resource type="AudioStream" uid="uid://cotg1jtn26twy" path="res://assets/sfx/chargebarksfx.mp3" id="13_7smn1"]
 [ext_resource type="PackedScene" uid="uid://dy6jmp88qig88" path="res://scenes/gameoveroverlay/game_over.tscn" id="14_eu2pp"]
+[ext_resource type="Script" uid="uid://bujgehfwg2nkx" path="res://scripts/SpeedManager.gd" id="15_dobbf"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_blune"]
 size = Vector2(64, 504)
@@ -116,3 +117,7 @@ shape = SubResource("RectangleShape2D_th5th")
 process_mode = 2
 visible = false
 z_index = 10
+
+[node name="SpeedManager" type="Node" parent="."]
+script = ExtResource("15_dobbf")
+metadata/_custom_type_script = "uid://bujgehfwg2nkx"
