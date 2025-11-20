@@ -6,8 +6,8 @@ signal speed_changed(new_speed)
 
 var speed : float
 var time : float
-var startSpeed : float = 150.0
-var maxSpeed : float = 600.0
+@export var startSpeed : float = 150.0
+@export var maxSpeed : float = 500.0
 
 func start():
 	time = 0

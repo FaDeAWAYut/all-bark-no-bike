@@ -12,6 +12,7 @@ class_name CollectablesManager
 @export var max_spawn_interval: float = 5.0
 @export var upgrade_spawn_chance: float = 0.3
 @export var cough_drop_scale: float = 2
+@export var collectable_speed_multiplier: float = 0.8
 
 @export var gameManager: GameManager
 
@@ -34,7 +35,7 @@ func update(delta: float, camera_y_position: float, screen_size_x: float, curren
 		current_spawn_interval = randf_range(min_spawn_interval, max_spawn_interval)
 	
 	cough_drop_timer += delta
-	cough_drop_speed = current_speed
+	cough_drop_speed = current_speed * collectable_speed_multiplier
 
 	if cough_drop_timer >= current_spawn_interval:
 		spawn_cough_drops(camera_y_position, screen_size_x)

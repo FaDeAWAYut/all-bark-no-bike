@@ -10,7 +10,7 @@
 [ext_resource type="AudioStream" uid="uid://dunh8q2k01f31" path="res://assets/sfx/biker5.mp3" id="8_5rlxp"]
 [ext_resource type="AudioStream" uid="uid://dp40jwc6otrwk" path="res://assets/sfx/jumpsfx.mp3" id="9_m0bp2"]
 [ext_resource type="AudioStream" uid="uid://d4ln25enga6t0" path="res://assets/sfx/bikesfx.mp3" id="10_1anp8"]
-[ext_resource type="Script" uid="uid://cjp7gidh1tau0" path="res://scenes/main/animation_player.gd" id="10_qivht"]
+[ext_resource type="Script" path="res://scenes/main/animation_player.gd" id="10_qivht"]
 [ext_resource type="Script" uid="uid://bujgehfwg2nkx" path="res://scripts/SpeedManager.gd" id="11_1anp8"]
 [ext_resource type="AudioStream" uid="uid://cnogw7lewk5lt" path="res://assets/sfx/bigdamage.mp3" id="11_es6xp"]
 [ext_resource type="AudioStream" uid="uid://de0ji7kdmp5p" path="res://assets/sfx/pickupsfx.mp3" id="12_yg3qw"]

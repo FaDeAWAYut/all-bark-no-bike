@@ -7,7 +7,7 @@ var sideScenes = [preload("res://scenes/sideobstacles/meow.tscn"), preload("res:
 # Module instances
 var gameManager: GameManager
 @export var obstacleSpawner: ObstacleSpawner
-var speedManager: SpeedManager
+@onready var speedManager: SpeedManager = $SpeedManager
 @export var barkController: BarkController
 var screenEffects: ScreenEffects
 
@@ -99,10 +99,6 @@ func initialize_modules():
 	obstacleSpawner.add_obstacle_pool(car_pool)
 	obstacleSpawner.add_obstacle_pool(side_pool)
 
-	# Create and setup speed manager
-	speedManager = SpeedManager.new()
-	add_child(speedManager)
-	
 	# Create and setup screen effects
 	screenEffects = ScreenEffects.new()
 	screenEffects.setup($Camera2D, screenSize, self)
@@ -254,7 +250,7 @@ func player_take_damage():
 	if gameManager.has_active_shield():
 		return
 	if !dogIsInvincible:
-		gameManager.reduce_HP(10)
+		gameManager.reduce_HP(20          )
 		screenEffects.screen_shake(5, 0.4)
 		screenEffects.screen_damage_flash(0.2, 0.8)
 		play_hurt_sound()
