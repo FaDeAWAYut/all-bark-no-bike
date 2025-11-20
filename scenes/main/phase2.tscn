@@ -13,6 +13,7 @@
 [ext_resource type="Script" uid="uid://dddagrng1jobg" path="res://scripts/BarkController.gd" id="11_bx00b"]
 [ext_resource type="AudioStream" uid="uid://cotg1jtn26twy" path="res://assets/sfx/chargebarksfx.mp3" id="12_4i2q6"]
 [ext_resource type="Script" uid="uid://ek8hm7xuisk5" path="res://scripts/Pool.gd" id="13_haqeb"]
+[ext_resource type="PackedScene" uid="uid://ce7vraqhrguhk" path="res://scenes/collectable/chadchart.tscn" id="14_bp3xm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_blune"]
 size = Vector2(64, 504)
@@ -40,6 +41,7 @@ collectables_manager = NodePath("../CollectablesManager")
 obstacle_spawner = NodePath("../ObstacleSpawner")
 
 [node name="TheDawg" parent="." groups=["player"] instance=ExtResource("4_7a0md")]
+z_index = 2
 position = Vector2(448, 500)
 scale = Vector2(2, 2)
 collision_mask = 3
@@ -117,3 +119,6 @@ offset_top = 390.0
 offset_right = 546.0
 offset_bottom = 413.0
 text = "Phase 2!"
+
+[node name="Chadchart" parent="." groups=["chadchart"] instance=ExtResource("14_bp3xm")]
+position = Vector2(595, 318)

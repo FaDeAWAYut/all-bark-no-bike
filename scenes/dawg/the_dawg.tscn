@@ -1,7 +1,16 @@
-[gd_scene load_steps=9 format=3 uid="uid://dfnmfcww2cu6i"]
+[gd_scene load_steps=12 format=3 uid="uid://dfnmfcww2cu6i"]
 
 [ext_resource type="Script" uid="uid://bg5sn4uhfhgto" path="res://scenes/dawg/TheDawg.gd" id="1_jfyaa"]
+[ext_resource type="Texture2D" uid="uid://8noh6vtr7dx0" path="res://assets/chadchart_active.png" id="2_8fyta"]
 [ext_resource type="Texture2D" uid="uid://b7wcsauy7nqkt" path="res://assets/TheDawg.png" id="2_eavk6"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u1vlm"]
+atlas = ExtResource("2_8fyta")
+region = Rect2(0, 0, 252, 341)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o7pi3"]
+atlas = ExtResource("2_8fyta")
+region = Rect2(253, 0, 252, 341)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xr6vp"]
 atlas = ExtResource("2_eavk6")
@@ -21,6 +30,17 @@ region = Rect2(32, 32, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_u1vlm"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u1vlm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o7pi3")
+}],
+"loop": true,
+"name": &"chadchart_active",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_xr6vp")
@@ -50,7 +70,7 @@ script = ExtResource("1_jfyaa")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_u1vlm")
-animation = &"run"
+animation = &"chadchart_active"
 autoplay = "run"
 frame_progress = 0.11201086
 

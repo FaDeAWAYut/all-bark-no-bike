@@ -9,6 +9,9 @@ var gameManager: GameManager
 var speedManager: SpeedManager
 @export var barkController: BarkController
 var screenEffects: ScreenEffects
+@onready var chadchart: Area2D = $Chadchart
+
+var playerInvincible = false;
 
 @export var collectablesManager: CollectablesManager
 
@@ -129,7 +132,10 @@ func setup_signal_connections():
 	gameManager.hp_changed.connect(_on_hp_changed)
 	gameManager.charge_changed.connect(_on_charge_changed)
 	bossHealthController.died.connect(gameManager._on_boss_died)
-	
+	if chadchart:
+		chadchart.collide.connect(_on_chadchart_collide)
+		chadchart.end.connect(_on_chadchart_end)
+		
 	# Connect obstacle spawner signals
 	obstacleSpawner.obstacle_spawned.connect(_on_obstacle_spawned)
 	
@@ -183,7 +189,7 @@ func _on_obstacle_spawned(obs: Node):
 		obs.body_entered.connect(_on_obstacle_collision)
 
 func _on_obstacle_collision(body):
-	if body.name == "TheDawg":
+	if body.name == "TheDawg" && !playerInvincible:
 		player_take_damage()
 		
 func player_take_damage():
@@ -263,3 +269,13 @@ func _on_game_ended():
 func _on_speed_changed(new_speed: float):
 	# Handle speed change events if needed
 	pass
+
+func _on_chadchart_collide():
+	playerInvincible = true;
+	$TheDawg/AnimatedSprite2D.animation = &"chadchart_active"
+	$TheDawg.apply_scale(Vector2(0.25,0.25))
+	
+func _on_chadchart_end():
+	playerInvincible = false;
+	$TheDawg.apply_scale(Vector2(4,4))
+	$TheDawg/AnimatedSprite2D.animation = &"run"
