@@ -61,7 +61,7 @@ grow_horizontal = 0
 text = "Boss Health"
 
 [node name="Motorbike" parent="." node_paths=PackedStringArray("BossHealthController") groups=["enemy"] instance=ExtResource("6_b4rkt")]
-position = Vector2(448, 524)
+position = Vector2(448, 515)
 scale = Vector2(2, 2)
 setSprite = "no_bike"
 hide_speed_multiplier = 0.5
