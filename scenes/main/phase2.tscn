@@ -88,6 +88,7 @@ script = ExtResource("10_jhg8w")
 script = ExtResource("11_bx00b")
 barkSpawnOffset = Vector2(0, 0)
 bulletDirection = Vector2(0, 1)
+charge_orb_offset = Vector2(0, -25)
 normalBarkVolume = -10
 charge_bark_sound = ExtResource("12_4i2q6")
 
