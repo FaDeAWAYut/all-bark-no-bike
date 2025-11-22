@@ -70,7 +70,10 @@ hit_flash_duration = 1.0
 
 [node name="BossHealthController" type="Node" parent="Motorbike" node_paths=PackedStringArray("hp_label")]
 script = ExtResource("7_nbgot")
+max_health = 2000
 hp_label = NodePath("../../HUD/PlaceholderBossHP")
+small_impact_offset = 25
+big_impact_offset = 50
 
 [node name="CollectablesManager" type="Node" parent="." node_paths=PackedStringArray("cough_drop_pool")]
 script = ExtResource("8_u40po")
@@ -111,13 +114,6 @@ shape = SubResource("RectangleShape2D_th5th")
 [node name="BoundaryBottom" type="CollisionShape2D" parent="Boundary"]
 position = Vector2(448, 380)
 shape = SubResource("RectangleShape2D_th5th")
-
-[node name="LabelForDebug" type="Label" parent="."]
-offset_left = 481.0
-offset_top = 390.0
-offset_right = 546.0
-offset_bottom = 413.0
-text = "Phase 2!"
 
 [node name="GameOver" parent="." instance=ExtResource("14_ogru6")]
 process_mode = 2

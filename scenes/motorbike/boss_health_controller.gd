@@ -25,6 +25,9 @@ var bikerSounds: Array = [
 
 var small_impact_scene = preload("res://scenes/impact/small_impact.tscn")
 var big_impact_scene = preload("res://scenes/impact/big_impact.tscn")  # Big impact for charge bark
+@export_group("impact offsets")
+@export var small_impact_offset = -50
+@export var big_impact_offset = -150
 
 signal health_changed(new_health: int)
 signal died
@@ -111,14 +114,14 @@ func play_big_damage_sound():
 func spawn_small_impact_effect(position: Vector2):
 	if small_impact_scene:
 		var impact = small_impact_scene.instantiate()
-		impact.global_position = position + Vector2(0,-50) # + some offset
+		impact.global_position = position + Vector2(0,small_impact_offset) # + some offset
 		get_tree().current_scene.add_child(impact)
 
 # NEW: Spawn big impact effect for charge bark
 func spawn_big_impact_effect(position: Vector2):
 	if big_impact_scene:
 		var impact = big_impact_scene.instantiate()
-		impact.global_position = position + Vector2(0,-150) # + some offset
+		impact.global_position = position + Vector2(0,big_impact_offset) # + some offset
 		get_tree().current_scene.add_child(impact)
 
 func play_biker_sound(current_health):
