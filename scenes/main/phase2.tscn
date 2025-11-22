@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://ct048k6rsjfbb" path="res://scenes/main/main.gd" id="1_54jss"]
 [ext_resource type="PackedScene" uid="uid://bsf3igehijgig" path="res://scenes/background/parallax_bg.tscn" id="2_eu2pp"]
 [ext_resource type="PackedScene" uid="uid://kj3vytv8yexd" path="res://scenes/background/Turn/road_turn.tscn" id="3_dobbf"]
-[ext_resource type="PackedScene" uid="uid://dfnmfcww2cu6i" path="res://scenes/dawg/the_dawg.tscn" id="4_7a0md"]
+[ext_resource type="PackedScene" uid="uid://ftnxv01ifvwb" path="res://scenes/dawg/The_dawg_on_bike.tscn" id="4_ogru6"]
 [ext_resource type="PackedScene" uid="uid://cobth27w6p3ja" path="res://scenes/hud/hud.tscn" id="5_hgphf"]
 [ext_resource type="PackedScene" uid="uid://d4mchi4q55xdb" path="res://scenes/motorbike/motorbike.tscn" id="6_b4rkt"]
 [ext_resource type="Script" uid="uid://b7ufw4rkm38q4" path="res://scenes/motorbike/boss_health_controller.gd" id="7_nbgot"]
@@ -40,7 +40,8 @@ motorbike = NodePath("../Motorbike")
 collectables_manager = NodePath("../CollectablesManager")
 obstacle_spawner = NodePath("../ObstacleSpawner")
 
-[node name="TheDawg" parent="." groups=["player"] instance=ExtResource("4_7a0md")]
+[node name="TheDawg" parent="." groups=["player"] instance=ExtResource("4_ogru6")]
+z_index = 1
 position = Vector2(448, 169)
 scale = Vector2(2, 2)
 collision_mask = 3
@@ -62,7 +63,7 @@ text = "Boss Health"
 [node name="Motorbike" parent="." node_paths=PackedStringArray("BossHealthController") groups=["enemy"] instance=ExtResource("6_b4rkt")]
 position = Vector2(448, 524)
 scale = Vector2(2, 2)
-spawn_position = Vector2(448, 169)
+setSprite = "no_bike"
 hide_speed_multiplier = 0.5
 BossHealthController = NodePath("BossHealthController")
 hit_flash_duration = 1.0
@@ -80,9 +81,8 @@ cough_drop_pool = NodePath("CoughDropsPool")
 [node name="ObstacleSpawner" type="Node" parent="."]
 script = ExtResource("10_jhg8w")
 
-[node name="BarkController" type="Node" parent="." node_paths=PackedStringArray("theDawg")]
+[node name="BarkController" type="Node" parent="."]
 script = ExtResource("11_bx00b")
-theDawg = NodePath("../TheDawg")
 barkSpawnOffset = Vector2(0, 0)
 bulletDirection = Vector2(0, 1)
 normalBarkVolume = -10

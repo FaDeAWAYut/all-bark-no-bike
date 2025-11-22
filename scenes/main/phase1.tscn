@@ -63,7 +63,6 @@ text = "Boss Health"
 z_index = 1
 position = Vector2(448, 173)
 scale = Vector2(2, 2)
-spawn_position = Vector2(448, 169)
 hide_speed_multiplier = 0.5
 BossHealthController = NodePath("BossHealthController")
 hit_flash_duration = 1.0
