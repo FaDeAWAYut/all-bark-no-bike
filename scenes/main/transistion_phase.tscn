@@ -1,6 +1,6 @@
 [gd_scene load_steps=31 format=3 uid="uid://3q5fkhta75i5"]
 
-[ext_resource type="Script" uid="uid://olu68o4i2tkj" path="res://scenes/main/transistion_phase.gd" id="1_avitw"]
+[ext_resource type="Script" path="res://scenes/main/transistion_phase.gd" id="1_avitw"]
 [ext_resource type="PackedScene" uid="uid://bsf3igehijgig" path="res://scenes/background/parallax_bg.tscn" id="1_qhmcf"]
 [ext_resource type="Texture2D" uid="uid://d3tmm68h2ma8x" path="res://assets/baiRun.png" id="3_bg1o1"]
 [ext_resource type="Texture2D" uid="uid://dfyu3yb8ljp8g" path="res://assets/motorbike.png" id="4_avitw"]
@@ -10,7 +10,7 @@
 [ext_resource type="AudioStream" uid="uid://dunh8q2k01f31" path="res://assets/sfx/biker5.mp3" id="8_5rlxp"]
 [ext_resource type="AudioStream" uid="uid://dp40jwc6otrwk" path="res://assets/sfx/jumpsfx.mp3" id="9_m0bp2"]
 [ext_resource type="AudioStream" uid="uid://d4ln25enga6t0" path="res://assets/sfx/bikesfx.mp3" id="10_1anp8"]
-[ext_resource type="Script" path="res://scenes/main/animation_player.gd" id="10_qivht"]
+[ext_resource type="Script" uid="uid://cjp7gidh1tau0" path="res://scenes/main/animation_player.gd" id="10_qivht"]
 [ext_resource type="Script" uid="uid://bujgehfwg2nkx" path="res://scripts/SpeedManager.gd" id="11_1anp8"]
 [ext_resource type="AudioStream" uid="uid://cnogw7lewk5lt" path="res://assets/sfx/bigdamage.mp3" id="11_es6xp"]
 [ext_resource type="AudioStream" uid="uid://de0ji7kdmp5p" path="res://assets/sfx/pickupsfx.mp3" id="12_yg3qw"]

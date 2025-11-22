@@ -11,6 +11,8 @@ class_name BarkController
 @export var normal_bark_pool: Pool	
 @export var charge_bark_pool: Pool
 
+@export var bulletDirection = Vector2.UP
+
 # Charge orb properties
 @export var charge_orb_scene: PackedScene = preload("res://scenes/chargeorb/charge_orb.tscn")
 @export var charge_orb_offset: Vector2 = Vector2(0, -50)  # Y offset from dog position
@@ -229,6 +231,7 @@ func shoot_normalbark():
 	var bullet = normal_bark_pool.get_object()
 	
 	# Position at the dog's position with adjustable offset
+	bullet.direction = bulletDirection
 	bullet.global_position = theDawg.global_position + barkSpawnOffset
 	
 	# Play random bark sound
@@ -247,6 +250,7 @@ func shoot_chargebark():
 	var bullet = charge_bark_pool.get_object()
 	
 	# Position at the dog's position with adjustable offset
+	bullet.direction = bulletDirection
 	bullet.global_position = theDawg.global_position + barkSpawnOffset
 	
 	# Play charge bark sound

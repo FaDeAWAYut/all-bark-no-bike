@@ -131,3 +131,4 @@ text = "Level 2"
 [connection signal="pressed" from="LevelPanel/CloseLevelsButton" to="MainMenu/MenuOptions" method="show"]
 [connection signal="pressed" from="LevelPanel/CloseLevelsButton" to="LevelPanel" method="hide"]
 [connection signal="pressed" from="LevelPanel/LevelOptions/Level1Button" to="." method="_on_level_1_button_pressed"]
+[connection signal="pressed" from="LevelPanel/LevelOptions/Level2Button" to="." method="_on_level_2_button_pressed"]

@@ -8,8 +8,7 @@ var scrollChangeEndTime = 10 # when to reach start speed of level 1
  
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	parallaxBG.scroll_offset.y = 35 # makes the intro bg align with level 1
-
+	parallaxBG.scroll_offset.y = 10 # makes the intro bg align with level 1
 
 func _process(_delta: float) -> void:
 	var currentAnimationPos = self.current_animation_position
