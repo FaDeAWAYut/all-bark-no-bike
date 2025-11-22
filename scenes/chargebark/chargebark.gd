@@ -2,13 +2,14 @@ extends PoolObject
 
 class_name ChargeBark
 
-@onready var anim = $AnimatedSprite2D/AnimatedSprite2D
+@onready var anim : AnimatedSprite2D = $AnimatedSprite2D/AnimatedSprite2D
 @onready var area_2d: Area2D = $AnimatedSprite2D
 
 # Group for basic properties
 @export_group("Basic Properties")
 @export var speed = 1200
 @export var damage = 100
+@export var direction = Vector2.UP
 
 # Group for appearance customization
 @export_group("Appearance Settings")
@@ -17,7 +18,6 @@ class_name ChargeBark
 @export var squeezeScaleY: float = 1.2
 @export var scaleTransitionTime: float = 0.5
 
-var direction = Vector2.UP
 var tween: Tween
 var lifetime_timer: Timer
 
@@ -40,7 +40,7 @@ func activate():
 	super.activate()
 	
 	# Reset properties
-	direction = Vector2.UP
+	#direction = Vector2.UP
 	
 	# Enable collision detection
 	if area_2d:
@@ -81,6 +81,8 @@ func setup_visual_effects():
 	# Start with zero opacity and squeezed scale
 	anim.modulate.a = 0
 	anim.scale = Vector2(squeezeScaleX, squeezeScaleY)
+	if direction.y > 0:
+		anim.flip_v = true
 	
 	# Play animation
 	anim.play("normal_bark")

@@ -18,7 +18,7 @@ var offset_from_camera: Vector2 = Vector2(0, 0)
 
 # Screen boundaries (adjust these based on your camera/screen size)
 @export var screen_top_y: float = 150.0    # Top boundary (pixels from top)
-@export var screen_bottom_y: float = 300.0 # Bottom boundary (pixels from top)
+@export var screen_bottom_y: float = 600 # Bottom boundary (pixels from top)
 
 @export var BossHealthController: Node
 
