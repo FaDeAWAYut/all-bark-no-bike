@@ -149,6 +149,10 @@ func initialize_modules():
 	barkController.charge_bark_pool = charge_bark_pool
 	
 	barkController.hud = $HUD
+	#to initialize Boss health bar
+	$HUD.get_node("TextureProgressBarBoss").value = bossHealthController.current_health
+	bossHealthController.hud = $HUD
+	
 	
 	# NEW: Pass screenEffects to BarkController
 	barkController.screenEffects = screenEffects
