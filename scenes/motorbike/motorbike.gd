@@ -60,8 +60,10 @@ var speedManager: SpeedManager
 
 @onready var motorbike_sprite = $Sprite2D
 
-# state variables
+@export_category("State Variables")
 @onready var timer: Timer = $Timer
+var stunned_duration: float = 3.0
+@export var stunnable_objects: Array[Stunnable] = []
 
 func _ready():
 	# set sprite
