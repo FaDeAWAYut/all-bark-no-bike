@@ -29,6 +29,7 @@ barkController = NodePath("BarkController")
 collectablesManager = NodePath("CollectablesManager")
 dogStartPosition = Vector2i(448, 400)
 camStartPosition = Vector2i(448, 252)
+SkipPhaseOne = true
 
 [node name="ParallaxBG" parent="." instance=ExtResource("2_th5th")]
 
