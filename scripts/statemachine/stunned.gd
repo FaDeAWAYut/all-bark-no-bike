@@ -24,8 +24,8 @@ func enter(_previous_state_path: String, _data := {}) -> void:
 	
 	# Calculate stun duration based on stun multiplier
 	var stun_multiplier = boss.get_stun_multiplier()
-    if stun_multiplier <= 0:
-        stun_multiplier = 1  
+	if stun_multiplier <= 0:
+		stun_multiplier = 1  
 	stun_duration = boss.base_stunned_duration * stun_multiplier
 	
 	# Start moving down
