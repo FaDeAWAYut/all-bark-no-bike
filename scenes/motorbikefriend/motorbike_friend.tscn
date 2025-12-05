@@ -9,10 +9,11 @@
 [ext_resource type="Script" uid="uid://c8qasji16ecpn" path="res://scripts/statemachine/motorbike_friend_zooming.gd" id="7_ulevm"]
 [ext_resource type="Script" uid="uid://e088l0k2u315" path="res://scenes/motorbikefriend/motorbike_friend_health_controller.gd" id="8_ab7kq"]
 
-[node name="MotorbikeFriend" type="CharacterBody2D"]
+[node name="MotorbikeFriend" type="CharacterBody2D" node_paths=PackedStringArray("HealthController")]
 texture_filter = 1
 motion_mode = 1
 script = ExtResource("1_x8yn3")
+HealthController = NodePath("HealthController")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -32)
@@ -56,5 +57,7 @@ script = ExtResource("6_ulevm")
 [node name="Zooming" type="Node" parent="StateMachine"]
 script = ExtResource("7_ulevm")
 
-[node name="MotorbikeFriendHealthController" type="Node" parent="."]
+[node name="HealthController" type="Node" parent="."]
 script = ExtResource("8_ab7kq")
+small_impact_offset = 25
+big_impact_offset = 50

@@ -21,7 +21,7 @@ var offset_from_camera: Vector2 = Vector2(0, 0)
 @export var screen_top_y: float = 150.0    # Top boundary (pixels from top)
 @export var screen_bottom_y: float = 600 # Bottom boundary (pixels from top)
 
-@export var BossHealthController: Node
+@export var HealthController: Node
 
 signal motorbike_hidden
 
