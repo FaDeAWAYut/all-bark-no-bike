@@ -114,4 +114,4 @@ script = ExtResource("5_6mq4i")
 
 [node name="Stunned" type="Node" parent="StateMachine"]
 script = ExtResource("8_lpxf4")
-stun_duration = 10.0
+stun_duration = 5.0

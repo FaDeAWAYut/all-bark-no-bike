@@ -159,6 +159,8 @@ func initialize_modules():
 	
 	barkController.hud = $HUD
 	#to initialize Boss health bar
+	var boss_max_health = bossHealthController.phase_two_max_health if bossHealthController.is_phase_two else bossHealthController.max_health
+	$HUD.get_node("TextureProgressBarBoss").max_value = boss_max_health
 	$HUD.get_node("TextureProgressBarBoss").value = bossHealthController.current_health
 	bossHealthController.hud = $HUD
 	

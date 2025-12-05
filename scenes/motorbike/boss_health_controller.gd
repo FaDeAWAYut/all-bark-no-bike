@@ -50,6 +50,10 @@ func _ready():
 
 # UPDATED: Add bark_type parameter to distinguish between normal and charge bark
 func take_damage(damage_amount: int, impact_position: Vector2 = Vector2.ZERO, bark_type: String = "normal"):
+	# Prevent damage while stunned
+	if motorbike and motorbike.state_machine.state.name == "Stunned":
+		return
+	
 	current_health = max(0, current_health - damage_amount)
 	health_changed.emit(current_health)
 	update_hp_label()
