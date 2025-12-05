@@ -1,6 +1,6 @@
 extends BossState
 
-@export var stun_duration: float = 3.0
+var stun_duration
 @export var sprite_height: float = 200.0
 @export var slide_down_duration: float = 1.0
 @export var slide_back_duration: float = 1.0
@@ -21,6 +21,12 @@ func enter(_previous_state_path: String, _data := {}) -> void:
 	
 	# Store original position (the position to return to after stun)
 	original_position = boss.global_position
+	
+	# Calculate stun duration based on stun multiplier
+	var stun_multiplier = boss.get_stun_multiplier()
+    if stun_multiplier <= 0:
+        stun_multiplier = 1  
+	stun_duration = boss.base_stunned_duration * stun_multiplier
 	
 	# Start moving down
 	start_moving_down()
