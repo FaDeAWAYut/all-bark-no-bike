@@ -54,6 +54,7 @@ func take_damage(damage_amount: int, impact_position: Vector2 = Vector2.ZERO, ba
 
 	if current_health <= 0:
 		died.emit()
+		get_parent().set_stunned()
 
 func restore_health(heal_amount: int):
 	current_health = min(max_health, current_health + heal_amount)

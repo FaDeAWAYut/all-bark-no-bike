@@ -1,4 +1,4 @@
-class_name MotorbikeFriend extends CharacterBody2D
+class_name MotorbikeFriend extends Stunnable
 
 var offset_from_camera: Vector2 = Vector2(0, 0)
 
