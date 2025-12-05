@@ -29,6 +29,8 @@ func physics_update(delta: float) -> void:
 	
 	# Handle rotation based on direction
 	boss.rotation = lerp_angle(boss.rotation, boss.direction_rotation_angle * boss.direction, delta * boss.direction_rotation_speed)
+	if boss.get_node("HealthBar"):
+		boss.get_node("HealthBar").rotation = lerp_angle(-boss.rotation, -boss.direction_rotation_angle * boss.direction, delta * boss.direction_rotation_speed)
 	
 	# Check for obstacles periodically
 	if obstacle_timer >= boss.obstacle_check_rate:

@@ -1,13 +1,15 @@
-[gd_scene load_steps=9 format=3 uid="uid://bv5t0i620xpop"]
+[gd_scene load_steps=11 format=3 uid="uid://bv5t0i620xpop"]
 
 [ext_resource type="Texture2D" uid="uid://c8urtn7s80qbd" path="res://assets/motorbikeFriend_Flash.png" id="1_d03wb"]
 [ext_resource type="Script" uid="uid://ckwrvr6jqi8t2" path="res://scenes/motorbikefriend/motorbike_friend.gd" id="1_x8yn3"]
 [ext_resource type="Script" uid="uid://y2jsbpc2gabf" path="res://scripts/statemachine/state_machine.gd" id="3_ulevm"]
 [ext_resource type="Script" uid="uid://b6taeeft41png" path="res://scripts/statemachine/motorbike_friend_driving.gd" id="4_x8yn3"]
-[ext_resource type="Script" uid="uid://6we8v6kaf6x1" path="res://scripts/statemachine/motorbike_friend_turning.gd" id="5_x8yn3"]
-[ext_resource type="Script" uid="uid://cnni66ojg1re8" path="res://scripts/statemachine/motorbike_friend_throwing.gd" id="6_ulevm"]
-[ext_resource type="Script" uid="uid://c8qasji16ecpn" path="res://scripts/statemachine/motorbike_friend_zooming.gd" id="7_ulevm"]
+[ext_resource type="Script" path="res://scripts/statemachine/motorbike_friend_turning.gd" id="5_x8yn3"]
+[ext_resource type="Script" path="res://scripts/statemachine/motorbike_friend_throwing.gd" id="6_ulevm"]
+[ext_resource type="Script" path="res://scripts/statemachine/motorbike_friend_zooming.gd" id="7_ulevm"]
 [ext_resource type="Script" uid="uid://e088l0k2u315" path="res://scenes/motorbikefriend/motorbike_friend_health_controller.gd" id="8_ab7kq"]
+[ext_resource type="Texture2D" uid="uid://b64sm0rjr0n8a" path="res://assets/small_hp_under.png" id="9_tehww"]
+[ext_resource type="Texture2D" uid="uid://pqspuwo830gg" path="res://assets/small_hp_progress.png" id="10_8bteb"]
 
 [node name="MotorbikeFriend" type="CharacterBody2D" node_paths=PackedStringArray("HealthController")]
 texture_filter = 1
@@ -59,5 +61,19 @@ script = ExtResource("7_ulevm")
 
 [node name="HealthController" type="Node" parent="."]
 script = ExtResource("8_ab7kq")
+max_health = 200
 small_impact_offset = 25
 big_impact_offset = 50
+
+[node name="HealthBar" type="TextureProgressBar" parent="."]
+texture_filter = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = -8.0
+offset_top = -70.0
+offset_right = 8.0
+offset_bottom = -60.0
+grow_horizontal = 2
+max_value = 200.0
+texture_under = ExtResource("9_tehww")
+texture_progress = ExtResource("10_8bteb")
