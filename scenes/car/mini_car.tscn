@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://83g1dcbmvipq" path="res://assets/minicar_red_back.png" id="2_8csog"]
 
 [node name="Car" instance=ExtResource("1_8cijl")]
+collision_layer = 9
 
 [node name="Sprite2D" parent="." index="0"]
 scale = Vector2(2, 1.9999999)
