@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://b6taeeft41png" path="res://scripts/statemachine/motorbike_friend_driving.gd" id="4_x8yn3"]
 [ext_resource type="Script" path="res://scripts/statemachine/motorbike_friend_turning.gd" id="5_x8yn3"]
 [ext_resource type="Script" path="res://scripts/statemachine/motorbike_friend_throwing.gd" id="6_ulevm"]
-[ext_resource type="Script" path="res://scripts/statemachine/motorbike_friend_zooming.gd" id="7_ulevm"]
+[ext_resource type="Script" uid="uid://c8qasji16ecpn" path="res://scripts/statemachine/motorbike_friend_zooming.gd" id="7_ulevm"]
 [ext_resource type="Script" uid="uid://e088l0k2u315" path="res://scenes/motorbikefriend/motorbike_friend_health_controller.gd" id="8_ab7kq"]
 [ext_resource type="Texture2D" uid="uid://b64sm0rjr0n8a" path="res://assets/small_hp_under.png" id="9_tehww"]
 [ext_resource type="Texture2D" uid="uid://pqspuwo830gg" path="res://assets/small_hp_progress.png" id="10_8bteb"]
@@ -50,6 +50,9 @@ initial_state = NodePath("Driving")
 [node name="Driving" type="Node" parent="StateMachine"]
 script = ExtResource("4_x8yn3")
 
+[node name="ZoomingTimer" type="Timer" parent="StateMachine/Driving"]
+wait_time = 35.0
+
 [node name="Turning" type="Node" parent="StateMachine"]
 script = ExtResource("5_x8yn3")
 
@@ -77,3 +80,5 @@ grow_horizontal = 2
 max_value = 200.0
 texture_under = ExtResource("9_tehww")
 texture_progress = ExtResource("10_8bteb")
+
+[connection signal="timeout" from="StateMachine/Driving/ZoomingTimer" to="StateMachine/Driving" method="_on_zooming_timer_timeout"]

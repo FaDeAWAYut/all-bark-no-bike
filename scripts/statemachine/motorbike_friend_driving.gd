@@ -5,6 +5,8 @@ var timer: float = 0.0
 var change_direction_time: float = 2.0
 var obstacle_timer: float = 0.0
 
+@onready var zooming_timer = $ZoomingTimer
+
 func enter(_previous_state_path: String, _data := {}) -> void:
 	# Initialize driving state
 	timer = 0.0
@@ -13,6 +15,10 @@ func enter(_previous_state_path: String, _data := {}) -> void:
 	
 	# Set initial direction
 	boss.direction = 0
+	
+	# Set timer to switch state
+	zooming_timer.one_shot = true
+	zooming_timer.start()
 
 func physics_update(delta: float) -> void:
 	if not boss:
@@ -55,13 +61,13 @@ func handle_normal_movement():
 	
 	# Move only horizontally (no vertical movement since camera is static)
 	boss.velocity.x = boss.direction * boss.speed_x
-	boss.velocity.y = 0  # No vertical movement
+	#boss.velocity.y = 0  # No vertical movement
 
 func handle_obstacle_escape():
 	# Move away from obstacle (only horizontally)
 	boss.direction = boss.escape_direction
 	boss.velocity.x = boss.escape_direction * boss.escape_speed
-	boss.velocity.y = 0  # No vertical movement
+	#boss.velocity.y = 0  # No vertical movement
 
 func check_for_obstacles():
 	boss.current_obstacle = null
@@ -127,3 +133,7 @@ func enforce_boundaries():
 		boss.global_position.y = boss.screen_top_y
 	elif boss.global_position.y >= boss.screen_bottom_y:
 		boss.global_position.y = boss.screen_bottom_y
+
+
+func _on_zooming_timer_timeout() -> void:
+	finished.emit(ZOOMING)
