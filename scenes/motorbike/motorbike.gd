@@ -60,6 +60,9 @@ var speedManager: SpeedManager
 
 @onready var motorbike_sprite = $Sprite2D
 
+# state variables
+@onready var timer: Timer = $Timer
+
 func _ready():
 	# set sprite
 	sprite.animation = StringName(setSprite)
