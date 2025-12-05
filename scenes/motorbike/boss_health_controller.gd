@@ -1,8 +1,8 @@
 extends Node
 
 @export var max_health: int = 100
-@export var hp_label: Label
 var current_health: int
+var hud: Node
 
 var hurtSounds: Array = [
 	preload("res://assets/sfx/smalldamage1.mp3"),
@@ -68,8 +68,9 @@ func restore_health(heal_amount: int):
 	update_hp_label()
 
 func update_hp_label():
-	if hp_label:
-		hp_label.text = "Boss HP: " + str(current_health)
+	if hud:
+		hud.get_node("TextureProgressBarBoss").value = current_health
+
 
 func play_random_hurt_sound():
 	if hurtSounds.is_empty():
