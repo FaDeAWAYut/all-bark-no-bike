@@ -1,7 +1,8 @@
 class_name Motorbike extends CharacterBody2D
 
-@export var spawn_position: Vector2 = Vector2(448, 150)
 var offset_from_camera: Vector2 = Vector2(0, 0)
+@export var setSprite : String = "default"
+@onready var sprite : AnimatedSprite2D = $AnimatedSprite2D
 
 # Movement settings
 @export var speed_x: float = 200.0
@@ -18,7 +19,7 @@ var offset_from_camera: Vector2 = Vector2(0, 0)
 
 # Screen boundaries (adjust these based on your camera/screen size)
 @export var screen_top_y: float = 150.0    # Top boundary (pixels from top)
-@export var screen_bottom_y: float = 300.0 # Bottom boundary (pixels from top)
+@export var screen_bottom_y: float = 600 # Bottom boundary (pixels from top)
 
 @export var BossHealthController: Node
 
@@ -60,6 +61,9 @@ var speedManager: SpeedManager
 @onready var motorbike_sprite = $Sprite2D
 
 func _ready():
+	# set sprite
+	sprite.animation = StringName(setSprite)
+	
 	# Create and setup speed manager
 	speedManager = SpeedManager.new()
 	add_child(speedManager)

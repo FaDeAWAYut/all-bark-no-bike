@@ -39,7 +39,8 @@ var screenSize : Vector2i
 
 var hurtSFX = preload("res://assets/sfx/hurtsfx.mp3")
 
-var bgMusic = preload("res://assets/sfx/AllBark.mp3")
+var AllBarkMusic = preload("res://assets/sfx/AllBark.mp3")
+var NoBikeMusic = preload("res://assets/sfx/NoBike.mp3")
 
 var coughDropSounds: Array = [
 	preload("res://assets/sfx/cough_drop_eating1.mp3"),
@@ -302,7 +303,11 @@ func play_hp_gain_sound():
 	
 func play_background_music():
 	var music_player = AudioStreamPlayer.new()
-	music_player.stream = bgMusic
+	if isPhaseOne:
+		music_player.stream = AllBarkMusic
+	else:
+		music_player.stream = NoBikeMusic
+
 	music_player.volume_db = bgMusicVolume
 	music_player.autoplay = true
 	music_player.name = "BackgroundMusic"
@@ -311,6 +316,8 @@ func play_background_music():
 	music_player.finished.connect(music_player.play)
 	
 	add_child(music_player)
+	if !isPhaseOne:
+		music_player.play(11)
 	 
 func _input(event):
 	if gameManager.isGameOver:
