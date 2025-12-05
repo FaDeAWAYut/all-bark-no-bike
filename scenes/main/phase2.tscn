@@ -14,6 +14,7 @@
 [ext_resource type="AudioStream" uid="uid://cotg1jtn26twy" path="res://assets/sfx/chargebarksfx.mp3" id="12_4i2q6"]
 [ext_resource type="Script" uid="uid://ek8hm7xuisk5" path="res://scripts/Pool.gd" id="13_haqeb"]
 [ext_resource type="PackedScene" uid="uid://ce7vraqhrguhk" path="res://scenes/collectable/chadchart.tscn" id="14_bp3xm"]
+[ext_resource type="PackedScene" uid="uid://dy6jmp88qig88" path="res://scenes/gameoveroverlay/game_over.tscn" id="15_flnuf"]
 [ext_resource type="Script" uid="uid://bujgehfwg2nkx" path="res://scripts/SpeedManager.gd" id="15_ogru6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_blune"]
@@ -124,6 +125,11 @@ text = "Phase 2!"
 
 [node name="Chadchart" parent="." groups=["chadchart"] instance=ExtResource("14_bp3xm")]
 position = Vector2(595, 318)
+
+[node name="GameOver" parent="." instance=ExtResource("15_flnuf")]
+process_mode = 2
+visible = false
+z_index = 10
 
 [node name="SpeedManager" type="Node" parent="."]
 script = ExtResource("15_ogru6")
