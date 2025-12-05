@@ -10,6 +10,9 @@ var gameManager: GameManager
 @onready var speedManager: SpeedManager = $SpeedManager
 @export var barkController: BarkController
 var screenEffects: ScreenEffects
+@onready var chadchart: Area2D = $Chadchart
+
+var playerInvincible = false;
 
 @export var collectablesManager: CollectablesManager
 
@@ -181,7 +184,10 @@ func setup_signal_connections():
 	gameManager.charge_changed.connect(_on_charge_changed)
 	gameManager.shield_changed.connect(_on_shield_changed)
 	bossHealthController.died.connect(_on_boss_died)  # Connect to local handler first
-	
+	if chadchart:
+		chadchart.collide.connect(_on_chadchart_collide)
+		chadchart.end.connect(_on_chadchart_end)
+		
 	# Connect obstacle spawner signals
 	obstacleSpawner.obstacle_spawned.connect(_on_obstacle_spawned)
 	
@@ -189,7 +195,8 @@ func setup_signal_connections():
 	speedManager.speed_changed.connect(_on_speed_changed)
 
 func _on_boss_died():
-	transition_to_phase_transition()
+	if isPhaseOne:
+		transition_to_phase_transition()
 
 func new_game():
 	gameManager.start_new_game()
@@ -243,7 +250,7 @@ func _on_obstacle_spawned(obs: Node):
 		obs.body_entered.connect(_on_obstacle_collision)
 
 func _on_obstacle_collision(body):
-	if body.name == "TheDawg":
+	if body.name == "TheDawg" && !playerInvincible:
 		player_take_damage()
 		
 func player_take_damage():
@@ -387,3 +394,13 @@ func transition_to_phase_transition():
 	# Capture current positions and state
 	# Load transition scene
 	get_tree().change_scene_to_file("res://scenes/main/transistion_phase.tscn")
+
+func _on_chadchart_collide():
+	playerInvincible = true;
+	$TheDawg/AnimatedSprite2D.animation = &"chadchart_active"
+	$TheDawg.apply_scale(Vector2(0.25,0.25))
+	
+func _on_chadchart_end():
+	playerInvincible = false;
+	$TheDawg.apply_scale(Vector2(4,4))
+	$TheDawg/AnimatedSprite2D.animation = &"run"

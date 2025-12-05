@@ -1,0 +1,45 @@
+[gd_scene load_steps=7 format=3 uid="uid://ce7vraqhrguhk"]
+
+[ext_resource type="Script" uid="uid://boqbihqamndht" path="res://scenes/collectable/chadchart.gd" id="1_gi74k"]
+[ext_resource type="Texture2D" uid="uid://c5auuiad7gxja" path="res://assets/chadchart_normal.png" id="2_gi74k"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6bf4s"]
+atlas = ExtResource("2_gi74k")
+region = Rect2(0, 0, 252, 341)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5yowg"]
+atlas = ExtResource("2_gi74k")
+region = Rect2(253, 0, 252, 341)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jfpr2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6bf4s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5yowg")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_mefpe"]
+radius = 25.0
+height = 154.0
+
+[node name="Chadchart" type="Area2D"]
+script = ExtResource("1_gi74k")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_jfpr2")
+autoplay = "default"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(3, 11)
+shape = SubResource("CapsuleShape2D_mefpe")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
