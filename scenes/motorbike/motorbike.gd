@@ -193,7 +193,7 @@ func _on_throw_timer_timeout():
 
 	var direction = (player.global_position - global_position).normalized()
 	
-	var projectile_speed = 1000.0
+	var projectile_speed = 400.0
 	
 	projectile.launch(direction * projectile_speed)
 
