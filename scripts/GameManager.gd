@@ -16,6 +16,7 @@ var maxCharge: int = 3
 var chargePercentage: float = 0.0
 
 var has_shield: bool = false
+var has_chadchart: bool = false # for checking if we should spawn another chadchart
 var shield_timer: Timer
 
 func start_new_game():
@@ -24,6 +25,7 @@ func start_new_game():
 	currentCharge = 0  # RESET: Reset charges on new game
 	chargePercentage = 0.0
 	has_shield = false
+	has_chadchart = false
 	game_started.emit()
 	charge_changed.emit(currentCharge, maxCharge)  # EMIT: Signal charge change
 	shield_changed.emit(has_shield, false)
@@ -59,6 +61,9 @@ func use_shield(duration: float, is_chadchart: bool):
 		return false
 	
 	has_shield = true
+	if is_chadchart:
+		has_chadchart = true
+		
 	shield_timer.start(duration)
 	shield_changed.emit(has_shield, is_chadchart)
 	return true

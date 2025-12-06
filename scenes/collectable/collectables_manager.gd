@@ -28,6 +28,7 @@ var spawning_enabled: bool = true
 var cleared_signal_emitted: bool = false
 
 signal collectables_cleared
+signal chadchart_appears
 
 func update(delta: float, camera_y_position: float, screen_size_x: float, current_speed: float):
 	move_drop(delta)
@@ -67,7 +68,7 @@ func spawn_cough_drops(camera_y_position: float, screen_size_x: float):
 	var drop_x_level = screen_size_x * randf_range(0.3, 0.7)
 	var random_value = randf()
 
-	if random_value < chadchart_spawn_chance and chadchart_pool:
+	if random_value < chadchart_spawn_chance and chadchart_pool and len(chadchart_pool.active_objects) == 0 and !gameManager.has_chadchart:
 		print("spawning chadchart") # for DEBUG
 		# Spawn chadchart
 		var chadchart = chadchart_pool.get_object()
