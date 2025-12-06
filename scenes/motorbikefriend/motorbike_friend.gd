@@ -58,6 +58,8 @@ var speedManager: SpeedManager
 
 @onready var motorbike_sprite = $Sprite2D
 
+var main_scene: Node = null
+
 func _ready():	
 	# Create and setup speed manager
 	speedManager = SpeedManager.new()
@@ -76,6 +78,9 @@ func _ready():
 	
 	# Set initial position within screen bounds
 	global_position.x = clamp(global_position.x, min_x, max_x)
+	
+	# Get reference to main scene (parent node)
+	main_scene = get_parent()
 	
 	# Connect health controller's died signal to stun the motorbike friend
 	if HealthController:

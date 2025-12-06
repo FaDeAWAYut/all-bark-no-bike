@@ -7,7 +7,7 @@
 [ext_resource type="Script" uid="uid://6we8v6kaf6x1" path="res://scripts/statemachine/motorbike_friend_turning.gd" id="5_x8yn3"]
 [ext_resource type="Script" uid="uid://cnni66ojg1re8" path="res://scripts/statemachine/motorbike_friend_throwing.gd" id="6_ulevm"]
 [ext_resource type="Script" uid="uid://c8qasji16ecpn" path="res://scripts/statemachine/motorbike_friend_zooming.gd" id="7_ulevm"]
-[ext_resource type="Script" uid="uid://b3ef8s5apobv2" path="res://scenes/motorbikefriend/stunned.gd" id="8_8bteb"]
+[ext_resource type="Script" uid="uid://7snsa825eoyp" path="res://scenes/motorbikefriend/stunned.gd" id="8_8bteb"]
 [ext_resource type="Script" uid="uid://e088l0k2u315" path="res://scenes/motorbikefriend/motorbike_friend_health_controller.gd" id="8_ab7kq"]
 [ext_resource type="Texture2D" uid="uid://b64sm0rjr0n8a" path="res://assets/small_hp_under.png" id="9_tehww"]
 [ext_resource type="Texture2D" uid="uid://pqspuwo830gg" path="res://assets/small_hp_progress.png" id="10_8bteb"]
@@ -71,6 +71,7 @@ script = ExtResource("7_ulevm")
 
 [node name="Stunned" type="Node" parent="StateMachine"]
 script = ExtResource("8_8bteb")
+sprite_height = 0.0
 
 [node name="HealthController" type="Node" parent="."]
 script = ExtResource("8_ab7kq")

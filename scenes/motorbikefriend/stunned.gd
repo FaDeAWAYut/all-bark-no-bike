@@ -9,6 +9,7 @@ var is_moving_back: bool = false
 var original_position: Vector2
 var slide_timer: float = 0.0
 var target_y: float = 0.0
+var main_scene: Node = null
 
 func enter(_previous_state_path: String, _data := {}) -> void:
 	if not boss:
@@ -21,6 +22,14 @@ func enter(_previous_state_path: String, _data := {}) -> void:
 	# Store original position (the position to return to after stun)
 	original_position = boss.global_position
 	
+	# Get reference to main scene from boss
+	main_scene = boss.main_scene
+	
+	# Connect to player_took_damage signal
+	if main_scene and main_scene.has_signal("player_took_damage"):
+		if not main_scene.player_took_damage.is_connected(_on_player_took_damage):
+			main_scene.player_took_damage.connect(_on_player_took_damage)
+	
 	# Start moving down
 	start_moving_down()
 
@@ -28,12 +37,25 @@ func exit() -> void:
 	is_moving_down = false
 	is_moving_back = false
 	
+	# Disconnect from player_took_damage signal
+	if main_scene and main_scene.has_signal("player_took_damage"):
+		if main_scene.player_took_damage.is_connected(_on_player_took_damage):
+			main_scene.player_took_damage.disconnect(_on_player_took_damage)
+	
 	# Reset health when exiting stunned state
 	if boss and boss.HealthController:
 		boss.HealthController.current_health = boss.HealthController.max_health
+		boss.HealthController.has_died = false
 		boss.HealthController.health_changed.emit(boss.HealthController.current_health)
 		if boss.HealthController.has_method("update_hp_label"):
 			boss.HealthController.update_hp_label()
+
+func _on_player_took_damage() -> void:
+	# Transition to moving back up when player takes damage
+	if is_moving_down:
+		is_moving_down = false
+		is_moving_back = true
+		slide_timer = 0.0
 
 func physics_update(delta: float) -> void:
 	if not boss:
@@ -100,10 +122,20 @@ func handle_moving_back(delta: float):
 	slide_timer += delta
 	
 	if slide_timer >= slide_back_duration:
-		# Slide back complete
+		# Slide back complete - position back to original, accounting for sprite_height
 		boss.global_position.y = original_position.y
 		is_moving_back = false
 		boss.is_positioned = true
+		boss.is_hiding = false
+		
+		# Re-enable raycasts
+		if boss.ray_cast_left:
+			boss.ray_cast_left.enabled = true
+		if boss.ray_cast_right:
+			boss.ray_cast_right.enabled = true
+		if boss.ray_cast_center:
+			boss.ray_cast_center.enabled = true
+		
 		# Transition back to driving state
 		finished.emit(DRIVING)
 	else:

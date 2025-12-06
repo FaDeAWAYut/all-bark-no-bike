@@ -2,6 +2,7 @@ extends Node
 
 @export var max_health: int = 100
 var current_health: int
+var has_died: bool = false
 @onready var health_bar: Node = $"../HealthBar"
 
 var hurtSounds: Array = [
@@ -26,9 +27,14 @@ signal died
 
 func _ready():
 	current_health = max_health
+	has_died = false
 	update_hp_label()
 
 func take_damage(damage_amount: int, impact_position: Vector2 = Vector2.ZERO, bark_type: String = "normal"):
+	# Prevent damage while stunned
+	if get_parent() and get_parent().state_machine and get_parent().state_machine.state.name == "Stunned":
+		return
+	
 	current_health = max(0, current_health - damage_amount)
 	health_changed.emit(current_health)
 	update_hp_label()
@@ -52,8 +58,10 @@ func take_damage(damage_amount: int, impact_position: Vector2 = Vector2.ZERO, ba
 		get_parent().trigger_hit_effects()
 
 	if current_health <= 0:
-		died.emit()
-		get_parent().set_stunned()
+		if not has_died:
+			has_died = true
+			died.emit()
+			get_parent().set_stunned()
 
 func restore_health(heal_amount: int):
 	current_health = min(max_health, current_health + heal_amount)
