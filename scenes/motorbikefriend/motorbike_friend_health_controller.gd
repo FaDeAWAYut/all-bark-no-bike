@@ -1,9 +1,9 @@
 extends Node
 
 @export var max_health: int = 100
-@export var phase_two_max_health: int = 100
 var current_health: int
-var hud: Node
+var has_died: bool = false
+@onready var health_bar: Node = $"../HealthBar"
 
 var hurtSounds: Array = [
 	preload("res://assets/sfx/smalldamage1.mp3"),
@@ -16,14 +16,6 @@ var hurtSounds: Array = [
 var big_damage_sound: AudioStream = preload("res://assets/sfx/bigdamage.mp3")
 @export var big_damage_volume_db: float = -5.0  # Volume for big damage sound
 
-var bikerSounds: Array = [
-	preload("res://assets/sfx/biker1.mp3"),
-	preload("res://assets/sfx/biker2.mp3"),
-	preload("res://assets/sfx/biker3.mp3"),
-	preload("res://assets/sfx/biker4.mp3"),
-]
-@export var biker_volume_db: float = 0
-
 var small_impact_scene = preload("res://scenes/impact/small_impact.tscn")
 var big_impact_scene = preload("res://scenes/impact/big_impact.tscn")  # Big impact for charge bark
 @export_group("impact offsets")
@@ -33,35 +25,20 @@ var big_impact_scene = preload("res://scenes/impact/big_impact.tscn")  # Big imp
 signal health_changed(new_health: int)
 signal died
 
-var motorbike: Motorbike
-var is_phase_two: bool = false
-
 func _ready():
-	# Get reference to motorbike and determine phase
-	motorbike = get_parent() as Motorbike
-	# Phase 2 is tied to the Phase2 scene; default to Phase 1 health otherwise
-	var current_scene = get_tree().current_scene
-	is_phase_two = current_scene != null and current_scene.name == "Phase2"
-	
-	# Use appropriate max health based on phase
-	if is_phase_two:
-		current_health = phase_two_max_health
-	else:
-		current_health = max_health
+	current_health = max_health
+	has_died = false
 	update_hp_label()
 
-# UPDATED: Add bark_type parameter to distinguish between normal and charge bark
 func take_damage(damage_amount: int, impact_position: Vector2 = Vector2.ZERO, bark_type: String = "normal"):
 	# Prevent damage while stunned
-	if motorbike and motorbike.state_machine.state.name == "Stunned":
+	if get_parent() and get_parent().state_machine and get_parent().state_machine.state.name == "Stunned":
 		return
 	
 	current_health = max(0, current_health - damage_amount)
 	health_changed.emit(current_health)
 	update_hp_label()
-	
-	play_biker_sound(current_health)
-	
+
 	# UPDATED: Play different sound based on bark type
 	if bark_type == "charge":
 		play_big_damage_sound()
@@ -81,21 +58,19 @@ func take_damage(damage_amount: int, impact_position: Vector2 = Vector2.ZERO, ba
 		get_parent().trigger_hit_effects()
 
 	if current_health <= 0:
-		# Phase 2: Transition to stunned state instead of dying immediately
-		if is_phase_two and motorbike:
-			motorbike.state_machine._transition_to_next_state("Stunned")
-		else:
+		if not has_died:
+			has_died = true
 			died.emit()
+			get_parent().set_stunned()
 
 func restore_health(heal_amount: int):
-	var current_max = phase_two_max_health if is_phase_two else max_health
-	current_health = min(current_max, current_health + heal_amount)
+	current_health = min(max_health, current_health + heal_amount)
 	health_changed.emit(current_health)
 	update_hp_label()
 
 func update_hp_label():
-	if hud:
-		hud.get_node("TextureProgressBarBoss").value = current_health
+	if health_bar:
+		health_bar.value = current_health
 
 
 func play_random_hurt_sound():
@@ -147,22 +122,3 @@ func spawn_big_impact_effect(position: Vector2):
 		var impact = big_impact_scene.instantiate()
 		impact.global_position = position + Vector2(0,big_impact_offset) # + some offset
 		get_tree().current_scene.add_child(impact)
-
-func play_biker_sound(current_health):
-	var sound_player = AudioStreamPlayer.new()
-	var selected_sound
-	# CAN ADJUST ACCORDING TO THE STATE MACHINE NA
-	if current_health == 1990:
-		selected_sound = bikerSounds[0] #เห้ย อะไรวะ
-	elif current_health == 1500:
-		selected_sound = bikerSounds[1] #ไอหมาส้ม หยุด
-	elif current_health == 1000:
-		selected_sound = bikerSounds[2] #ไอหมาเวน
-	elif current_health == 500:
-		selected_sound = bikerSounds[3] #เห่าเหี้ยไรนักหนา
-	
-	sound_player.stream = selected_sound
-	sound_player.volume_db = biker_volume_db
-	sound_player.finished.connect(sound_player.queue_free)
-	get_tree().current_scene.add_child(sound_player)
-	sound_player.play()

@@ -110,13 +110,9 @@ func _on_body_entered(body: Node2D):
 		var collision_position = global_position
 		
 		# Apply damage to the boss if it's the motorbike
-		if body.has_method("take_damage"):
-			print("take damage from charge bark")
+		if body.HealthController and body.HealthController.has_method("take_damage"):
 			# UPDATED: Pass "charge" as bark_type
-			body.take_damage(damage, collision_position, "charge")  # Pass the position and bark type
-		elif body.BossHealthController and body.BossHealthController.has_method("take_damage"):
-			# UPDATED: Pass "charge" as bark_type
-			body.BossHealthController.take_damage(damage, collision_position, "charge")  # Pass the position and bark type
+			body.HealthController.take_damage(damage, collision_position, "charge")  # Pass the position and bark type
 		
 		return_to_pool()
 
