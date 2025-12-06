@@ -1,8 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://778k268328ak"]
+[gd_scene load_steps=2 format=3 uid="uid://778k268328ak"]
 
 [ext_resource type="Script" uid="uid://ek8hm7xuisk5" path="res://scripts/Pool.gd" id="1_0fu1t"]
-[ext_resource type="PackedScene" uid="uid://blrc5j8yuy18t" path="res://scenes/collectable/cough_drop.tscn" id="2_iw2mv"]
 
 [node name="CoughDropsPool" type="Node"]
 script = ExtResource("1_0fu1t")
-object_scene = ExtResource("2_iw2mv")

@@ -1,0 +1,87 @@
+[gd_scene load_steps=12 format=3 uid="uid://kj3vytv8yexd"]
+
+[ext_resource type="Script" uid="uid://bj3bj0d8skqwt" path="res://scenes/background/Turn/road_turn.gd" id="2_1oaxq"]
+[ext_resource type="Script" path="res://scenes/background/Turn/barrier_colliders.gd" id="3_1oaxq"]
+[ext_resource type="Texture2D" uid="uid://cqhusipk24l8m" path="res://assets/bg_turn_road.png" id="3_oh7qs"]
+[ext_resource type="Texture2D" uid="uid://c0o0j1pmvmffx" path="res://assets/bg_turn_building.png" id="4_tlsb1"]
+[ext_resource type="Texture2D" uid="uid://cxv7pfghove5" path="res://assets/bg_turn_barrier.png" id="4_xnrlv"]
+[ext_resource type="Texture2D" uid="uid://ckijnlq00orid" path="res://assets/bg_sign_construction.png" id="5_aexux"]
+[ext_resource type="Texture2D" uid="uid://dd37wpdmraem6" path="res://assets/bg_sign_turn_yellow.png" id="7_34hpd"]
+[ext_resource type="Texture2D" uid="uid://rff7a2wrmcly" path="res://assets/bg_sign_no_turn.png" id="8_pohxv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1ir2d"]
+size = Vector2(260.5, 288)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lho0t"]
+size = Vector2(286.5, 958.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hvcyl"]
+size = Vector2(288.75, 291)
+
+[node name="RoadTurn" type="Node2D"]
+texture_filter = 1
+scale = Vector2(2, 2)
+script = ExtResource("2_1oaxq")
+probability_turn = 1.0
+probability_left_turn = 0.5
+road_spawn_position = Vector2i(447, -967)
+
+[node name="turnRoad" type="Sprite2D" parent="."]
+z_index = 1
+texture_filter = 1
+position = Vector2(-71, 0)
+texture = ExtResource("3_oh7qs")
+
+[node name="turnBuilding" type="Sprite2D" parent="."]
+z_index = 2
+texture_filter = 1
+position = Vector2(-71, 0)
+texture = ExtResource("4_tlsb1")
+
+[node name="turnBarrier" type="Sprite2D" parent="."]
+z_index = 2
+texture_filter = 1
+position = Vector2(-36, 4)
+texture = ExtResource("4_xnrlv")
+
+[node name="signs" type="Node2D" parent="."]
+z_index = 2
+texture_filter = 1
+
+[node name="signConstruction" type="Sprite2D" parent="signs"]
+position = Vector2(146, 241)
+texture = ExtResource("5_aexux")
+
+[node name="signTurn" type="Sprite2D" parent="signs"]
+position = Vector2(-145.5, 341)
+texture = ExtResource("7_34hpd")
+
+[node name="signNoTurn" type="Sprite2D" parent="signs"]
+position = Vector2(146.5, 433)
+texture = ExtResource("8_pohxv")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 20.0
+autostart = true
+
+[node name="BarrierColliders" type="Area2D" parent="."]
+z_index = 2
+script = ExtResource("3_1oaxq")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="BarrierColliders"]
+position = Vector2(-46.5, 89)
+polygon = PackedVector2Array(-36, -111.5, -186.5, -199, -187, -270.5, 15, -145.5, 160, 27, 225, 117, 232.5, 127.5, 184, 150, 50.5, -15)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BarrierColliders"]
+position = Vector2(-343.75, -331.5)
+shape = SubResource("RectangleShape2D_1ir2d")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="BarrierColliders"]
+position = Vector2(340.25, -1.75)
+shape = SubResource("RectangleShape2D_lho0t")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="BarrierColliders"]
+position = Vector2(-335.875, 338)
+shape = SubResource("RectangleShape2D_hvcyl")
+
+[connection signal="body_entered" from="BarrierColliders" to="BarrierColliders" method="_on_body_entered"]

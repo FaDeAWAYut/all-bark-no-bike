@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://tbmglukt3bp4"]
+
+[ext_resource type="Script" uid="uid://c3ceuvjbmn7ts" path="res://scenes/chargeorb/charge_orb.gd" id="1_7ewri"]
+[ext_resource type="Texture2D" uid="uid://cqo87rjlbymf" path="res://assets/chargeorb.png" id="1_kwrs6"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7ewri"]
+atlas = ExtResource("1_kwrs6")
+region = Rect2(0, 0, 65, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dj73n"]
+atlas = ExtResource("1_kwrs6")
+region = Rect2(65, 0, 65, 65)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_i3im1"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7ewri")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dj73n")
+}],
+"loop": true,
+"name": &"charge_orb",
+"speed": 10.0
+}]
+
+[node name="charge_orb" type="Node2D"]
+script = ExtResource("1_7ewri")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 1
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_i3im1")
+animation = &"charge_orb"

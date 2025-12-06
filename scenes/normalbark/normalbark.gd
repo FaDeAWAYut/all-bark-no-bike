@@ -2,13 +2,14 @@ extends PoolObject
 
 class_name NormalBark
 
-@onready var anim = $AnimatedSprite2D/AnimatedSprite2D
+@onready var anim : AnimatedSprite2D = $AnimatedSprite2D/AnimatedSprite2D
 @onready var area_2d: Area2D = $AnimatedSprite2D
 
 # Group for basic properties
 @export_group("Basic Properties")
 @export var speed = 1200
 @export var damage = 10
+@export var direction = Vector2.UP
 
 # Group for appearance customization
 @export_group("Appearance Settings")
@@ -17,14 +18,13 @@ class_name NormalBark
 @export var squeezeScaleY: float = 1.2
 @export var scaleTransitionTime: float = 0.5
 
-var direction = Vector2.UP
 var tween: Tween
 var lifetime_timer: Timer
 
 func _ready() -> void:
 	# Create lifetime timer
 	lifetime_timer = Timer.new()
-	lifetime_timer.wait_time = 3.0
+	lifetime_timer.wait_time = 0.6
 	lifetime_timer.one_shot = true
 	lifetime_timer.timeout.connect(_on_lifetime_timeout)
 	add_child(lifetime_timer)
@@ -37,10 +37,18 @@ func _ready() -> void:
 	deactivate()
 
 func activate():
-	super.activate()  # Call parent activate method
+	super.activate()
 	
 	# Reset properties
-	direction = Vector2.UP
+	#direction = Vector2.UP
+	
+	# Enable collision detection
+	if area_2d:
+		area_2d.monitoring = true
+		area_2d.monitorable = true
+		area_2d.collision_layer = 1
+		area_2d.collision_mask = 1
+	
 	# Initialize visual effects
 	setup_visual_effects()
 	
@@ -48,7 +56,7 @@ func activate():
 	lifetime_timer.start()
 
 func deactivate():
-	super.deactivate()  # Call parent deactivate method
+	super.deactivate()
 	
 	# Stop timer
 	if lifetime_timer:
@@ -57,6 +65,13 @@ func deactivate():
 	# Stop tween
 	if tween:
 		tween.kill()
+	
+	# DISABLE collision detection when deactivated
+	if area_2d:
+		area_2d.monitoring = false
+		area_2d.monitorable = false
+		area_2d.collision_layer = 0
+		area_2d.collision_mask = 0
 
 func setup_visual_effects():
 	# Initialize tween
@@ -66,6 +81,8 @@ func setup_visual_effects():
 	# Start with zero opacity and squeezed scale
 	anim.modulate.a = 0
 	anim.scale = Vector2(squeezeScaleX, squeezeScaleY)
+	if direction.y > 0:
+		anim.flip_v = true
 	
 	# Play animation
 	anim.play("normal_bark")
@@ -84,14 +101,18 @@ func _physics_process(delta: float) -> void:
 	global_position += direction * speed * delta
 	
 	# Remove if off-screen
-	if global_position.y < -2000:
+	if global_position.y < -50:
 		return_to_pool()
 
 func _on_body_entered(body: Node2D):
 	if body.is_in_group("enemy"):
-		var health_controller = body.BossHealthController
-		if health_controller:
-			health_controller.take_damage(damage)
+		# Store the collision position
+		var collision_position = global_position
+		
+		# Apply damage to the boss if it's the motorbike
+		if body.HealthController and body.HealthController.has_method("take_damage"):
+			body.HealthController.take_damage(damage, collision_position, "normal")  # Pass "normal" as bark_type
+		
 		return_to_pool()
 
 func _on_lifetime_timeout():

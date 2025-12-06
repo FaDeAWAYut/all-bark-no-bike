@@ -1,7 +1,8 @@
 class_name Motorbike extends CharacterBody2D
 
-@export var spawn_position: Vector2 = Vector2(448, 150)
 var offset_from_camera: Vector2 = Vector2(0, 0)
+@export var setSprite : String = "default"
+@onready var sprite : AnimatedSprite2D = $AnimatedSprite2D
 
 # Movement settings
 @export var speed_x: float = 200.0
@@ -18,9 +19,9 @@ var offset_from_camera: Vector2 = Vector2(0, 0)
 
 # Screen boundaries (adjust these based on your camera/screen size)
 @export var screen_top_y: float = 150.0    # Top boundary (pixels from top)
-@export var screen_bottom_y: float = 300.0 # Bottom boundary (pixels from top)
+@export var screen_bottom_y: float = 600 # Bottom boundary (pixels from top)
 
-@export var BossHealthController: Node
+@export var HealthController: Node
 
 	# Interruption
 @export var smoke_scene: PackedScene 
@@ -34,6 +35,13 @@ var projectile_scenes = []
 @warning_ignore("unused_signal")
 signal motorbike_hidden
 
+# Visual effects settings
+@export_group("Hit Effects")
+@export var hit_shake_intensity: float = 5.0
+@export var hit_shake_duration: float = 0.3
+@export var hit_flash_duration: float = 0.4
+@export var hit_flash_color: Color = Color.RED
+
 # Internal variables (accessible by states)
 var direction: int = 1
 var current_obstacle: Node2D = null
@@ -44,6 +52,13 @@ var is_hiding: bool = false
 var is_hidden: bool = false
 var is_showing: bool = false
 var is_positioned: bool = true
+
+# Visual effect variables
+var original_position: Vector2
+var shake_timer: float = 0.0
+var shake_intensity: float = 0.0
+var flash_tween: Tween
+var shake_tween: Tween
 
 # Module Instances
 var speedManager: SpeedManager
@@ -56,8 +71,17 @@ var speedManager: SpeedManager
 	# Interruption
 @onready var smoke_timer = $SmokeTimer
 @onready var throw_timer = $ThrowTimer
+@onready var motorbike_sprite = $Sprite2D
+
+@export_category("State Variables")
+@onready var timer: Timer = $Timer
+var base_stunned_duration: float = 3.0
+var stunnable_objects: Array[Stunnable] = []
 
 func _ready():
+	# set sprite
+	sprite.animation = StringName(setSprite)
+	
 	# Create and setup speed manager
 	speedManager = SpeedManager.new()
 	add_child(speedManager)
@@ -70,6 +94,9 @@ func _ready():
 	motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
 	direction = 1 if randf() > 0.5 else -1
 	
+	# Store original position for shake effect
+	original_position = global_position
+	
 	# Set initial position within screen bounds
 	global_position.x = clamp(global_position.x, min_x, max_x)
 	
@@ -81,10 +108,58 @@ func _ready():
 	throw_timer.start()
 
 	projectile_scenes = [cigarette_scene, rock_scene, bouncy_ball_scene]
+	# Find all Stunnable objects in the scene
+	if get_tree().has_group("stunnable"):
+		var nodes = get_tree().get_nodes_in_group("stunnable")
+		stunnable_objects = []
+		for node in nodes:
+			if node is Stunnable:
+				stunnable_objects.append(node as Stunnable)
+	else:
+		stunnable_objects = []
 
 func _physics_process(delta):
 	currentSpeed = speedManager.update(delta)
 	# All movement logic is now handled by the state machine
+	update_shake_effect(delta)
+
+func trigger_hit_effects():
+	start_shake_effect()
+
+func start_shake_effect():
+	shake_intensity = hit_shake_intensity
+	shake_timer = hit_shake_duration
+	
+	# Stop any existing shake tween
+	if shake_tween:
+		shake_tween.kill()
+	
+	# Create tween to gradually reduce shake intensity
+	shake_tween = create_tween()
+	shake_tween.tween_property(self, "shake_intensity", 0.0, hit_shake_duration)
+	
+func update_shake_effect(delta):
+	if shake_timer > 0:
+		# Apply random shake offset relative to current position
+		var shake_offset = Vector2(
+			randf_range(-shake_intensity, shake_intensity),
+			randf_range(-shake_intensity, shake_intensity)
+		)
+		
+		# Store the base position (without shake)
+		var base_position = global_position
+		
+		# Apply shake offset
+		global_position = base_position + shake_offset
+		
+		shake_timer -= delta
+
+func get_stun_multiplier() -> int:
+	var stunned_count: int = 0
+	for stunnable_object in stunnable_objects:
+		if stunnable_object.is_stunned():
+			stunned_count += 1
+	return stunned_count
 	
 	# Interruption
 func _on_smoke_timer_timeout():
@@ -124,3 +199,4 @@ func _on_throw_timer_timeout():
 
 	throw_timer.wait_time = randf_range(1.0, 3.0)
 	throw_timer.start()
+	
