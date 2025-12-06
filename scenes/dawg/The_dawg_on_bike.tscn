@@ -1,8 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://ftnxv01ifvwb"]
+[gd_scene load_steps=18 format=3 uid="uid://ftnxv01ifvwb"]
 
 [ext_resource type="Texture2D" uid="uid://k12rgs1438ff" path="res://assets/TheDawgOnBikeBark.png" id="1_vg5h0"]
-[ext_resource type="Script" path="res://scenes/dawg/the_dawg_on_bike.gd" id="1_xub8n"]
+[ext_resource type="Script" uid="uid://dnkjtkuwmwu1c" path="res://scenes/dawg/the_dawg_on_bike.gd" id="1_xub8n"]
 [ext_resource type="Texture2D" uid="uid://2y3hqwi7jx71" path="res://assets/TheDawgOnBike.png" id="2_xub8n"]
+[ext_resource type="Texture2D" uid="uid://8noh6vtr7dx0" path="res://assets/chadchart_active.png" id="3_fhtjf"]
+[ext_resource type="Texture2D" uid="uid://dtvjheqj572q5" path="res://assets/chadchart_active_barking.png" id="3_q0tly"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_q0tly"]
 atlas = ExtResource("1_vg5h0")
@@ -11,6 +13,22 @@ region = Rect2(32, 0, 32, 64)
 [sub_resource type="AtlasTexture" id="AtlasTexture_fhtjf"]
 atlas = ExtResource("1_vg5h0")
 region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aoaw1"]
+atlas = ExtResource("3_fhtjf")
+region = Rect2(0, 0, 252, 341)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u6gai"]
+atlas = ExtResource("3_fhtjf")
+region = Rect2(252, 0, 252, 341)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uutb4"]
+atlas = ExtResource("3_q0tly")
+region = Rect2(0, 0, 252, 341)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ogxmn"]
+atlas = ExtResource("3_q0tly")
+region = Rect2(252, 0, 252, 341)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hcd7y"]
 atlas = ExtResource("2_xub8n")
@@ -31,6 +49,28 @@ animations = [{
 }],
 "loop": true,
 "name": &"barking",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aoaw1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u6gai")
+}],
+"loop": true,
+"name": &"chadchart_active",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uutb4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ogxmn")
+}],
+"loop": true,
+"name": &"chadchart_active_barking",
 "speed": 5.0
 }, {
 "frames": [{
@@ -88,8 +128,9 @@ script = ExtResource("1_xub8n")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_aoaw1")
-animation = &"barking"
+animation = &"chadchart_active_barking"
 autoplay = "default"
+frame_progress = 0.19167927
 
 [node name="CollisionShape2D" type="CollisionPolygon2D" parent="."]
 polygon = PackedVector2Array(5, -23, -5, -23, -5, -14, -12, -8, -12, -6, -14, -6, -14, -4, -10, -4, -4, -3, -6, 0, -6, 16, -8, 18, -8, 20, -3, 24, -3, 29, -1, 31, 1, 31, 3, 29, 3, 24, 8, 20, 8, 18, 6, 16, 6, 0, 4, -3, 10, -4, 14, -4, 14, -6, 12, -6, 12, -8, 5, -14)

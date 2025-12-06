@@ -3,15 +3,20 @@ extends Node
 # Preload the obstacle scenes
 var carScenes = [preload("res://scenes/car/black_car.tscn"), preload("res://scenes/car/mini_car.tscn"),preload("res://scenes/car/truck_car.tscn")]
 var sideScenes = [preload("res://scenes/sideobstacles/meow.tscn"), preload("res://scenes/sideobstacles/banner.tscn"), preload("res://scenes/sideobstacles/bonsai.tscn")]
+var chadchartWalkout = preload("res://scenes/collectable/chadchart_walkout.tscn").instantiate()
 
 # Module instances
 var gameManager: GameManager
 @export var obstacleSpawner: ObstacleSpawner
+@export var collectablesManager: CollectablesManager
 @onready var speedManager: SpeedManager = $SpeedManager
 @export var barkController: BarkController
 var screenEffects: ScreenEffects
 
-@export var collectablesManager: CollectablesManager
+#@onready var music_player = $BgmPlayer
+@export var music_player: AudioStreamPlayer
+@onready var chadchartSfxPlayer: AudioStreamPlayer
+#@onready var BGM_BUS_ID = AudioServer.get_bus_index("BGM") # for when we implement volume settings
 
 @onready var isPhaseOne = self.name == "Phase1"
 
@@ -35,6 +40,10 @@ var gameTime: float = 0.0
 var screenSize : Vector2i
 
 var hurtSFX = preload("res://assets/sfx/hurtsfx.mp3")
+var shieldSFX = preload("res://assets/sfx/shieldmonk.mp3")
+var healingSFX = preload("res://assets/sfx/healingsfx.mp3")
+var chadchartAppearsSFX = preload("res://assets/sfx/ChadChartAppears.mp3")
+var chadchartActiveSFX = preload("res://assets/sfx/ChadChartIsHere.mp3")
 
 signal player_took_damage
 
@@ -47,14 +56,13 @@ var coughDropSounds: Array = [
 	preload("res://assets/sfx/cough_drop_eating3.mp3")
 ]
 
-var shieldSFX = preload("res://assets/sfx/shieldmonk.mp3")
-var healingSFX = preload("res://assets/sfx/healingsfx.mp3")
-
 @export var hurtSoundVolume = -5
-@export var bgMusicVolume = -5
+@export var bgmVolume = -5
 @export var coughDropVolume: float = -5.0
 @export var shieldSoundVolume: float = -5.0
 @export var healingSoundVolume: float = -5.0 
+@export var chadchartAppearsSoundVolume: float = 0.0
+@export var chadchartActiveSoundVolume: float = -5.0
 
 @export_category("Debug Options")
 @export var SkipPhaseOne := false
@@ -83,7 +91,15 @@ func _ready():
 func initialize_modules():
 	gameManager = GameManager.new()
 	add_child(gameManager)
+	
+	music_player = AudioStreamPlayer.new()
+	music_player.name = "BackgroundMusic"
+	add_child(music_player)
 
+	chadchartSfxPlayer = AudioStreamPlayer.new()
+	chadchartSfxPlayer.name = "ChadchartSfxPlayer"
+	add_child(chadchartSfxPlayer)
+	
 	# Create car pool and add to obstacle spawner FIRST
 	var car_pool = Pool.new()
 	add_child(car_pool)
@@ -138,6 +154,13 @@ func initialize_modules():
 	upgrade_pool_2.pool_size = 3
 	upgrade_pool_2.initialize()
 	
+	var chadchart_scene = [preload("res://scenes/collectable/chadchart.tscn")]
+	var chadchart_pool = Pool.new()
+	add_child(chadchart_pool)
+	chadchart_pool.object_scenes = chadchart_scene
+	chadchart_pool.pool_size = 1
+	chadchart_pool.initialize()
+	
 	# Initialize normal bark pool for BarkController
 	var normal_bark_scenes = [preload("res://scenes/normalbark/normalbark.tscn")]
 	var normal_bark_pool = Pool.new()
@@ -174,8 +197,9 @@ func initialize_modules():
 	collectablesManager.cough_drop_pool = cough_drop_pool
 	collectablesManager.upgrade_pool_1 = upgrade_pool_1
 	collectablesManager.upgrade_pool_2 = upgrade_pool_2
+	collectablesManager.chadchart_pool = chadchart_pool
 	collectablesManager.gameManager = gameManager
-	
+
 	# Connect existing cough drops to the collectables manager
 	for cough_drop in cough_drop_pool.get_children():
 		if cough_drop.has_signal("coughdrop_collected"):
@@ -183,21 +207,24 @@ func initialize_modules():
 				cough_drop.coughdrop_collected.connect(collectablesManager._on_cough_drop_collected)
 	
 	for upgrade in upgrade_pool_1.get_children():
-		if upgrade.has_signal("coughdrop_collected"):
-			if not upgrade.coughdrop_collected.is_connected(collectablesManager._on_cough_drop_collected):
+		if upgrade.has_signal("coughdrop_collected") && not upgrade.coughdrop_collected.is_connected(collectablesManager._on_cough_drop_collected):
 				upgrade.coughdrop_collected.connect(collectablesManager._on_cough_drop_collected)
 	
 	for upgrade in upgrade_pool_2.get_children():
-		if upgrade.has_signal("coughdrop_collected"):
-			if not upgrade.coughdrop_collected.is_connected(collectablesManager._on_cough_drop_collected):
+		if upgrade.has_signal("coughdrop_collected") && not upgrade.coughdrop_collected.is_connected(collectablesManager._on_cough_drop_collected):
 				upgrade.coughdrop_collected.connect(collectablesManager._on_cough_drop_collected)
-
+	
+	for chadchart in chadchart_pool.get_children():
+		if chadchart.has_signal("coughdrop_collected") && not chadchart.coughdrop_collected.is_connected(collectablesManager._on_cough_drop_collected):
+				chadchart.coughdrop_collected.connect(collectablesManager._on_cough_drop_collected)
+		
 func setup_signal_connections():
 	# Connect game manager signals
 	gameManager.game_ended.connect(_on_game_ended)
 	gameManager.hp_changed.connect(_on_hp_changed)
 	gameManager.charge_changed.connect(_on_charge_changed)
 	gameManager.shield_changed.connect(_on_shield_changed)
+	collectablesManager.chadchart_appears.connect(_on_chadchart_appears)
 	bossHealthController.died.connect(_on_boss_died)  # Connect to local handler first
 	
 	# Connect obstacle spawner signals
@@ -207,14 +234,15 @@ func setup_signal_connections():
 	speedManager.speed_changed.connect(_on_speed_changed)
 
 func _on_boss_died():
-	transition_to_phase_transition()
+	if isPhaseOne:
+		transition_to_phase_transition()
 
 func new_game():
 	gameManager.start_new_game()
 	speedManager.start()
 	
-	$"TheDawg".position = dogStartPosition
-	$"TheDawg".velocity = Vector2i(0, 0)
+	$TheDawg.position = dogStartPosition
+	$TheDawg.velocity = Vector2i(0, 0)
 	$Camera2D.position = camStartPosition
 	
 	# Reset background scrolling
@@ -241,13 +269,11 @@ func _physics_process(delta: float):
 	# Update screen effects
 	screenEffects.update_screen_shake(delta)
 	
-	update_shield_blink(delta)
+	update_shield_blink()
 	# Scroll the background instead of moving camera
-	scroll_background(delta)
+	scroll_background()
 
-func scroll_background(delta: float):
-	#var targetSpeed = calculate_background_speed()
-	# TODO: add more Parallax2D nodes for more layers? may not be necessary
+func scroll_background():
 	parallax.autoscroll.y = currentSpeed
 		
 func _on_obstacle_spawned(obs: Node):
@@ -312,24 +338,36 @@ func play_hp_gain_sound():
 	add_child(soundPlayer)
 	soundPlayer.play()
 
+# use chadchartSfxPlayer so that when player collects chadchart while ChadchartAppears.mp3 is still playing, the game immediately switches to ChadchartIsHere.mp3 
+# เสียงจะได้ไม่เล่นทับกัน
+func play_chadchart_appears_sound():
+	if chadchartSfxPlayer:
+		chadchartSfxPlayer.stream = chadchartAppearsSFX
+		chadchartSfxPlayer.volume_db = chadchartAppearsSoundVolume
+		chadchartSfxPlayer.play()
+	
+func play_chadchart_active_sound():
+	if chadchartSfxPlayer:
+		chadchartSfxPlayer.stream = chadchartActiveSFX
+		chadchartSfxPlayer.volume_db = chadchartActiveSoundVolume
+		chadchartSfxPlayer.play()
 	
 func play_background_music():
-	var music_player = AudioStreamPlayer.new()
 	if isPhaseOne:
 		music_player.stream = AllBarkMusic
 	else:
 		music_player.stream = NoBikeMusic
 
-	music_player.volume_db = bgMusicVolume
+	music_player.volume_db = bgmVolume
 	music_player.autoplay = true
-	music_player.name = "BackgroundMusic"
 	
 	# Make it loop
 	music_player.finished.connect(music_player.play)
 	
-	add_child(music_player)
-	if !isPhaseOne:
-		music_player.play(11)
+	if isPhaseOne:
+		music_player.play(0)
+	else:
+		music_player.play(11.5)
 	 
 func _input(event):
 	if gameManager.isGameOver:
@@ -352,15 +390,18 @@ func _on_hp_changed(new_hp: int):
 	previousHP = new_hp
 	show_hp()
 
-func _on_shield_changed(has_shield: bool):
+func _on_shield_changed(has_shield: bool, is_chadchart: bool):
 	if has_shield:
-		play_shield_sound()
-
+		if is_chadchart:
+			activate_chadchart()
+		else: 
+			play_shield_sound()	
+		
 	var shield_icon = $HUD.get_node("TextureRect")
 	if shield_icon:
 		shield_icon.visible = has_shield
 
-func update_shield_blink(delta: float):
+func update_shield_blink():
 	var shield_icon = $HUD.get_node("TextureRect")
 	if not shield_icon or not gameManager.has_active_shield():
 		return
@@ -413,3 +454,32 @@ func transition_to_phase_transition():
 	# Capture current positions and state
 	# Load transition scene
 	get_tree().change_scene_to_file("res://scenes/main/transistion_phase.tscn")
+	
+func _on_chadchart_appears():
+	play_chadchart_appears_sound()
+	
+func activate_chadchart():
+	$TheDawg/AnimatedSprite2D.animation = &"chadchart_active"
+	$TheDawg/AnimatedSprite2D.scale = Vector2(0.25,0.25)
+	music_player.volume_db = -60.0
+	play_chadchart_active_sound()
+	await get_tree().create_timer(11.5).timeout
+	
+	# after chadchart use
+	gradually_increase_bgm_volume(5)
+	add_child(chadchartWalkout)
+	chadchartWalkout.get_child(2).hide() # hide Control node
+	chadchartWalkout.position = Vector2($TheDawg.position.x,$TheDawg.position.y)
+	chadchartWalkout.get_child(0).animation = &"no_shield"
+	$TheDawg/AnimatedSprite2D.animation = &"default"
+	$TheDawg/AnimatedSprite2D.scale = Vector2(1,1)
+	
+	# delete node after ~5 secs, when chadchart has walked out of screen
+	await get_tree().create_timer(5).timeout
+	chadchartWalkout.queue_free() 
+	
+func gradually_increase_bgm_volume(duration_sec: float):
+	const muteVolume = -60.0
+	for i in range(1, duration_sec*10+1): # *10 for less increase in each step -> smoother increase
+		await get_tree().create_timer(0.1).timeout
+		music_player.volume_db = muteVolume + (bgmVolume - muteVolume) * (i/(duration_sec*10))

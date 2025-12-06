@@ -13,8 +13,8 @@
 [ext_resource type="Script" uid="uid://dddagrng1jobg" path="res://scripts/BarkController.gd" id="11_bx00b"]
 [ext_resource type="AudioStream" uid="uid://cotg1jtn26twy" path="res://assets/sfx/chargebarksfx.mp3" id="12_4i2q6"]
 [ext_resource type="Script" uid="uid://ek8hm7xuisk5" path="res://scripts/Pool.gd" id="13_haqeb"]
-[ext_resource type="Script" uid="uid://bujgehfwg2nkx" path="res://scripts/SpeedManager.gd" id="14_bp3xm"]
 [ext_resource type="PackedScene" uid="uid://dy6jmp88qig88" path="res://scenes/gameoveroverlay/game_over.tscn" id="14_ogru6"]
+[ext_resource type="Script" uid="uid://bujgehfwg2nkx" path="res://scripts/SpeedManager.gd" id="15_ogru6"]
 [ext_resource type="PackedScene" uid="uid://bv5t0i620xpop" path="res://scenes/motorbikefriend/motorbike_friend.tscn" id="16_flnuf"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_blune"]
@@ -23,11 +23,11 @@ size = Vector2(64, 504)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_th5th"]
 size = Vector2(896, 16)
 
-[node name="Phase2" type="Node" node_paths=PackedStringArray("obstacleSpawner", "barkController", "collectablesManager")]
+[node name="Phase2" type="Node" node_paths=PackedStringArray("obstacleSpawner", "collectablesManager", "barkController")]
 script = ExtResource("1_54jss")
 obstacleSpawner = NodePath("ObstacleSpawner")
-barkController = NodePath("BarkController")
 collectablesManager = NodePath("CollectablesManager")
+barkController = NodePath("BarkController")
 dogStartPosition = Vector2i(448, 169)
 camStartPosition = Vector2i(448, 252)
 
@@ -122,9 +122,13 @@ visible = false
 z_index = 10
 
 [node name="SpeedManager" type="Node" parent="."]
-script = ExtResource("14_bp3xm")
+script = ExtResource("15_ogru6")
 startSpeed = 400.0
 metadata/_custom_type_script = "uid://bujgehfwg2nkx"
+
+[node name="BgmPlayer" type="AudioStreamPlayer2D" parent="."]
+
+[node name="ChadchartSfxPlayer" type="AudioStreamPlayer2D" parent="."]
 
 [node name="MotorbikeFriend" parent="." groups=["enemy"] instance=ExtResource("16_flnuf")]
 position = Vector2(336, 513)

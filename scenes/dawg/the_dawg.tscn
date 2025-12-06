@@ -35,13 +35,28 @@ animations = [{
 "texture": SubResource("AtlasTexture_mk2tq")
 }],
 "loop": true,
-"name": &"run",
+"name": &"default",
 "speed": 10.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xr6vp"]
 radius = 5.0
 height = 22.0
+
+[sub_resource type="Animation" id="Animation_8fyta"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:self_modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1.0]
+}
 
 [sub_resource type="Animation" id="Animation_xr6vp"]
 resource_name = "invincible"
@@ -59,21 +74,6 @@ tracks/0/keys = {
 "values": [1.0, 0.5, 1.0]
 }
 
-[sub_resource type="Animation" id="Animation_8fyta"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("AnimatedSprite2D:self_modulate:a")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [1.0]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ry4lc"]
 _data = {
 &"RESET": SubResource("Animation_8fyta"),
@@ -87,9 +87,8 @@ script = ExtResource("1_jfyaa")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_u1vlm")
-animation = &"run"
-autoplay = "run"
-frame_progress = 0.11201086
+autoplay = "default"
+frame_progress = 0.23497605
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_xr6vp")
