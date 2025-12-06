@@ -11,4 +11,4 @@ func _on_body_entered(body: Node2D) -> void:
 
 func _process(_delta: float) -> void:
 	var old_position: Vector2 = position
-	position = Vector2(old_position.x - 1.5, old_position.y + 1)
+	position = Vector2(old_position.x - 1, old_position.y + 1)

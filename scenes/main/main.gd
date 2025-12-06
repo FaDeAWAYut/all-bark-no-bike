@@ -7,6 +7,7 @@ var sideScenes = [preload("res://scenes/sideobstacles/meow.tscn"), preload("res:
 # Module instances
 var gameManager: GameManager
 @export var obstacleSpawner: ObstacleSpawner
+@export var collectablesManager: CollectablesManager
 @onready var speedManager: SpeedManager = $SpeedManager
 @export var barkController: BarkController
 var screenEffects: ScreenEffects
@@ -14,8 +15,6 @@ var screenEffects: ScreenEffects
 @onready var bgmPlayer = $BgmPlayer
 @onready var chadchartSfxPlayer = $ChadchartSfxPlayer
 #@onready var BGM_BUS_ID = AudioServer.get_bus_index("BGM") # for when we implement volume settings
-
-@export var collectablesManager: CollectablesManager
 
 @onready var isPhaseOne = self.name == "Phase1"
 
@@ -58,8 +57,8 @@ var coughDropSounds: Array = [
 @export var coughDropVolume: float = -5.0
 @export var shieldSoundVolume: float = -5.0
 @export var healingSoundVolume: float = -5.0 
+@export var chadchartAppearsSoundVolume: float = 0.0
 @export var chadchartActiveSoundVolume: float = -5.0
-@export var chadchartAppearsSoundVolume: float = -5.0
 
 @onready var parallax = $ParallaxBG/Parallax2D
 @onready var bossHealthController = $Motorbike/BossHealthController
@@ -215,8 +214,8 @@ func new_game():
 	gameManager.start_new_game()
 	speedManager.start()
 	
-	$"TheDawg".position = dogStartPosition
-	$"TheDawg".velocity = Vector2i(0, 0)
+	$TheDawg.position = dogStartPosition
+	$TheDawg.velocity = Vector2i(0, 0)
 	$Camera2D.position = camStartPosition
 	
 	# Reset background scrolling
@@ -437,7 +436,7 @@ func activate_chadchart():
 	$TheDawg.scale = Vector2(0.5,0.5)
 	bgmPlayer.volume_db = -60.0
 	play_chadchart_active_sound()
-	await get_tree().create_timer(10).timeout
+	await get_tree().create_timer(11.5).timeout
 	print("DONE cc")
 	gradually_increase_bgm_volume(5)
 

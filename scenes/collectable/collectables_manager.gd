@@ -14,7 +14,7 @@ class_name CollectablesManager
 @export var min_spawn_interval: float = 1.0
 @export var max_spawn_interval: float = 5.0
 @export var upgrade_spawn_chance: float = 1 # DEBUG: remember to change back to 0.3
-@export var chadchart_spawn_chance: float = 0.5 if !isPhaseOne else 0 # DEBUG: remember to change back to 0.05 or other values to balance the game
+@export var chadchart_spawn_chance: float = 1.0 if !isPhaseOne else 0.0 # DEBUG: remember to change back to 0.05 or other values to balance the game
 @export var cough_drop_scale: float = 2
 @export var collectable_speed_multiplier: float = 0.8
 
@@ -72,7 +72,7 @@ func spawn_cough_drops(camera_y_position: float, screen_size_x: float):
 		print("spawning chadchart") # for DEBUG
 		# Spawn chadchart
 		var chadchart = chadchart_pool.get_object()
-		chadchart.position = Vector2(800, -50)
+		chadchart.position = Vector2(800, -70)
 		chadchart.scale = Vector2(1, 1)
 		chadchart_appears.emit()
 			
@@ -112,7 +112,7 @@ func _on_cough_drop_collected(collectable):
 	elif collectable.collectable_type == "shield":
 		gameManager.use_shield(10.0, false)
 	elif collectable.collectable_type == "chadchart":
-		gameManager.use_shield(10.0, true)
+		gameManager.use_shield(11.5, true) # 11.5 sec to sync with audio
 
 func stop_spawning():
 	spawning_enabled = false
