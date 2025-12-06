@@ -174,13 +174,11 @@ func initialize_modules():
 				cough_drop.coughdrop_collected.connect(collectablesManager._on_cough_drop_collected)
 	
 	for upgrade in upgrade_pool_1.get_children():
-		if upgrade.has_signal("coughdrop_collected"):
-			if not upgrade.coughdrop_collected.is_connected(collectablesManager._on_cough_drop_collected):
+		if upgrade.has_signal("coughdrop_collected") && not upgrade.coughdrop_collected.is_connected(collectablesManager._on_cough_drop_collected):
 				upgrade.coughdrop_collected.connect(collectablesManager._on_cough_drop_collected)
 	
 	for upgrade in upgrade_pool_2.get_children():
-		if upgrade.has_signal("coughdrop_collected"):
-			if not upgrade.coughdrop_collected.is_connected(collectablesManager._on_cough_drop_collected):
+		if upgrade.has_signal("coughdrop_collected") && not upgrade.coughdrop_collected.is_connected(collectablesManager._on_cough_drop_collected):
 				upgrade.coughdrop_collected.connect(collectablesManager._on_cough_drop_collected)
 	
 	for chadchart in chadchart_pool.get_children():
@@ -237,13 +235,11 @@ func _physics_process(delta: float):
 	# Update screen effects
 	screenEffects.update_screen_shake(delta)
 	
-	update_shield_blink(delta)
+	update_shield_blink()
 	# Scroll the background instead of moving camera
-	scroll_background(delta)
+	scroll_background()
 
-func scroll_background(delta: float):
-	#var targetSpeed = calculate_background_speed()
-	# TODO: add more Parallax2D nodes for more layers? may not be necessary
+func scroll_background():
 	parallax.autoscroll.y = currentSpeed
 		
 func _on_obstacle_spawned(obs: Node):
@@ -361,7 +357,7 @@ func _on_shield_changed(has_shield: bool, is_chadchart: bool):
 	if shield_icon:
 		shield_icon.visible = has_shield
 
-func update_shield_blink(delta: float):
+func update_shield_blink():
 	var shield_icon = $HUD.get_node("TextureRect")
 	if not shield_icon or not gameManager.has_active_shield():
 		return
