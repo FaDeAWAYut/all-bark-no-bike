@@ -367,7 +367,7 @@ func play_background_music():
 	if isPhaseOne:
 		music_player.play(0)
 	else:
-		music_player.play(11)
+		music_player.play(11.5)
 	 
 func _input(event):
 	if gameManager.isGameOver:
