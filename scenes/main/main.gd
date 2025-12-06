@@ -191,6 +191,8 @@ func initialize_modules():
 		if chadchart.has_signal("coughdrop_collected") && not chadchart.coughdrop_collected.is_connected(collectablesManager._on_cough_drop_collected):
 				chadchart.coughdrop_collected.connect(collectablesManager._on_cough_drop_collected)
 
+	$ChadchartWalkout/AnimatedSprite2D.animation = &"no_shield"
+	
 func setup_signal_connections():
 	# Connect game manager signals
 	gameManager.game_ended.connect(_on_game_ended)
@@ -437,9 +439,10 @@ func activate_chadchart():
 	bgmPlayer.volume_db = -60.0
 	play_chadchart_active_sound()
 	await get_tree().create_timer(11.5).timeout
-	print("DONE cc")
 	gradually_increase_bgm_volume(5)
-
+	$ChadchartWalkout.position = Vector2($TheDawg.position.x, $TheDawg.position.y) 
+	$ChadchartWalkout/Control.hide()
+	$ChadchartWalkout.show()	
 	$TheDawg/AnimatedSprite2D.animation = &"run"
 	$TheDawg.scale = Vector2(2,2)
 	
