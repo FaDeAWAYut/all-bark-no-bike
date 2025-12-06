@@ -13,8 +13,8 @@ class_name CollectablesManager
 @export var chadchart_pool: Pool
 @export var min_spawn_interval: float = 1.0
 @export var max_spawn_interval: float = 5.0
-@export var upgrade_spawn_chance: float = 1 # DEBUG: remember to change back to 0.3
-@export var chadchart_spawn_chance: float = 1.0 if !isPhaseOne else 0.0 # DEBUG: remember to change back to 0.05 or other values to balance the game
+@export var upgrade_spawn_chance: float = 0.3 
+@export var chadchart_spawn_chance: float = 0.1 if !isPhaseOne else 0.0
 @export var cough_drop_scale: float = 2
 @export var collectable_speed_multiplier: float = 0.8
 
