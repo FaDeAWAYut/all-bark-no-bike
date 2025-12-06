@@ -149,7 +149,8 @@ func try_spawn_obstacle(camera_y_position: float, screen_size_x: float):
 	else:
 		# Spawn cars in road lanes (your existing code)
 		var random_lane = randi() % num_lanes
-		spawnX = lane_positions[random_lane]
+		var x_noise = (-20 + (randi() % 40)) # add some noise so cars don't spawn at the exact same x position
+		spawnX = lane_positions[random_lane] + x_noise
 		# Set initial speed
 		if obs.has_method("set_speed"):
 			obs.set_speed(obstacleSpeed)
