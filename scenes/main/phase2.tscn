@@ -126,7 +126,6 @@ script = ExtResource("15_ogru6")
 metadata/_custom_type_script = "uid://bujgehfwg2nkx"
 
 [node name="BgmPlayer" type="AudioStreamPlayer2D" parent="."]
-bus = &"BGM"
 
 [node name="ChadchartSfxPlayer" type="AudioStreamPlayer2D" parent="."]
 

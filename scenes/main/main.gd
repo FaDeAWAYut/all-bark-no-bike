@@ -13,8 +13,9 @@ var gameManager: GameManager
 @export var barkController: BarkController
 var screenEffects: ScreenEffects
 
-@onready var bgmPlayer = $BgmPlayer
-@onready var chadchartSfxPlayer = $ChadchartSfxPlayer
+#@onready var music_player = $BgmPlayer
+@export var music_player: AudioStreamPlayer
+@onready var chadchartSfxPlayer: AudioStreamPlayer
 #@onready var BGM_BUS_ID = AudioServer.get_bus_index("BGM") # for when we implement volume settings
 
 @onready var isPhaseOne = self.name == "Phase1"
@@ -90,7 +91,15 @@ func _ready():
 func initialize_modules():
 	gameManager = GameManager.new()
 	add_child(gameManager)
+	
+	music_player = AudioStreamPlayer.new()
+	music_player.name = "BackgroundMusic"
+	add_child(music_player)
 
+	chadchartSfxPlayer = AudioStreamPlayer.new()
+	chadchartSfxPlayer.name = "ChadchartSfxPlayer"
+	add_child(chadchartSfxPlayer)
+	
 	# Create car pool and add to obstacle spawner FIRST
 	var car_pool = Pool.new()
 	add_child(car_pool)
@@ -345,22 +354,20 @@ func play_chadchart_active_sound():
 	
 func play_background_music():
 	if isPhaseOne:
-		bgmPlayer.stream = AllBarkMusic
+		music_player.stream = AllBarkMusic
 	else:
-		bgmPlayer.stream = NoBikeMusic
+		music_player.stream = NoBikeMusic
 
-	bgmPlayer.volume_db = bgmVolume
-	bgmPlayer.autoplay = true
-	bgmPlayer.name = "BackgroundMusic"
+	music_player.volume_db = bgmVolume
+	music_player.autoplay = true
 	
 	# Make it loop
-	bgmPlayer.finished.connect(bgmPlayer.play)
+	music_player.finished.connect(music_player.play)
 	
-	add_child(bgmPlayer)
 	if isPhaseOne:
-		bgmPlayer.play(0)
+		music_player.play(0)
 	else:
-		bgmPlayer.play(11)
+		music_player.play(11)
 	 
 func _input(event):
 	if gameManager.isGameOver:
@@ -454,7 +461,7 @@ func _on_chadchart_appears():
 func activate_chadchart():
 	$TheDawg/AnimatedSprite2D.animation = &"chadchart_active"
 	$TheDawg.scale = Vector2(0.5,0.5)
-	bgmPlayer.volume_db = -60.0
+	music_player.volume_db = -60.0
 	play_chadchart_active_sound()
 	await get_tree().create_timer(11.5).timeout
 	
@@ -475,4 +482,4 @@ func gradually_increase_bgm_volume(duration_sec: float):
 	const muteVolume = -60.0
 	for i in range(1, duration_sec*10+1): # *10 for less increase in each step -> smoother increase
 		await get_tree().create_timer(0.1).timeout
-		bgmPlayer.volume_db = muteVolume + (bgmVolume - muteVolume) * (i/(duration_sec*10))
+		music_player.volume_db = muteVolume + (bgmVolume - muteVolume) * (i/(duration_sec*10))
