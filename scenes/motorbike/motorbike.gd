@@ -63,7 +63,7 @@ var speedManager: SpeedManager
 @export_category("State Variables")
 @onready var timer: Timer = $Timer
 var base_stunned_duration: float = 3.0
-@export var stunnable_objects: Array[Stunnable] = []
+var stunnable_objects: Array[Stunnable] = []
 
 func _ready():
 	# set sprite
@@ -86,6 +86,16 @@ func _ready():
 	
 	# Set initial position within screen bounds
 	global_position.x = clamp(global_position.x, min_x, max_x)
+	
+	# Find all Stunnable objects in the scene
+	if get_tree().has_group("stunnable"):
+		var nodes = get_tree().get_nodes_in_group("stunnable")
+		stunnable_objects = []
+		for node in nodes:
+			if node is Stunnable:
+				stunnable_objects.append(node as Stunnable)
+	else:
+		stunnable_objects = []
 
 func _physics_process(delta):
 	currentSpeed = speedManager.update(delta)
