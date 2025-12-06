@@ -191,11 +191,11 @@ func _on_throw_timer_timeout():
 	get_parent().add_child(projectile)
 	projectile.global_position = global_position
 
-	var direction = (player.global_position - global_position).normalized()
+	var throw_direction = (player.global_position - global_position).normalized()
 	
 	var projectile_speed = 400.0
 	
-	projectile.launch(direction * projectile_speed)
+	projectile.launch(throw_direction * projectile_speed)
 
 	throw_timer.wait_time = randf_range(1.0, 3.0)
 	throw_timer.start()
