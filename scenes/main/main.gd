@@ -36,6 +36,8 @@ var screenSize : Vector2i
 
 var hurtSFX = preload("res://assets/sfx/hurtsfx.mp3")
 
+signal player_took_damage
+
 var AllBarkMusic = preload("res://assets/sfx/AllBark.mp3")
 var NoBikeMusic = preload("res://assets/sfx/NoBike.mp3")
 
@@ -273,6 +275,8 @@ func player_take_damage():
 		dogIsInvincible = true
 		$TheDawg/InvincibleAnimation.play("invincible")
 		invincibleTimer.start(dogInvincibleDuration)
+		# Emit player damage signal for motorbike friend
+		player_took_damage.emit()
 
 func _on_invincible_timer_timeout():
 	$TheDawg/InvincibleAnimation.stop()

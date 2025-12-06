@@ -114,6 +114,3 @@ script = ExtResource("5_6mq4i")
 
 [node name="Stunned" type="Node" parent="StateMachine"]
 script = ExtResource("8_lpxf4")
-sprite_height = null
-slide_down_duration = null
-slide_back_duration = null

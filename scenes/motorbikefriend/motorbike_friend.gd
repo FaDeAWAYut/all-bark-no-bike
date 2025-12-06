@@ -1,8 +1,6 @@
-class_name Motorbike extends CharacterBody2D
+class_name MotorbikeFriend extends Stunnable
 
 var offset_from_camera: Vector2 = Vector2(0, 0)
-@export var setSprite : String = "default"
-@onready var sprite : AnimatedSprite2D = $AnimatedSprite2D
 
 # Movement settings
 @export var speed_x: float = 200.0
@@ -60,15 +58,9 @@ var speedManager: SpeedManager
 
 @onready var motorbike_sprite = $Sprite2D
 
-@export_category("State Variables")
-@onready var timer: Timer = $Timer
-var base_stunned_duration: float = 3.0
-var stunnable_objects: Array[Stunnable] = []
+var main_scene: Node = null
 
-func _ready():
-	# set sprite
-	sprite.animation = StringName(setSprite)
-	
+func _ready():	
 	# Create and setup speed manager
 	speedManager = SpeedManager.new()
 	add_child(speedManager)
@@ -87,15 +79,17 @@ func _ready():
 	# Set initial position within screen bounds
 	global_position.x = clamp(global_position.x, min_x, max_x)
 	
-	# Find all Stunnable objects in the scene
-	if get_tree().has_group("stunnable"):
-		var nodes = get_tree().get_nodes_in_group("stunnable")
-		stunnable_objects = []
-		for node in nodes:
-			if node is Stunnable:
-				stunnable_objects.append(node as Stunnable)
-	else:
-		stunnable_objects = []
+	# Get reference to main scene (parent node)
+	main_scene = get_parent()
+	
+	# Connect health controller's died signal to stun the motorbike friend
+	if HealthController:
+		HealthController.died.connect(_on_health_depleted)
+
+func _on_health_depleted() -> void:
+	# Transition to stunned state when health is depleted
+	if state_machine:
+		state_machine._transition_to_next_state("Stunned")
 
 func _physics_process(delta):
 	currentSpeed = speedManager.update(delta)
@@ -132,10 +126,3 @@ func update_shake_effect(delta):
 		global_position = base_position + shake_offset
 		
 		shake_timer -= delta
-
-func get_stun_multiplier() -> int:
-	var stunned_count: int = 0
-	for stunnable_object in stunnable_objects:
-		if stunnable_object.is_stunned():
-			stunned_count += 1
-	return stunned_count

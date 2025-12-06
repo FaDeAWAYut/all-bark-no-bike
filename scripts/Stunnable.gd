@@ -1,4 +1,4 @@
-class_name Stunnable extends Node
+class_name Stunnable extends CharacterBody2D
 
 var _is_stunned: bool = false
 
