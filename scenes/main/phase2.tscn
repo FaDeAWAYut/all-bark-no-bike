@@ -1,9 +1,9 @@
-[gd_scene load_steps=19 format=3 uid="uid://y870mw6xbtm6"]
+[gd_scene load_steps=21 format=3 uid="uid://y870mw6xbtm6"]
 
 [ext_resource type="Script" uid="uid://ct048k6rsjfbb" path="res://scenes/main/main.gd" id="1_54jss"]
 [ext_resource type="PackedScene" uid="uid://bsf3igehijgig" path="res://scenes/background/parallax_bg.tscn" id="2_eu2pp"]
 [ext_resource type="PackedScene" uid="uid://kj3vytv8yexd" path="res://scenes/background/Turn/road_turn.tscn" id="3_dobbf"]
-[ext_resource type="PackedScene" uid="uid://dfnmfcww2cu6i" path="res://scenes/dawg/the_dawg.tscn" id="4_7a0md"]
+[ext_resource type="PackedScene" uid="uid://ftnxv01ifvwb" path="res://scenes/dawg/The_dawg_on_bike.tscn" id="4_ogru6"]
 [ext_resource type="PackedScene" uid="uid://cobth27w6p3ja" path="res://scenes/hud/hud.tscn" id="5_hgphf"]
 [ext_resource type="PackedScene" uid="uid://d4mchi4q55xdb" path="res://scenes/motorbike/motorbike.tscn" id="6_b4rkt"]
 [ext_resource type="Script" uid="uid://b7ufw4rkm38q4" path="res://scenes/motorbike/boss_health_controller.gd" id="7_nbgot"]
@@ -14,8 +14,9 @@
 [ext_resource type="AudioStream" uid="uid://cotg1jtn26twy" path="res://assets/sfx/chargebarksfx.mp3" id="12_4i2q6"]
 [ext_resource type="Script" uid="uid://ek8hm7xuisk5" path="res://scripts/Pool.gd" id="13_haqeb"]
 [ext_resource type="PackedScene" uid="uid://ce7vraqhrguhk" path="res://scenes/collectable/chadchart.tscn" id="14_bp3xm"]
-[ext_resource type="PackedScene" uid="uid://dy6jmp88qig88" path="res://scenes/gameoveroverlay/game_over.tscn" id="15_flnuf"]
 [ext_resource type="Script" uid="uid://bujgehfwg2nkx" path="res://scripts/SpeedManager.gd" id="15_ogru6"]
+[ext_resource type="PackedScene" uid="uid://dy6jmp88qig88" path="res://scenes/gameoveroverlay/game_over.tscn" id="14_ogru6"]
+[ext_resource type="PackedScene" uid="uid://bv5t0i620xpop" path="res://scenes/motorbikefriend/motorbike_friend.tscn" id="16_flnuf"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_blune"]
 size = Vector2(64, 504)
@@ -26,25 +27,24 @@ size = Vector2(896, 16)
 [node name="Phase2" type="Node" node_paths=PackedStringArray("obstacleSpawner", "collectablesManager", "barkController")]
 script = ExtResource("1_54jss")
 obstacleSpawner = NodePath("ObstacleSpawner")
-collectablesManager = NodePath("CollectablesManager")
 barkController = NodePath("BarkController")
-dogStartPosition = Vector2i(448, 400)
+collectablesManager = NodePath("CollectablesManager")
+dogStartPosition = Vector2i(448, 169)
 camStartPosition = Vector2i(448, 252)
 
 [node name="ParallaxBG" parent="." instance=ExtResource("2_eu2pp")]
 
 [node name="RoadTurn" parent="." node_paths=PackedStringArray("main_scene", "mainScene", "motorbike", "collectables_manager", "obstacle_spawner") instance=ExtResource("3_dobbf")]
 position = Vector2(447, -967)
-timer_duration = 5.0
 main_scene = NodePath("..")
 mainScene = NodePath("..")
 motorbike = NodePath("../Motorbike")
 collectables_manager = NodePath("../CollectablesManager")
 obstacle_spawner = NodePath("../ObstacleSpawner")
 
-[node name="TheDawg" parent="." groups=["player"] instance=ExtResource("4_7a0md")]
-z_index = 2
-position = Vector2(448, 500)
+[node name="TheDawg" parent="." groups=["player"] instance=ExtResource("4_ogru6")]
+z_index = 1
+position = Vector2(448, 169)
 scale = Vector2(2, 2)
 collision_mask = 3
 
@@ -62,16 +62,19 @@ offset_bottom = 23.0
 grow_horizontal = 0
 text = "Boss Health"
 
-[node name="Motorbike" parent="." node_paths=PackedStringArray("BossHealthController") groups=["enemy"] instance=ExtResource("6_b4rkt")]
-position = Vector2(448, 173)
+[node name="Motorbike" parent="." node_paths=PackedStringArray("HealthController") groups=["enemy"] instance=ExtResource("6_b4rkt")]
+position = Vector2(448, 515)
 scale = Vector2(2, 2)
+setSprite = "no_bike"
 hide_speed_multiplier = 0.5
-BossHealthController = NodePath("BossHealthController")
+HealthController = NodePath("BossHealthController")
 hit_flash_duration = 1.0
 
-[node name="BossHealthController" type="Node" parent="Motorbike" node_paths=PackedStringArray("hp_label")]
+[node name="BossHealthController" type="Node" parent="Motorbike"]
 script = ExtResource("7_nbgot")
-hp_label = NodePath("../../HUD/PlaceholderBossHP")
+max_health = 2000
+small_impact_offset = 25
+big_impact_offset = 50
 
 [node name="CollectablesManager" type="Node" parent="." node_paths=PackedStringArray("cough_drop_pool")]
 script = ExtResource("8_u40po")
@@ -82,10 +85,11 @@ cough_drop_pool = NodePath("CoughDropsPool")
 [node name="ObstacleSpawner" type="Node" parent="."]
 script = ExtResource("10_jhg8w")
 
-[node name="BarkController" type="Node" parent="." node_paths=PackedStringArray("theDawg")]
+[node name="BarkController" type="Node" parent="."]
 script = ExtResource("11_bx00b")
-theDawg = NodePath("../TheDawg")
 barkSpawnOffset = Vector2(0, 0)
+bulletDirection = Vector2(0, 1)
+charge_orb_offset = Vector2(0, -25)
 normalBarkVolume = -10
 charge_bark_sound = ExtResource("12_4i2q6")
 
@@ -106,21 +110,14 @@ position = Vector2(864, 252)
 shape = SubResource("RectangleShape2D_blune")
 
 [node name="BoundaryTop" type="CollisionShape2D" parent="Boundary"]
-position = Vector2(448, 186)
+position = Vector2(448, 0)
 shape = SubResource("RectangleShape2D_th5th")
 
 [node name="BoundaryBottom" type="CollisionShape2D" parent="Boundary"]
-position = Vector2(448, 512)
+position = Vector2(448, 380)
 shape = SubResource("RectangleShape2D_th5th")
 
-[node name="LabelForDebug" type="Label" parent="."]
-offset_left = 481.0
-offset_top = 390.0
-offset_right = 546.0
-offset_bottom = 413.0
-text = "Phase 2!"
-
-[node name="GameOver" parent="." instance=ExtResource("15_flnuf")]
+[node name="GameOver" parent="." instance=ExtResource("14_ogru6")]
 process_mode = 2
 visible = false
 z_index = 10
@@ -138,3 +135,7 @@ bus = &"BGM"
 visible = false
 z_index = 2
 position = Vector2(769, 158)
+
+[node name="MotorbikeFriend" parent="." groups=["enemy"] instance=ExtResource("16_flnuf")]
+position = Vector2(336, 513)
+scale = Vector2(2, 2)

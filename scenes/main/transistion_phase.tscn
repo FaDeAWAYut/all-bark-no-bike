@@ -1,6 +1,6 @@
 [gd_scene load_steps=31 format=3 uid="uid://3q5fkhta75i5"]
 
-[ext_resource type="Script" uid="uid://olu68o4i2tkj" path="res://scenes/main/transistion_phase.gd" id="1_avitw"]
+[ext_resource type="Script" path="res://scenes/main/transistion_phase.gd" id="1_avitw"]
 [ext_resource type="PackedScene" uid="uid://bsf3igehijgig" path="res://scenes/background/parallax_bg.tscn" id="1_qhmcf"]
 [ext_resource type="Texture2D" uid="uid://d3tmm68h2ma8x" path="res://assets/baiRun.png" id="3_bg1o1"]
 [ext_resource type="Texture2D" uid="uid://dfyu3yb8ljp8g" path="res://assets/motorbike.png" id="4_avitw"]

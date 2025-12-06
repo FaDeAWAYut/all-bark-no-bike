@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cobth27w6p3ja"]
+[gd_scene load_steps=13 format=3 uid="uid://cobth27w6p3ja"]
 
 [ext_resource type="Script" uid="uid://b0dlfsughup2x" path="res://scenes/hud/hud.gd" id="1_v7mo4"]
 [ext_resource type="Texture2D" uid="uid://ckkisvsq4v73e" path="res://assets/healthbar_under.png" id="2_0bx4p"]
@@ -10,6 +10,8 @@
 [ext_resource type="Texture2D" uid="uid://dk14hh4hsqh7h" path="res://assets/chargebar_progress.png" id="8_go0ap"]
 [ext_resource type="Texture2D" uid="uid://xd7nj3xmyw5k" path="res://assets/chargebar_bluefire.png" id="9_go0ap"]
 [ext_resource type="Texture2D" uid="uid://c87ec0hq7vlj4" path="res://assets/shield.png" id="10_nhd55"]
+[ext_resource type="Texture2D" uid="uid://q2sxkh4bmopt" path="res://assets/bosshp_background.png" id="11_8nkf1"]
+[ext_resource type="Texture2D" uid="uid://dfhhlfvkb0xeq" path="res://assets/bosshp_progess.png" id="12_558d4"]
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_v7mo4")
@@ -18,16 +20,16 @@ metadata/_edit_vertical_guides_ = [448.0]
 [node name="TextureProgressBar" type="TextureProgressBar" parent="."]
 texture_filter = 1
 offset_left = 60.499992
-offset_top = 33.5
+offset_top = 53.5
 offset_right = 247.16669
-offset_bottom = 68.5
+offset_bottom = 88.5
 nine_patch_stretch = true
 texture_under = ExtResource("2_0bx4p")
 texture_progress = ExtResource("4_v7mo4")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
-position = Vector2(52.5, 49.5)
+position = Vector2(52.5, 69.5)
 scale = Vector2(3, 3)
 texture = ExtResource("3_mgtrf")
 
@@ -38,11 +40,11 @@ script = ExtResource("5_v7mo4")
 texture_filter = 1
 layout_mode = 0
 offset_left = 47.0
-offset_top = 75.0
+offset_top = 97.0
 offset_right = 109.0
-offset_bottom = 124.0
+offset_bottom = 146.0
 theme_override_fonts/font = ExtResource("5_mgtrf")
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 28
 text = "00:"
 horizontal_alignment = 2
 
@@ -50,11 +52,11 @@ horizontal_alignment = 2
 texture_filter = 1
 layout_mode = 0
 offset_left = 105.0
-offset_top = 75.0
+offset_top = 97.0
 offset_right = 149.0
-offset_bottom = 124.0
+offset_bottom = 146.0
 theme_override_fonts/font = ExtResource("5_mgtrf")
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 28
 text = "00"
 horizontal_alignment = 2
 
@@ -76,9 +78,20 @@ texture = ExtResource("9_go0ap")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 texture_filter = 1
-offset_left = 259.0
-offset_top = 17.0
-offset_right = 321.0
-offset_bottom = 79.0
+offset_left = 24.0
+offset_top = 140.0
+offset_right = 80.0
+offset_bottom = 196.0
 texture = ExtResource("10_nhd55")
 expand_mode = 1
+
+[node name="TextureProgressBarBoss" type="TextureProgressBar" parent="."]
+texture_filter = 1
+offset_left = 109.0
+offset_top = 14.0
+offset_right = 786.0
+offset_bottom = 52.0
+max_value = 2000.0
+nine_patch_stretch = true
+texture_under = ExtResource("11_8nkf1")
+texture_progress = ExtResource("12_558d4")

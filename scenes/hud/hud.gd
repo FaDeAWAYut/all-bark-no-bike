@@ -6,6 +6,7 @@ extends CanvasLayer
 @onready var bluefire = $Sprite2DCharge
 @onready var timer = $Panel
 @onready var shield = $TextureRect
+@onready var bosshealth = $TextureProgressBarBoss
 
 @export var floatAmplitude: float = 2
 @export var floatFrequency: float = 0.4
@@ -17,6 +18,7 @@ var chargeOriginalPosition: Vector2
 var bluefireOriginalPosition: Vector2
 var timerOriginalPosition: Vector2
 var shieldOriginalPosition: Vector2
+var bossOriginalPosition: Vector2
 var time: float = 0.0
 
 func _ready():
@@ -26,6 +28,7 @@ func _ready():
 	bluefireOriginalPosition = bluefire.position
 	timerOriginalPosition = timer.position
 	shieldOriginalPosition = shield.position
+	bossOriginalPosition = bosshealth.position
 
 func _process(delta):
 	if not floatEnabled:
@@ -38,6 +41,7 @@ func _process(delta):
 	healthBar.position.y = healthBarOriginalPosition.y + healthBarFloatOffset
 	chargeBar.position.y = chargeOriginalPosition.y + healthBarFloatOffset
 	shield.position.y = shieldOriginalPosition.y + healthBarFloatOffset
+	bosshealth.position.y = bossOriginalPosition.y + healthBarFloatOffset
 	#timer.position.y = timerOriginalPosition.y + healthBarFloatOffset
 	#idontlikethetimer floating lmfao
 	

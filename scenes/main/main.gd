@@ -43,6 +43,8 @@ var healingSFX = preload("res://assets/sfx/healingsfx.mp3")
 var chadchartAppearsSFX = preload("res://assets/sfx/ChadChartAppears.mp3")
 var chadchartActiveSFX = preload("res://assets/sfx/ChadChartIsHere.mp3")
 
+signal player_took_damage
+
 var AllBarkMusic = preload("res://assets/sfx/AllBark.mp3")
 var NoBikeMusic = preload("res://assets/sfx/NoBike.mp3")
 
@@ -60,6 +62,9 @@ var coughDropSounds: Array = [
 @export var chadchartAppearsSoundVolume: float = 0.0
 @export var chadchartActiveSoundVolume: float = -5.0
 
+@export_category("Debug Options")
+@export var SkipPhaseOne := false
+
 @onready var parallax = $ParallaxBG/Parallax2D
 @onready var bossHealthController = $Motorbike/BossHealthController
 
@@ -74,6 +79,12 @@ func _ready():
 	play_background_music()
 	
 	previousHP = gameManager.playerHp
+	
+	# Skip Phase One debug option
+	if SkipPhaseOne:
+		bossHealthController.current_health = 0
+		bossHealthController.update_hp_label()
+		bossHealthController.died.emit()
 
 func initialize_modules():
 	gameManager = GameManager.new()
@@ -162,6 +173,12 @@ func initialize_modules():
 	barkController.charge_bark_pool = charge_bark_pool
 	
 	barkController.hud = $HUD
+	#to initialize Boss health bar
+	var boss_max_health = bossHealthController.phase_two_max_health if bossHealthController.is_phase_two else bossHealthController.max_health
+	$HUD.get_node("TextureProgressBarBoss").max_value = boss_max_health
+	$HUD.get_node("TextureProgressBarBoss").value = bossHealthController.current_health
+	bossHealthController.hud = $HUD
+	
 	
 	# NEW: Pass screenEffects to BarkController
 	barkController.screenEffects = screenEffects
@@ -276,6 +293,8 @@ func player_take_damage():
 		dogIsInvincible = true
 		$TheDawg/InvincibleAnimation.play("invincible")
 		invincibleTimer.start(dogInvincibleDuration)
+		# Emit player damage signal for motorbike friend
+		player_took_damage.emit()
 
 func _on_invincible_timer_timeout():
 	$TheDawg/InvincibleAnimation.stop()

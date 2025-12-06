@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://c22gh5obgnvfy"]
+
+[ext_resource type="Script" uid="uid://ceqv0jlyaqpiv" path="res://scenes/motorbike/interruption/throw/ball/ball.gd" id="1_3kvy3"]
+[ext_resource type="Texture2D" uid="uid://c8hqtlsjqism5" path="res://assets/ball.png" id="1_v6h5u"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_43bca"]
+friction = 0.1
+bounce = 1.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3kvy3"]
+radius = 21.0
+
+[node name="Ball" type="RigidBody2D"]
+mass = 0.8
+physics_material_override = SubResource("PhysicsMaterial_43bca")
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("1_3kvy3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(3, -1)
+shape = SubResource("CircleShape2D_3kvy3")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(1, 3.8147e-06)
+scale = Vector2(0.110417, 0.110417)
+texture = ExtResource("1_v6h5u")
