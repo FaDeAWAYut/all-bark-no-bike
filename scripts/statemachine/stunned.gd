@@ -136,11 +136,11 @@ func _on_stun_timer_timeout():
 		boss.ray_cast_center.enabled = true
 	
 	# Reset boss health to full
-	if boss.BossHealthController:
-		var current_max = boss.BossHealthController.phase_two_max_health if boss.BossHealthController.is_phase_two else boss.BossHealthController.max_health
-		boss.BossHealthController.current_health = current_max
-		boss.BossHealthController.health_changed.emit(boss.BossHealthController.current_health)
-		boss.BossHealthController.update_hp_label()
+	if boss.HealthController:
+		var current_max = boss.HealthController.phase_two_max_health if boss.HealthController.is_phase_two else boss.HealthController.max_health
+		boss.HealthController.current_health = current_max
+		boss.HealthController.health_changed.emit(boss.HealthController.current_health)
+		boss.HealthController.update_hp_label()
 	
 	# Start sliding back to original position
 	is_moving_back = true
