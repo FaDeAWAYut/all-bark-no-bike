@@ -4,8 +4,8 @@
 [ext_resource type="Script" uid="uid://ckwrvr6jqi8t2" path="res://scenes/motorbikefriend/motorbike_friend.gd" id="1_x8yn3"]
 [ext_resource type="Script" uid="uid://y2jsbpc2gabf" path="res://scripts/statemachine/state_machine.gd" id="3_ulevm"]
 [ext_resource type="Script" uid="uid://b6taeeft41png" path="res://scripts/statemachine/motorbike_friend_driving.gd" id="4_x8yn3"]
-[ext_resource type="Script" path="res://scripts/statemachine/motorbike_friend_turning.gd" id="5_x8yn3"]
-[ext_resource type="Script" path="res://scripts/statemachine/motorbike_friend_throwing.gd" id="6_ulevm"]
+[ext_resource type="Script" uid="uid://6we8v6kaf6x1" path="res://scripts/statemachine/motorbike_friend_turning.gd" id="5_x8yn3"]
+[ext_resource type="Script" uid="uid://cnni66ojg1re8" path="res://scripts/statemachine/motorbike_friend_throwing.gd" id="6_ulevm"]
 [ext_resource type="Script" uid="uid://c8qasji16ecpn" path="res://scripts/statemachine/motorbike_friend_zooming.gd" id="7_ulevm"]
 [ext_resource type="Script" uid="uid://e088l0k2u315" path="res://scenes/motorbikefriend/motorbike_friend_health_controller.gd" id="8_ab7kq"]
 [ext_resource type="Texture2D" uid="uid://b64sm0rjr0n8a" path="res://assets/small_hp_under.png" id="9_tehww"]
@@ -21,9 +21,15 @@ HealthController = NodePath("HealthController")
 position = Vector2(0, -32)
 texture = ExtResource("1_d03wb")
 
+[node name="DamageArea2D" type="Area2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="DamageArea2D"]
+position = Vector2(0, -32)
+polygon = PackedVector2Array(-2, -30, 2, -30, 5, -27, 5, -20, 8, -19, 10, -10, 15, -6, 15, -4, 11, -4, 8, -3, 12, 6, 9, 19, 3, 23, 3, 31, -3, 31, -3, 23, -9, 19, -12, 6, -8, -3, -11, -4, -15, -4, -15, -6, -10, -10, -8, -19, -5, -20, -5, -27)
+
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 position = Vector2(0, -32)
-polygon = PackedVector2Array(-2, -30, 2, -30, 6, -27, 6, -21, 9, -19, 10, -11, 15, -6, 15, -4, 11, -4, 9, -3, 11, 3, 12, 6, 10, 19, 3, 24, 3, 31, -3, 31, -3, 24, -10, 19, -12, 6, -11, 2, -9, -3, -11, -4, -15, -4, -15, -6, -10, -11, -9, -19, -6, -21, -6, -27)
+polygon = PackedVector2Array(-2, -29, 2, -29, 4, -27, 5, -20, 7, -19, 10, -10, 14, -6, 14, -4, 11, -4, 8, -3, 10, 3, 11, 6, 9, 19, 3, 23, 3, 31, -3, 31, -3, 23, -9, 19, -11, 6, -10, 3, -8, -3, -11, -4, -14, -4, -14, -6, -10, -10, -7, -19, -5, -20, -4, -27)
 
 [node name="RayCastCenter" type="RayCast2D" parent="."]
 position = Vector2(0, -32)
@@ -81,4 +87,5 @@ max_value = 200.0
 texture_under = ExtResource("9_tehww")
 texture_progress = ExtResource("10_8bteb")
 
+[connection signal="body_entered" from="DamageArea2D" to="StateMachine/Zooming" method="_on_area_2d_body_entered"]
 [connection signal="timeout" from="StateMachine/Driving/ZoomingTimer" to="StateMachine/Driving" method="_on_zooming_timer_timeout"]

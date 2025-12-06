@@ -49,3 +49,8 @@ func handle_end_zooming():
 		if boss.global_position.y <= camera_bottom:
 			boss.velocity.y = 0
 			finished.emit(DRIVING)
+
+
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	if body.name == "TheDawg":
+		$"../..".get_parent().player_take_damage()

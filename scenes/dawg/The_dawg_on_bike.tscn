@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=3 uid="uid://ftnxv01ifvwb"]
 
 [ext_resource type="Texture2D" uid="uid://k12rgs1438ff" path="res://assets/TheDawgOnBikeBark.png" id="1_vg5h0"]
-[ext_resource type="Script" uid="uid://dnkjtkuwmwu1c" path="res://scenes/dawg/the_dawg_on_bike.gd" id="1_xub8n"]
+[ext_resource type="Script" path="res://scenes/dawg/the_dawg_on_bike.gd" id="1_xub8n"]
 [ext_resource type="Texture2D" uid="uid://2y3hqwi7jx71" path="res://assets/TheDawgOnBike.png" id="2_xub8n"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_q0tly"]
@@ -92,7 +92,7 @@ animation = &"barking"
 autoplay = "default"
 
 [node name="CollisionShape2D" type="CollisionPolygon2D" parent="."]
-polygon = PackedVector2Array(5, -23, -5, -23, -5, -14, -12, -8, -12, -6, -14, -6, -14, -4, -10, -3, -4, -3, -6, 0, -6, 16, -9, 19, -3, 24, -3, 31, 3, 31, 3, 24, 9, 19, 6, 16, 6, 0, 4, -3, 10, -3, 14, -4, 14, -6, 12, -6, 12, -8, 5, -14)
+polygon = PackedVector2Array(5, -23, -5, -23, -5, -14, -12, -8, -12, -6, -14, -6, -14, -4, -10, -4, -4, -3, -6, 0, -6, 16, -8, 18, -8, 20, -3, 24, -3, 29, -1, 31, 1, 31, 3, 29, 3, 24, 8, 20, 8, 18, 6, 16, 6, 0, 4, -3, 10, -4, 14, -4, 14, -6, 12, -6, 12, -8, 5, -14)
 
 [node name="InvincibleAnimation" type="AnimationPlayer" parent="."]
 libraries = {
