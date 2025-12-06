@@ -76,11 +76,20 @@ func _ready():
 	
 	# Set initial position within screen bounds
 	global_position.x = clamp(global_position.x, min_x, max_x)
+	
+	# Connect health controller's died signal to stun the motorbike friend
+	if HealthController:
+		HealthController.died.connect(_on_health_depleted)
 
 func _on_player_took_damage() -> void:
 	# Transition from stunned state to driving state
 	if state_machine and state_machine.state.name == "Stunned":
 		state_machine._transition_to_next_state("Driving")
+
+func _on_health_depleted() -> void:
+	# Transition to stunned state when health is depleted
+	if state_machine:
+		state_machine._transition_to_next_state("Stunned")
 
 func _physics_process(delta):
 	currentSpeed = speedManager.update(delta)

@@ -27,6 +27,13 @@ func enter(_previous_state_path: String, _data := {}) -> void:
 func exit() -> void:
 	is_moving_down = false
 	is_moving_back = false
+	
+	# Reset health when exiting stunned state
+	if boss and boss.HealthController:
+		boss.HealthController.current_health = boss.HealthController.max_health
+		boss.HealthController.health_changed.emit(boss.HealthController.current_health)
+		if boss.HealthController.has_method("update_hp_label"):
+			boss.HealthController.update_hp_label()
 
 func physics_update(delta: float) -> void:
 	if not boss:

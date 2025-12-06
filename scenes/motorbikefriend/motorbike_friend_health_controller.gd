@@ -28,7 +28,6 @@ func _ready():
 	current_health = max_health
 	update_hp_label()
 
-# UPDATED: Add bark_type parameter to distinguish between normal and charge bark
 func take_damage(damage_amount: int, impact_position: Vector2 = Vector2.ZERO, bark_type: String = "normal"):
 	current_health = max(0, current_health - damage_amount)
 	health_changed.emit(current_health)
