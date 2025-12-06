@@ -14,7 +14,7 @@ class_name CollectablesManager
 @export var min_spawn_interval: float = 1.0
 @export var max_spawn_interval: float = 5.0
 @export var upgrade_spawn_chance: float = 0.3 
-@export var chadchart_spawn_chance: float = 0.1 if !isPhaseOne else 0.0
+@onready var chadchart_spawn_chance: float = 0.0 if isPhaseOne else 0.1
 @export var cough_drop_scale: float = 2
 @export var collectable_speed_multiplier: float = 0.8
 

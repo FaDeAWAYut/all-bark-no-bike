@@ -3,6 +3,7 @@ extends Node
 # Preload the obstacle scenes
 var carScenes = [preload("res://scenes/car/black_car.tscn"), preload("res://scenes/car/mini_car.tscn"),preload("res://scenes/car/truck_car.tscn")]
 var sideScenes = [preload("res://scenes/sideobstacles/meow.tscn"), preload("res://scenes/sideobstacles/banner.tscn"), preload("res://scenes/sideobstacles/bonsai.tscn")]
+var chadchartWalkout = preload("res://scenes/collectable/chadchart_walkout.tscn").instantiate()
 
 # Module instances
 var gameManager: GameManager
@@ -207,9 +208,7 @@ func initialize_modules():
 	for chadchart in chadchart_pool.get_children():
 		if chadchart.has_signal("coughdrop_collected") && not chadchart.coughdrop_collected.is_connected(collectablesManager._on_cough_drop_collected):
 				chadchart.coughdrop_collected.connect(collectablesManager._on_cough_drop_collected)
-
-	$ChadchartWalkout/AnimatedSprite2D.animation = &"no_shield"
-	
+		
 func setup_signal_connections():
 	# Connect game manager signals
 	gameManager.game_ended.connect(_on_game_ended)
@@ -458,13 +457,19 @@ func activate_chadchart():
 	bgmPlayer.volume_db = -60.0
 	play_chadchart_active_sound()
 	await get_tree().create_timer(11.5).timeout
+	
+	# after chadchart use
 	gradually_increase_bgm_volume(5)
-	$ChadchartWalkout.position = Vector2($TheDawg.position.x, $TheDawg.position.y) 
-	$ChadchartWalkout/Control.hide()
-	$ChadchartWalkout.show()	
-	print("cc: ", $ChadchartWalkout.position, "  --  dawg: ", $TheDawg.position) # somehow not printing this makes ChadchartWalkOut not show...
-	$TheDawg/AnimatedSprite2D.animation = &"run"
+	add_child(chadchartWalkout)
+	chadchartWalkout.get_child(2).hide() # hide Control node
+	chadchartWalkout.position = Vector2($TheDawg.position.x,$TheDawg.position.y)
+	chadchartWalkout.get_child(0).animation = &"no_shield"
+	$TheDawg/AnimatedSprite2D.animation = &"default"
 	$TheDawg.scale = Vector2(2,2)
+	
+	# delete node after ~5 secs, when chadchart has walked out of screen
+	await get_tree().create_timer(5).timeout
+	chadchartWalkout.queue_free() 
 	
 func gradually_increase_bgm_volume(duration_sec: float):
 	const muteVolume = -60.0

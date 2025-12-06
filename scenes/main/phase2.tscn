@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://y870mw6xbtm6"]
+[gd_scene load_steps=19 format=3 uid="uid://y870mw6xbtm6"]
 
 [ext_resource type="Script" uid="uid://ct048k6rsjfbb" path="res://scenes/main/main.gd" id="1_54jss"]
 [ext_resource type="PackedScene" uid="uid://bsf3igehijgig" path="res://scenes/background/parallax_bg.tscn" id="2_eu2pp"]
@@ -13,9 +13,8 @@
 [ext_resource type="Script" uid="uid://dddagrng1jobg" path="res://scripts/BarkController.gd" id="11_bx00b"]
 [ext_resource type="AudioStream" uid="uid://cotg1jtn26twy" path="res://assets/sfx/chargebarksfx.mp3" id="12_4i2q6"]
 [ext_resource type="Script" uid="uid://ek8hm7xuisk5" path="res://scripts/Pool.gd" id="13_haqeb"]
-[ext_resource type="PackedScene" uid="uid://ce7vraqhrguhk" path="res://scenes/collectable/chadchart.tscn" id="14_bp3xm"]
-[ext_resource type="Script" uid="uid://bujgehfwg2nkx" path="res://scripts/SpeedManager.gd" id="15_ogru6"]
 [ext_resource type="PackedScene" uid="uid://dy6jmp88qig88" path="res://scenes/gameoveroverlay/game_over.tscn" id="14_ogru6"]
+[ext_resource type="Script" uid="uid://bujgehfwg2nkx" path="res://scripts/SpeedManager.gd" id="15_ogru6"]
 [ext_resource type="PackedScene" uid="uid://bv5t0i620xpop" path="res://scenes/motorbikefriend/motorbike_friend.tscn" id="16_flnuf"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_blune"]
@@ -27,8 +26,8 @@ size = Vector2(896, 16)
 [node name="Phase2" type="Node" node_paths=PackedStringArray("obstacleSpawner", "collectablesManager", "barkController")]
 script = ExtResource("1_54jss")
 obstacleSpawner = NodePath("ObstacleSpawner")
-barkController = NodePath("BarkController")
 collectablesManager = NodePath("CollectablesManager")
+barkController = NodePath("BarkController")
 dogStartPosition = Vector2i(448, 169)
 camStartPosition = Vector2i(448, 252)
 
@@ -130,11 +129,6 @@ metadata/_custom_type_script = "uid://bujgehfwg2nkx"
 bus = &"BGM"
 
 [node name="ChadchartSfxPlayer" type="AudioStreamPlayer2D" parent="."]
-
-[node name="ChadchartWalkout" parent="." instance=ExtResource("14_bp3xm")]
-visible = false
-z_index = 2
-position = Vector2(769, 158)
 
 [node name="MotorbikeFriend" parent="." groups=["enemy"] instance=ExtResource("16_flnuf")]
 position = Vector2(336, 513)
