@@ -60,6 +60,11 @@ var speedManager: SpeedManager
 
 @onready var motorbike_sprite = $Sprite2D
 
+@export_category("State Variables")
+@onready var timer: Timer = $Timer
+var base_stunned_duration: float = 3.0
+@export var stunnable_objects: Array[Stunnable] = []
+
 func _ready():
 	# set sprite
 	sprite.animation = StringName(setSprite)
@@ -117,3 +122,10 @@ func update_shake_effect(delta):
 		global_position = base_position + shake_offset
 		
 		shake_timer -= delta
+
+func get_stun_multiplier() -> int:
+	var stunned_count: int = 0
+	for stunnable_object in stunnable_objects:
+		if stunnable_object.is_stunned():
+			stunned_count += 1
+	return stunned_count
