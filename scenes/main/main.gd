@@ -11,6 +11,10 @@ var gameManager: GameManager
 @export var barkController: BarkController
 var screenEffects: ScreenEffects
 
+@onready var bgmPlayer = $BgmPlayer
+@onready var chadchartSfxPlayer = $ChadchartSfxPlayer
+#@onready var BGM_BUS_ID = AudioServer.get_bus_index("BGM") # for when we implement volume settings
+
 @export var collectablesManager: CollectablesManager
 
 @onready var isPhaseOne = self.name == "Phase1"
@@ -35,6 +39,10 @@ var gameTime: float = 0.0
 var screenSize : Vector2i
 
 var hurtSFX = preload("res://assets/sfx/hurtsfx.mp3")
+var shieldSFX = preload("res://assets/sfx/shieldmonk.mp3")
+var healingSFX = preload("res://assets/sfx/healingsfx.mp3")
+var chadchartAppearsSFX = preload("res://assets/sfx/ChadChartAppears.mp3")
+var chadchartActiveSFX = preload("res://assets/sfx/ChadChartIsHere.mp3")
 
 var AllBarkMusic = preload("res://assets/sfx/AllBark.mp3")
 var NoBikeMusic = preload("res://assets/sfx/NoBike.mp3")
@@ -45,14 +53,13 @@ var coughDropSounds: Array = [
 	preload("res://assets/sfx/cough_drop_eating3.mp3")
 ]
 
-var shieldSFX = preload("res://assets/sfx/shieldmonk.mp3")
-var healingSFX = preload("res://assets/sfx/healingsfx.mp3")
-
 @export var hurtSoundVolume = -5
-@export var bgMusicVolume = -5
+@export var bgmVolume = -5
 @export var coughDropVolume: float = -5.0
 @export var shieldSoundVolume: float = -5.0
 @export var healingSoundVolume: float = -5.0 
+@export var chadchartActiveSoundVolume: float = -5.0
+@export var chadchartAppearsSoundVolume: float = -5.0
 
 @onready var parallax = $ParallaxBG/Parallax2D
 @onready var bossHealthController = $Motorbike/BossHealthController
@@ -191,6 +198,7 @@ func setup_signal_connections():
 	gameManager.hp_changed.connect(_on_hp_changed)
 	gameManager.charge_changed.connect(_on_charge_changed)
 	gameManager.shield_changed.connect(_on_shield_changed)
+	collectablesManager.chadchart_appears.connect(_on_chadchart_appears)
 	bossHealthController.died.connect(_on_boss_died)  # Connect to local handler first
 	
 	# Connect obstacle spawner signals
@@ -302,24 +310,41 @@ func play_hp_gain_sound():
 	add_child(soundPlayer)
 	soundPlayer.play()
 
+# use chadchartSfxPlayer so that when player collects chadchart while ChadchartAppears.mp3 is still playing, the game immediately switches to ChadchartIsHere.mp3 
+# เสียงจะได้ไม่เล่นทับกัน
+func play_chadchart_appears_sound():
+	print("player: ", chadchartSfxPlayer)
+	if chadchartSfxPlayer:
+		print("appear -- player: ", chadchartSfxPlayer)
+		chadchartSfxPlayer.stream = chadchartAppearsSFX
+		chadchartSfxPlayer.volume_db = chadchartAppearsSoundVolume
+		chadchartSfxPlayer.play()
+	
+func play_chadchart_active_sound():
+	if chadchartSfxPlayer:
+		print("active -- player: ", chadchartSfxPlayer)
+		chadchartSfxPlayer.stream = chadchartActiveSFX
+		chadchartSfxPlayer.volume_db = chadchartActiveSoundVolume
+		chadchartSfxPlayer.play()
 	
 func play_background_music():
-	var music_player = AudioStreamPlayer.new()
 	if isPhaseOne:
-		music_player.stream = AllBarkMusic
+		bgmPlayer.stream = AllBarkMusic
 	else:
-		music_player.stream = NoBikeMusic
+		bgmPlayer.stream = NoBikeMusic
 
-	music_player.volume_db = bgMusicVolume
-	music_player.autoplay = true
-	music_player.name = "BackgroundMusic"
+	bgmPlayer.volume_db = bgmVolume
+	bgmPlayer.autoplay = true
+	bgmPlayer.name = "BackgroundMusic"
 	
 	# Make it loop
-	music_player.finished.connect(music_player.play)
+	bgmPlayer.finished.connect(bgmPlayer.play)
 	
-	add_child(music_player)
-	if !isPhaseOne:
-		music_player.play(11)
+	add_child(bgmPlayer)
+	if isPhaseOne:
+		bgmPlayer.play(0)
+	else:
+		bgmPlayer.play(11)
 	 
 func _input(event):
 	if gameManager.isGameOver:
@@ -345,13 +370,9 @@ func _on_hp_changed(new_hp: int):
 func _on_shield_changed(has_shield: bool, is_chadchart: bool):
 	if has_shield:
 		if is_chadchart:
-			$TheDawg/AnimatedSprite2D.animation = &"chadchart_active"
-			$TheDawg.scale = Vector2(0.5,0.5)
+			activate_chadchart()
 		else: 
-			play_shield_sound()
-	else:
-		$TheDawg/AnimatedSprite2D.animation = &"run"
-		$TheDawg.scale = Vector2(2,2)
+			play_shield_sound()	
 		
 	var shield_icon = $HUD.get_node("TextureRect")
 	if shield_icon:
@@ -411,3 +432,23 @@ func transition_to_phase_transition():
 	# Load transition scene
 	get_tree().change_scene_to_file("res://scenes/main/transistion_phase.tscn")
 	
+func _on_chadchart_appears():
+	play_chadchart_appears_sound()
+	
+func activate_chadchart():
+	$TheDawg/AnimatedSprite2D.animation = &"chadchart_active"
+	$TheDawg.scale = Vector2(0.5,0.5)
+	bgmPlayer.volume_db = -60.0
+	play_chadchart_active_sound()
+	await get_tree().create_timer(10).timeout
+	print("DONE cc")
+	gradually_increase_bgm_volume(5)
+
+	$TheDawg/AnimatedSprite2D.animation = &"run"
+	$TheDawg.scale = Vector2(2,2)
+	
+func gradually_increase_bgm_volume(duration_sec: float):
+	const muteVolume = -60.0
+	for i in range(1, duration_sec*10+1): # *10 for less increase in each step -> smoother increase
+		await get_tree().create_timer(0.1).timeout
+		bgmPlayer.volume_db = muteVolume + (bgmVolume - muteVolume) * (i/(duration_sec*10))

@@ -63,7 +63,6 @@ text = "Boss Health"
 z_index = 1
 position = Vector2(448, 173)
 scale = Vector2(2, 2)
-spawn_position = Vector2(448, 169)
 hide_speed_multiplier = 0.5
 BossHealthController = NodePath("BossHealthController")
 hit_flash_duration = 1.0
@@ -121,3 +120,5 @@ z_index = 10
 [node name="SpeedManager" type="Node" parent="."]
 script = ExtResource("15_dobbf")
 metadata/_custom_type_script = "uid://bujgehfwg2nkx"
+
+[node name="BgmPlayer" type="AudioStreamPlayer2D" parent="."]
