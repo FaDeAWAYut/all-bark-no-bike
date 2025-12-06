@@ -205,11 +205,6 @@ func setup_signal_connections():
 	
 	# Connect speed manager signals
 	speedManager.speed_changed.connect(_on_speed_changed)
-	
-	# Connect motorbike friend to player damage signal
-	if has_node("MotorbikeFriend"):
-		var motorbike_friend = get_node("MotorbikeFriend")
-		player_took_damage.connect(motorbike_friend._on_player_took_damage)
 
 func _on_boss_died():
 	transition_to_phase_transition()

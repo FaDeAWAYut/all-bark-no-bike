@@ -7,6 +7,7 @@ extends MotorbikeFriendState
 var is_moving_down: bool = false
 var is_moving_back: bool = false
 var original_position: Vector2
+var current_down_position: Vector2
 var slide_timer: float = 0.0
 var target_y: float = 0.0
 var main_scene: Node = null
@@ -51,10 +52,11 @@ func exit() -> void:
 			boss.HealthController.update_hp_label()
 
 func _on_player_took_damage() -> void:
-	# Transition to moving back up when player takes damage
-	if is_moving_down:
+	# Only transition to moving back up if we've finished sliding down and not already moving back
+	if not is_moving_back and not boss.is_hiding:
 		is_moving_down = false
 		is_moving_back = true
+		current_down_position = boss.global_position
 		slide_timer = 0.0
 
 func physics_update(delta: float) -> void:
@@ -69,12 +71,6 @@ func physics_update(delta: float) -> void:
 		handle_moving_back(delta)
 
 func start_moving_down():
-	if boss.is_hidden:
-		return
-
-	if not boss.is_positioned:
-		return
-
 	is_moving_down = true
 	boss.is_hiding = true
 	boss.is_positioned = false
@@ -139,9 +135,9 @@ func handle_moving_back(delta: float):
 		# Transition back to driving state
 		finished.emit(DRIVING)
 	else:
-		# Smooth interpolation
+		# Smooth interpolation from current down position back to original position
 		var progress = slide_timer / slide_back_duration
-		boss.global_position.y = lerp(target_y, original_position.y, progress)
+		boss.global_position.y = lerp(current_down_position.y, original_position.y, progress)
 	
 	boss.velocity = Vector2.ZERO
 	boss.move_and_slide()

@@ -71,7 +71,6 @@ script = ExtResource("7_ulevm")
 
 [node name="Stunned" type="Node" parent="StateMachine"]
 script = ExtResource("8_8bteb")
-sprite_height = 0.0
 
 [node name="HealthController" type="Node" parent="."]
 script = ExtResource("8_ab7kq")
