@@ -1,13 +1,17 @@
-[gd_scene load_steps=16 format=3 uid="uid://d4mchi4q55xdb"]
+[gd_scene load_steps=20 format=3 uid="uid://d4mchi4q55xdb"]
 
 [ext_resource type="Script" uid="uid://cnjgaa41oxy3e" path="res://scenes/motorbike/motorbike.gd" id="1_1bwdf"]
 [ext_resource type="Texture2D" uid="uid://dfyu3yb8ljp8g" path="res://assets/motorbike.png" id="1_w1uch"]
+[ext_resource type="PackedScene" uid="uid://yh12dv5s23ef" path="res://scenes/motorbike/interruption/smoke/smoke.tscn" id="2_78t68"]
 [ext_resource type="Texture2D" uid="uid://d3tmm68h2ma8x" path="res://assets/baiRun.png" id="3_6mq4i"]
+[ext_resource type="PackedScene" uid="uid://cslgo50esooie" path="res://scenes/motorbike/interruption/throw/cigarette/cigarette.tscn" id="3_aa8o7"]
 [ext_resource type="Script" uid="uid://y2jsbpc2gabf" path="res://scripts/statemachine/state_machine.gd" id="3_y1enh"]
 [ext_resource type="Script" uid="uid://c2843477cblqo" path="res://scripts/statemachine/turning.gd" id="4_0xr2y"]
 [ext_resource type="Script" uid="uid://cknu1cymfg8xl" path="res://scripts/statemachine/driving.gd" id="4_6mq4i"]
+[ext_resource type="PackedScene" uid="uid://co7c2okay1p8l" path="res://scenes/motorbike/interruption/throw/rock/rock.tscn" id="4_78t68"]
 [ext_resource type="Script" uid="uid://ffqrcdp00q8d" path="res://scripts/statemachine/throwing.gd" id="5_6mq4i"]
-[ext_resource type="Script" uid="uid://bunovwwifxp1s" path="res://scripts/statemachine/stunned.gd" id="8_lpxf4"]
+[ext_resource type="PackedScene" uid="uid://c22gh5obgnvfy" path="res://scenes/motorbike/interruption/throw/ball/ball.tscn" id="5_ocqm2"]
+[ext_resource type="Script" path="res://scripts/statemachine/stunned.gd" id="8_lpxf4"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1bwdf"]
 atlas = ExtResource("1_w1uch")
@@ -67,6 +71,11 @@ animations = [{
 [node name="Motorbike" type="CharacterBody2D"]
 motion_mode = 1
 script = ExtResource("1_1bwdf")
+smoke_scene = ExtResource("2_78t68")
+level = 2
+cigarette_scene = ExtResource("3_aa8o7")
+rock_scene = ExtResource("4_78t68")
+bouncy_ball_scene = ExtResource("5_ocqm2")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
@@ -114,3 +123,8 @@ script = ExtResource("5_6mq4i")
 
 [node name="Stunned" type="Node" parent="StateMachine"]
 script = ExtResource("8_lpxf4")
+
+[node name="SmokeTimer" type="Timer" parent="."]
+
+[node name="ThrowTimer" type="Timer" parent="."]
+wait_time = 1.8
