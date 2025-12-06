@@ -443,6 +443,7 @@ func activate_chadchart():
 	$ChadchartWalkout.position = Vector2($TheDawg.position.x, $TheDawg.position.y) 
 	$ChadchartWalkout/Control.hide()
 	$ChadchartWalkout.show()	
+	print("cc: ", $ChadchartWalkout.position, "  --  dawg: ", $TheDawg.position) # somehow not printing this makes ChadchartWalkOut not show...
 	$TheDawg/AnimatedSprite2D.animation = &"run"
 	$TheDawg.scale = Vector2(2,2)
 	
