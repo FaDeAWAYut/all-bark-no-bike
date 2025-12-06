@@ -32,12 +32,18 @@ var invincibleTimer: Timer = Timer.new()
 # Background scrolling settings
 var gameTime: float = 0.0
 
+var timeLimit: float = 135.0 #2.15 minutes
+
 var screenSize : Vector2i
 
 var hurtSFX = preload("res://assets/sfx/hurtsfx.mp3")
 
 var AllBarkMusic = preload("res://assets/sfx/AllBark.mp3")
 var NoBikeMusic = preload("res://assets/sfx/NoBike.mp3")
+
+# Timer settings
+var minutes: int = 0
+var seconds: int = 0
 
 var coughDropSounds: Array = [
 	preload("res://assets/sfx/cough_drop_eating1.mp3"),
@@ -208,6 +214,8 @@ func new_game():
 	gameTime = 0.0
 	# Reset previous HP
 	previousHP = gameManager.playerHp
+	
+	show_timer()
 
 func _physics_process(delta: float):
 	if gameManager.isGameOver:
@@ -224,6 +232,7 @@ func _physics_process(delta: float):
 	collectablesManager.cleanup_offscreen_collectables($Camera2D.position.y, screenSize.y)
 	
 	show_hp()
+	show_timer()
 
 	# Update screen effects
 	screenEffects.update_screen_shake(delta)
@@ -382,7 +391,25 @@ func play_cough_drop_sound(charge_level: int):
 		sound_player.finished.connect(sound_player.queue_free)
 		add_child(sound_player)
 		sound_player.play()
-
+		
+func show_timer():
+	var timerPanel = $HUD.get_node("Panel")
+	if isPhaseOne:
+		seconds = fmod(gameTime, 60)
+		minutes = fmod(gameTime, 3600) / 60
+		timerPanel.get_node("SecondsLabel").text = "%02d" % seconds
+		timerPanel.get_node("MinutesLabel").text = "%02d:" % minutes
+	else:
+		var timeLeft = max(timeLimit - gameTime, 0)
+		seconds = fmod(timeLeft, 60)
+		minutes = fmod(timeLeft, 3600) / 60
+		timerPanel.get_node("SecondsLabel").text = "%02d" % seconds
+		timerPanel.get_node("MinutesLabel").text = "%02d:" % minutes
+		
+		if timeLeft <= 0 and not gameManager.isGameOver:
+			print("You wonn")
+			gameManager.end_game()
+			
 func _on_game_ended():
 	$GameOver.show()
 	Engine.time_scale = 0.1
