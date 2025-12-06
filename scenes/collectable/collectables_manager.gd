@@ -69,7 +69,7 @@ func spawn_cough_drops(camera_y_position: float, screen_size_x: float):
 	var random_value = randf()
 
 	if random_value < chadchart_spawn_chance and chadchart_pool and len(chadchart_pool.active_objects) == 0 and !gameManager.has_chadchart:
-		print("spawning chadchart") # for DEBUG
+		#print("spawning chadchart") # for DEBUG
 		# Spawn chadchart
 		var chadchart = chadchart_pool.get_object()
 		chadchart.position = Vector2(800, -70)
@@ -80,7 +80,7 @@ func spawn_cough_drops(camera_y_position: float, screen_size_x: float):
 			chadchart.coughdrop_collected.connect(_on_cough_drop_collected)
 		
 	elif random_value < upgrade_spawn_chance and upgrade_pool_1 and upgrade_pool_2:
-		print("spawning bone") # for DEBUG
+		#print("spawning bone") # for DEBUG
 		# Spawn bone
 		var upgrade = upgrade_pool_1.get_object() if randf() > 0.5 else upgrade_pool_2.get_object()
 		upgrade.position = Vector2(drop_x_level, drop_y_level)
@@ -92,7 +92,7 @@ func spawn_cough_drops(camera_y_position: float, screen_size_x: float):
 	else:
 		# Spawn cough drop (more frequent)
 		if cough_drop_pool:
-			print("spawning cough drop") # for DEBUG
+			#print("spawning cough drop") # for DEBUG
 			var cough_drop = cough_drop_pool.get_object()
 			cough_drop.position = Vector2(drop_x_level, drop_y_level)
 			cough_drop.scale = Vector2(cough_drop_scale, cough_drop_scale)

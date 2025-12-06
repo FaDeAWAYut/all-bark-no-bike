@@ -461,7 +461,6 @@ func _on_chadchart_appears():
 func activate_chadchart():
 	$TheDawg/AnimatedSprite2D.animation = &"chadchart_active"
 	$TheDawg/AnimatedSprite2D.scale = Vector2(0.25,0.25)
-	print($TheDawg/AnimatedSprite2D.scale)
 	music_player.volume_db = -60.0
 	play_chadchart_active_sound()
 	await get_tree().create_timer(11.5).timeout
@@ -474,7 +473,6 @@ func activate_chadchart():
 	chadchartWalkout.get_child(0).animation = &"no_shield"
 	$TheDawg/AnimatedSprite2D.animation = &"default"
 	$TheDawg/AnimatedSprite2D.scale = Vector2(1,1)
-	print($TheDawg/AnimatedSprite2D.scale)
 	
 	# delete node after ~5 secs, when chadchart has walked out of screen
 	await get_tree().create_timer(5).timeout
