@@ -13,6 +13,8 @@ radius = 21.0
 [node name="Ball" type="RigidBody2D"]
 mass = 0.8
 physics_material_override = SubResource("PhysicsMaterial_43bca")
+contact_monitor = true
+max_contacts_reported = 1
 script = ExtResource("1_3kvy3")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -20,6 +22,6 @@ position = Vector2(3, -1)
 shape = SubResource("CircleShape2D_3kvy3")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(1.0000038, 3.8146973e-06)
-scale = Vector2(0.110416636, 0.11041663)
+position = Vector2(1, 3.8147e-06)
+scale = Vector2(0.110417, 0.110417)
 texture = ExtResource("1_v6h5u")

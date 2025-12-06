@@ -4,9 +4,11 @@ extends Area2D
 
 func _ready():
 	timer.timeout.connect(queue_free)
-	body_entered.connect(_on_body_entered)
+#	body_entered.connect(_on_body_entered)
 
-func _on_body_entered(body):
-	if body.is_in_group("player"):
+#func _on_body_entered(body):
+#	if body.is_in_group("player"):
 #		gameManager.reduce_HP(5)
-		queue_free()
+#		queue_free()
+func _on_animated_sprite_2d_animation_finished():
+	queue_free()

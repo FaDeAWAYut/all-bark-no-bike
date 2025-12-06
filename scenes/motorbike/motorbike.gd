@@ -99,19 +99,28 @@ func _on_smoke_timer_timeout():
 	smoke_timer.start()
 
 func _on_throw_timer_timeout():
+	
 	if level < 2:
 		return
 
 	var chosen_projectile_scene = projectile_scenes.pick_random()
-
 	if !chosen_projectile_scene:
+		return
+
+	var player = get_tree().get_first_node_in_group("player")
+	
+	if not player:
 		return
 
 	var projectile = chosen_projectile_scene.instantiate()
 	get_parent().add_child(projectile)
-
 	projectile.global_position = global_position
-	projectile.launch(Vector2(500, 200))
+
+	var direction = (player.global_position - global_position).normalized()
+	
+	var projectile_speed = 1000.0
+	
+	projectile.launch(direction * projectile_speed)
 
 	throw_timer.wait_time = randf_range(1.0, 3.0)
 	throw_timer.start()
