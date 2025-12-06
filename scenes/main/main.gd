@@ -313,16 +313,13 @@ func play_hp_gain_sound():
 # use chadchartSfxPlayer so that when player collects chadchart while ChadchartAppears.mp3 is still playing, the game immediately switches to ChadchartIsHere.mp3 
 # เสียงจะได้ไม่เล่นทับกัน
 func play_chadchart_appears_sound():
-	print("player: ", chadchartSfxPlayer)
 	if chadchartSfxPlayer:
-		print("appear -- player: ", chadchartSfxPlayer)
 		chadchartSfxPlayer.stream = chadchartAppearsSFX
 		chadchartSfxPlayer.volume_db = chadchartAppearsSoundVolume
 		chadchartSfxPlayer.play()
 	
 func play_chadchart_active_sound():
 	if chadchartSfxPlayer:
-		print("active -- player: ", chadchartSfxPlayer)
 		chadchartSfxPlayer.stream = chadchartActiveSFX
 		chadchartSfxPlayer.volume_db = chadchartActiveSoundVolume
 		chadchartSfxPlayer.play()
