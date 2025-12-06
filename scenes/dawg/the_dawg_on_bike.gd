@@ -14,10 +14,10 @@ func _input(event):
 		elif sprite.animation == &"chadchart_active":
 			sprite.animation = &"chadchart_active_barking"
 		
-	if event.is_action_released("shoot") && sprite.animation == &"barking":
+	if event.is_action_released("shoot"):
 		# Release charge when space is released
 		if sprite.animation == &"barking":
 			sprite.animation = &"default"
 		elif sprite.animation == &"chadchart_active_barking":
-			sprite.animation = &"chadchart_active_barking_default"
+			sprite.animation = &"chadchart_active"
 		

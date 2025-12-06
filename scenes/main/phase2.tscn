@@ -123,6 +123,7 @@ z_index = 10
 
 [node name="SpeedManager" type="Node" parent="."]
 script = ExtResource("15_ogru6")
+startSpeed = 400.0
 metadata/_custom_type_script = "uid://bujgehfwg2nkx"
 
 [node name="BgmPlayer" type="AudioStreamPlayer2D" parent="."]

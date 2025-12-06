@@ -130,7 +130,7 @@ script = ExtResource("1_xub8n")
 sprite_frames = SubResource("SpriteFrames_aoaw1")
 animation = &"chadchart_active_barking"
 autoplay = "default"
-frame_progress = 0.6958914
+frame_progress = 0.19167927
 
 [node name="CollisionShape2D" type="CollisionPolygon2D" parent="."]
 polygon = PackedVector2Array(5, -23, -5, -23, -5, -14, -12, -8, -12, -6, -14, -6, -14, -4, -10, -4, -4, -3, -6, 0, -6, 16, -8, 18, -8, 20, -3, 24, -3, 29, -1, 31, 1, 31, 3, 29, 3, 24, 8, 20, 8, 18, 6, 16, 6, 0, 4, -3, 10, -4, 14, -4, 14, -6, 12, -6, 12, -8, 5, -14)
