@@ -3,10 +3,12 @@ extends MotorbikeFriendState
 # zooming variables
 var vertical_speed = -200
 var zooming_done = false
+var is_zooming = false
 
 func enter(_previous_state_path: String, _data := {}) -> void:
 	# Start going forward when entering turning state
 	zooming_done = false
+	is_zooming = true
 	start_zooming()
 
 func physics_update(_delta: float) -> void:
@@ -19,7 +21,7 @@ func physics_update(_delta: float) -> void:
 
 func exit() -> void:
 	# Clean up any zooming-specific state
-	pass
+	is_zooming = false
 
 func start_zooming():
 	boss.velocity.x = 0
@@ -52,5 +54,5 @@ func handle_end_zooming():
 
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
-	if body.name == "TheDawg":
+	if body.name == "TheDawg" and is_zooming:
 		$"../..".get_parent().player_take_damage()

@@ -5,7 +5,7 @@ var timer: float = 0.0
 var change_direction_time: float = 2.0
 var obstacle_timer: float = 0.0
 
-@onready var zooming_timer = $ZoomingTimer
+@onready var zooming_timer : Timer = $ZoomingTimer
 
 func enter(_previous_state_path: String, _data := {}) -> void:
 	# Initialize driving state
@@ -19,6 +19,9 @@ func enter(_previous_state_path: String, _data := {}) -> void:
 	# Set timer to switch state
 	zooming_timer.one_shot = true
 	zooming_timer.start()
+
+func exit() -> void:
+	zooming_timer.stop()
 
 func physics_update(delta: float) -> void:
 	if not boss:

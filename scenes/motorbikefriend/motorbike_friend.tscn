@@ -4,8 +4,8 @@
 [ext_resource type="Script" uid="uid://ckwrvr6jqi8t2" path="res://scenes/motorbikefriend/motorbike_friend.gd" id="1_x8yn3"]
 [ext_resource type="Script" uid="uid://y2jsbpc2gabf" path="res://scripts/statemachine/state_machine.gd" id="3_ulevm"]
 [ext_resource type="Script" uid="uid://b6taeeft41png" path="res://scripts/statemachine/motorbike_friend_driving.gd" id="4_x8yn3"]
-[ext_resource type="Script" uid="uid://6we8v6kaf6x1" path="res://scripts/statemachine/motorbike_friend_turning.gd" id="5_x8yn3"]
-[ext_resource type="Script" uid="uid://cnni66ojg1re8" path="res://scripts/statemachine/motorbike_friend_throwing.gd" id="6_ulevm"]
+[ext_resource type="Script" path="res://scripts/statemachine/motorbike_friend_turning.gd" id="5_x8yn3"]
+[ext_resource type="Script" path="res://scripts/statemachine/motorbike_friend_throwing.gd" id="6_ulevm"]
 [ext_resource type="Script" uid="uid://c8qasji16ecpn" path="res://scripts/statemachine/motorbike_friend_zooming.gd" id="7_ulevm"]
 [ext_resource type="Script" uid="uid://7snsa825eoyp" path="res://scenes/motorbikefriend/stunned.gd" id="8_8bteb"]
 [ext_resource type="Script" uid="uid://e088l0k2u315" path="res://scenes/motorbikefriend/motorbike_friend_health_controller.gd" id="8_ab7kq"]
@@ -58,7 +58,8 @@ initial_state = NodePath("Driving")
 script = ExtResource("4_x8yn3")
 
 [node name="ZoomingTimer" type="Timer" parent="StateMachine/Driving"]
-wait_time = 35.0
+wait_time = 20.0
+one_shot = true
 
 [node name="Turning" type="Node" parent="StateMachine"]
 script = ExtResource("5_x8yn3")
@@ -74,7 +75,7 @@ script = ExtResource("8_8bteb")
 
 [node name="HealthController" type="Node" parent="."]
 script = ExtResource("8_ab7kq")
-max_health = 200
+max_health = 150
 small_impact_offset = 25
 big_impact_offset = 50
 
@@ -87,7 +88,7 @@ offset_top = -70.0
 offset_right = 8.0
 offset_bottom = -60.0
 grow_horizontal = 2
-max_value = 200.0
+max_value = 150.0
 texture_under = ExtResource("9_tehww")
 texture_progress = ExtResource("10_8bteb")
 
