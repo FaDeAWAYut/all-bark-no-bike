@@ -10,9 +10,6 @@ var gameManager: GameManager
 @onready var speedManager: SpeedManager = $SpeedManager
 @export var barkController: BarkController
 var screenEffects: ScreenEffects
-@onready var chadchart: Area2D = $Chadchart
-
-var playerInvincible = false;
 
 @export var collectablesManager: CollectablesManager
 
@@ -130,6 +127,13 @@ func initialize_modules():
 	upgrade_pool_2.pool_size = 3
 	upgrade_pool_2.initialize()
 	
+	var chadchart_scene = [preload("res://scenes/collectable/chadchart.tscn")]
+	var chadchart_pool = Pool.new()
+	add_child(chadchart_pool)
+	chadchart_pool.object_scenes = chadchart_scene
+	chadchart_pool.pool_size = 1
+	chadchart_pool.initialize()
+	
 	# Initialize normal bark pool for BarkController
 	var normal_bark_scenes = [preload("res://scenes/normalbark/normalbark.tscn")]
 	var normal_bark_pool = Pool.new()
@@ -160,8 +164,9 @@ func initialize_modules():
 	collectablesManager.cough_drop_pool = cough_drop_pool
 	collectablesManager.upgrade_pool_1 = upgrade_pool_1
 	collectablesManager.upgrade_pool_2 = upgrade_pool_2
+	collectablesManager.chadchart_pool = chadchart_pool
 	collectablesManager.gameManager = gameManager
-	
+
 	# Connect existing cough drops to the collectables manager
 	for cough_drop in cough_drop_pool.get_children():
 		if cough_drop.has_signal("coughdrop_collected"):
@@ -177,6 +182,10 @@ func initialize_modules():
 		if upgrade.has_signal("coughdrop_collected"):
 			if not upgrade.coughdrop_collected.is_connected(collectablesManager._on_cough_drop_collected):
 				upgrade.coughdrop_collected.connect(collectablesManager._on_cough_drop_collected)
+	
+	for chadchart in chadchart_pool.get_children():
+		if chadchart.has_signal("coughdrop_collected") && not chadchart.coughdrop_collected.is_connected(collectablesManager._on_cough_drop_collected):
+				chadchart.coughdrop_collected.connect(collectablesManager._on_cough_drop_collected)
 
 func setup_signal_connections():
 	# Connect game manager signals
@@ -185,10 +194,7 @@ func setup_signal_connections():
 	gameManager.charge_changed.connect(_on_charge_changed)
 	gameManager.shield_changed.connect(_on_shield_changed)
 	bossHealthController.died.connect(_on_boss_died)  # Connect to local handler first
-	if chadchart:
-		chadchart.collide.connect(_on_chadchart_collide)
-		chadchart.end.connect(_on_chadchart_end)
-		
+	
 	# Connect obstacle spawner signals
 	obstacleSpawner.obstacle_spawned.connect(_on_obstacle_spawned)
 	
@@ -251,7 +257,7 @@ func _on_obstacle_spawned(obs: Node):
 		obs.body_entered.connect(_on_obstacle_collision)
 
 func _on_obstacle_collision(body):
-	if body.name == "TheDawg" && !playerInvincible:
+	if body.name == "TheDawg":
 		player_take_damage()
 		
 func player_take_damage():
@@ -340,10 +346,17 @@ func _on_hp_changed(new_hp: int):
 	previousHP = new_hp
 	show_hp()
 
-func _on_shield_changed(has_shield: bool):
+func _on_shield_changed(has_shield: bool, is_chadchart: bool):
 	if has_shield:
-		play_shield_sound()
-
+		if is_chadchart:
+			$TheDawg/AnimatedSprite2D.animation = &"chadchart_active"
+			$TheDawg.scale = Vector2(0.5,0.5)
+		else: 
+			play_shield_sound()
+	else:
+		$TheDawg/AnimatedSprite2D.animation = &"run"
+		$TheDawg.scale = Vector2(2,2)
+		
 	var shield_icon = $HUD.get_node("TextureRect")
 	if shield_icon:
 		shield_icon.visible = has_shield
@@ -401,13 +414,4 @@ func transition_to_phase_transition():
 	# Capture current positions and state
 	# Load transition scene
 	get_tree().change_scene_to_file("res://scenes/main/transistion_phase.tscn")
-
-func _on_chadchart_collide():
-	playerInvincible = true;
-	$TheDawg/AnimatedSprite2D.animation = &"chadchart_active"
-	$TheDawg.apply_scale(Vector2(0.25,0.25))
 	
-func _on_chadchart_end():
-	playerInvincible = false;
-	$TheDawg.apply_scale(Vector2(4,4))
-	$TheDawg/AnimatedSprite2D.animation = &"run"
