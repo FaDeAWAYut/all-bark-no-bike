@@ -4,6 +4,7 @@ const DRIVING = "Driving"
 const TURNING = "Turning"
 const THROWING = "Throwing"
 const ZOOMING = "Zooming"
+const STUNNED = "Stunned"
 
 var boss: MotorbikeFriend
 

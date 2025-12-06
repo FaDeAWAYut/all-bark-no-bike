@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bv5t0i620xpop"]
+[gd_scene load_steps=12 format=3 uid="uid://bv5t0i620xpop"]
 
 [ext_resource type="Texture2D" uid="uid://c8urtn7s80qbd" path="res://assets/motorbikeFriend_Flash.png" id="1_d03wb"]
 [ext_resource type="Script" uid="uid://ckwrvr6jqi8t2" path="res://scenes/motorbikefriend/motorbike_friend.gd" id="1_x8yn3"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://6we8v6kaf6x1" path="res://scripts/statemachine/motorbike_friend_turning.gd" id="5_x8yn3"]
 [ext_resource type="Script" uid="uid://cnni66ojg1re8" path="res://scripts/statemachine/motorbike_friend_throwing.gd" id="6_ulevm"]
 [ext_resource type="Script" uid="uid://c8qasji16ecpn" path="res://scripts/statemachine/motorbike_friend_zooming.gd" id="7_ulevm"]
+[ext_resource type="Script" uid="uid://b3ef8s5apobv2" path="res://scenes/motorbikefriend/stunned.gd" id="8_8bteb"]
 [ext_resource type="Script" uid="uid://e088l0k2u315" path="res://scenes/motorbikefriend/motorbike_friend_health_controller.gd" id="8_ab7kq"]
 [ext_resource type="Texture2D" uid="uid://b64sm0rjr0n8a" path="res://assets/small_hp_under.png" id="9_tehww"]
 [ext_resource type="Texture2D" uid="uid://pqspuwo830gg" path="res://assets/small_hp_progress.png" id="10_8bteb"]
@@ -67,6 +68,9 @@ script = ExtResource("6_ulevm")
 
 [node name="Zooming" type="Node" parent="StateMachine"]
 script = ExtResource("7_ulevm")
+
+[node name="Stunned" type="Node" parent="StateMachine"]
+script = ExtResource("8_8bteb")
 
 [node name="HealthController" type="Node" parent="."]
 script = ExtResource("8_ab7kq")
