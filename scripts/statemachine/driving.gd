@@ -166,6 +166,7 @@ func enforce_boundaries():
 	#smoke_timer.start()
 
 func _on_throw_timer_timeout():
+	level = $"../..".throwing_level
 	if level < 2:
 		return
 

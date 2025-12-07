@@ -4,7 +4,12 @@ extends Node
 @export var phase_two_max_health: int = 100
 var current_health: int
 var hud: Node
+@export_group("Throwing Level Changes")
+@export var hp_percent_to_change: float = 0.0
+@export var new_throw_level: int = 2
+var is_throw_level_changed = false
 
+@export_group("Volume Settings")
 var hurtSounds: Array = [
 	preload("res://assets/sfx/smalldamage1.mp3"),
 	preload("res://assets/sfx/smalldamage2.mp3"),
@@ -85,6 +90,11 @@ func take_damage(damage_amount: int, impact_position: Vector2 = Vector2.ZERO, ba
 			motorbike.state_machine._transition_to_next_state("Stunned")
 		else:
 			died.emit()
+
+	if !is_throw_level_changed:
+		if float(current_health)/float(max_health) <= hp_percent_to_change:
+			$"..".throwing_level = new_throw_level
+			is_throw_level_changed = true
 
 func restore_health(heal_amount: int):
 	var current_max = phase_two_max_health if is_phase_two else max_health
