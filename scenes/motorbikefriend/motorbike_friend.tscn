@@ -1,11 +1,14 @@
-[gd_scene load_steps=13 format=3 uid="uid://bv5t0i620xpop"]
+[gd_scene load_steps=16 format=3 uid="uid://bv5t0i620xpop"]
 
 [ext_resource type="Texture2D" uid="uid://c8urtn7s80qbd" path="res://assets/motorbikeFriend_Flash.png" id="1_d03wb"]
 [ext_resource type="Script" uid="uid://ckwrvr6jqi8t2" path="res://scenes/motorbikefriend/motorbike_friend.gd" id="1_x8yn3"]
 [ext_resource type="Script" uid="uid://y2jsbpc2gabf" path="res://scripts/statemachine/state_machine.gd" id="3_ulevm"]
-[ext_resource type="Script" path="res://scripts/statemachine/motorbike_friend_driving.gd" id="4_x8yn3"]
-[ext_resource type="Script" path="res://scripts/statemachine/motorbike_friend_turning.gd" id="5_x8yn3"]
+[ext_resource type="Script" uid="uid://b6taeeft41png" path="res://scripts/statemachine/motorbike_friend_driving.gd" id="4_x8yn3"]
+[ext_resource type="PackedScene" uid="uid://cslgo50esooie" path="res://scenes/motorbike/interruption/throw/cigarette/cigarette.tscn" id="5_27xsb"]
+[ext_resource type="Script" uid="uid://6we8v6kaf6x1" path="res://scripts/statemachine/motorbike_friend_turning.gd" id="5_x8yn3"]
+[ext_resource type="PackedScene" uid="uid://co7c2okay1p8l" path="res://scenes/motorbike/interruption/throw/rock/rock.tscn" id="6_hbh2d"]
 [ext_resource type="Script" path="res://scripts/statemachine/motorbike_friend_throwing.gd" id="6_ulevm"]
+[ext_resource type="PackedScene" uid="uid://c22gh5obgnvfy" path="res://scenes/motorbike/interruption/throw/ball/ball.tscn" id="7_piapj"]
 [ext_resource type="Script" path="res://scripts/statemachine/motorbike_friend_zooming.gd" id="7_ulevm"]
 [ext_resource type="Script" uid="uid://7snsa825eoyp" path="res://scenes/motorbikefriend/stunned.gd" id="8_8bteb"]
 [ext_resource type="Script" uid="uid://e088l0k2u315" path="res://scenes/motorbikefriend/motorbike_friend_health_controller.gd" id="8_ab7kq"]
@@ -58,6 +61,9 @@ initial_state = NodePath("Waiting")
 
 [node name="Driving" type="Node" parent="StateMachine"]
 script = ExtResource("4_x8yn3")
+cigarette_scene = ExtResource("5_27xsb")
+rock_scene = ExtResource("6_hbh2d")
+bouncy_ball_scene = ExtResource("7_piapj")
 
 [node name="ZoomingTimer" type="Timer" parent="StateMachine/Driving"]
 one_shot = true
@@ -99,6 +105,9 @@ grow_horizontal = 2
 max_value = 50.0
 texture_under = ExtResource("9_tehww")
 texture_progress = ExtResource("10_8bteb")
+
+[node name="ThrowTimer" type="Timer" parent="."]
+wait_time = 6.0
 
 [connection signal="body_entered" from="DamageArea2D" to="StateMachine/Zooming" method="_on_area_2d_body_entered"]
 [connection signal="timeout" from="StateMachine/Driving/ZoomingTimer" to="StateMachine/Driving" method="_on_zooming_timer_timeout"]
