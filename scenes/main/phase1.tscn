@@ -15,7 +15,7 @@
 [ext_resource type="AudioStream" uid="uid://cotg1jtn26twy" path="res://assets/sfx/chargebarksfx.mp3" id="13_7smn1"]
 [ext_resource type="PackedScene" uid="uid://dy6jmp88qig88" path="res://scenes/gameoveroverlay/game_over.tscn" id="14_eu2pp"]
 [ext_resource type="Script" uid="uid://bujgehfwg2nkx" path="res://scripts/SpeedManager.gd" id="15_dobbf"]
-[ext_resource type="PackedScene" path="res://scenes/hud/objective_panel.tscn" id="16_7a0md"]
+[ext_resource type="PackedScene" uid="uid://dji8f5amt6dio" path="res://scenes/hud/objective_panel.tscn" id="16_7a0md"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_blune"]
 size = Vector2(64, 504)

@@ -581,9 +581,7 @@ func save_high_score():
 
 func load_score():
 	if FileAccess.file_exists(save_path):
-		print("file found")
 		var file = FileAccess.open(save_path, FileAccess.READ)
 		high_score = file.get_var()
 	else:
-		print("file not found")
 		high_score = 0
