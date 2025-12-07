@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://d4mchi4q55xdb"]
+[gd_scene load_steps=21 format=3 uid="uid://d4mchi4q55xdb"]
 
 [ext_resource type="Script" uid="uid://cnjgaa41oxy3e" path="res://scenes/motorbike/motorbike.gd" id="1_1bwdf"]
 [ext_resource type="Texture2D" uid="uid://dfyu3yb8ljp8g" path="res://assets/motorbike.png" id="1_w1uch"]
@@ -11,7 +11,8 @@
 [ext_resource type="PackedScene" uid="uid://co7c2okay1p8l" path="res://scenes/motorbike/interruption/throw/rock/rock.tscn" id="4_78t68"]
 [ext_resource type="Script" uid="uid://ffqrcdp00q8d" path="res://scripts/statemachine/throwing.gd" id="5_6mq4i"]
 [ext_resource type="PackedScene" uid="uid://c22gh5obgnvfy" path="res://scenes/motorbike/interruption/throw/ball/ball.tscn" id="5_ocqm2"]
-[ext_resource type="Script" path="res://scripts/statemachine/stunned.gd" id="8_lpxf4"]
+[ext_resource type="Script" uid="uid://bunovwwifxp1s" path="res://scripts/statemachine/stunned.gd" id="8_lpxf4"]
+[ext_resource type="Script" uid="uid://br8bbhu23qfm8" path="res://scenes/motorbike/hiding_below.gd" id="13_ocqm2"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1bwdf"]
 atlas = ExtResource("1_w1uch")
@@ -123,6 +124,9 @@ script = ExtResource("5_6mq4i")
 
 [node name="Stunned" type="Node" parent="StateMachine"]
 script = ExtResource("8_lpxf4")
+
+[node name="HidingBelow" type="Node" parent="StateMachine"]
+script = ExtResource("13_ocqm2")
 
 [node name="SmokeTimer" type="Timer" parent="."]
 
