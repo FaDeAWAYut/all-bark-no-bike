@@ -24,7 +24,7 @@ var offset_from_camera: Vector2 = Vector2(0, 0)
 @export var HealthController: Node
 
 	# Interruption
-@export var smoke_scene: PackedScene 
+#@export var smoke_scene: PackedScene 
 @export var level = 1 
 @export var cigarette_scene: PackedScene
 @export var rock_scene: PackedScene
@@ -70,7 +70,7 @@ var speedManager: SpeedManager
 @onready var state_machine = $StateMachine
 
 	# Interruption
-@onready var smoke_timer = $SmokeTimer
+#@onready var smoke_timer = $SmokeTimer
 @onready var throw_timer = $ThrowTimer
 @onready var motorbike_sprite = $Sprite2D
 
@@ -106,10 +106,10 @@ func _ready():
 	global_position.x = clamp(global_position.x, min_x, max_x)
 	
 		# Interrruption
-	smoke_timer.timeout.connect(_on_smoke_timer_timeout)
+	#smoke_timer.timeout.connect(_on_smoke_timer_timeout)
 	throw_timer.timeout.connect(_on_throw_timer_timeout)
 
-	smoke_timer.start()
+	#smoke_timer.start()
 	throw_timer.start()
 
 	projectile_scenes = [cigarette_scene, rock_scene, bouncy_ball_scene]
@@ -167,16 +167,16 @@ func get_stun_multiplier() -> int:
 	return stunned_count
 	
 	# Interruption
-func _on_smoke_timer_timeout():
-	if !smoke_scene:
-		return 
+#func _on_smoke_timer_timeout():
+	#if !smoke_scene:
+	#	return 
 
-	var smoke = smoke_scene.instantiate()
-	get_parent().add_child(smoke)
-	smoke.global_position = global_position - Vector2(100, 0) 
+	#var smoke = smoke_scene.instantiate()
+	#get_parent().add_child(smoke)
+	#smoke.global_position = global_position - Vector2(100, 0) 
 
-	smoke_timer.wait_time = randf_range(2.0, 5.0)
-	smoke_timer.start()
+	#smoke_timer.wait_time = randf_range(2.0, 5.0)
+	#smoke_timer.start()
 
 func _on_throw_timer_timeout():
 	

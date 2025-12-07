@@ -1,17 +1,23 @@
 [gd_scene load_steps=4 format=3 uid="uid://co7c2okay1p8l"]
 
 [ext_resource type="Script" uid="uid://qfgedqy0voe2" path="res://scenes/motorbike/interruption/throw/rock/rock.gd" id="1_f2cia"]
+[ext_resource type="Texture2D" uid="uid://ckmuowugp2t8w" path="res://assets/projectiles_shadow.png" id="2_3p3xt"]
 [ext_resource type="Texture2D" uid="uid://knu0lgrhj3ov" path="res://assets/rock.png" id="2_bd7ix"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_f2cia"]
-radius = 24.0208
-
 [node name="Rock" type="Area2D"]
+scale = Vector2(0.8, 0.8)
 script = ExtResource("1_f2cia")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionPolygon2D" parent="."]
 position = Vector2(2, -3)
-shape = SubResource("CircleShape2D_f2cia")
+polygon = PackedVector2Array(-0.75, -18.249998, -10.749999, -11.999998, -20.749998, 2.9999998, -20.749998, 9.249999, -6.9999995, 12.999999, 11.749999, 12.999999, 20.499998, 6.749999, 16.749998, -8.249999, 6.749999, -15.749998)
+
+[node name="Shadow" type="Sprite2D" parent="."]
+self_modulate = Color(1, 1, 1, 0.25882354)
+texture_filter = 1
+position = Vector2(1.2499983, 6.25)
+scale = Vector2(1.612903, 0.8064515)
+texture = ExtResource("2_3p3xt")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(-9.53674e-07, -1)

@@ -37,7 +37,7 @@ var invincibleTimer: Timer = Timer.new()
 # Background scrolling settings
 var gameTime: float = 0.0
 
-@export var timeLimit: float = 135.0 #2.15 minutes
+@export var timeLimit: float = 134.0 #2.14 minutes
 
 var screenSize : Vector2i
 
@@ -50,7 +50,7 @@ var chadchartActiveSFX = preload("res://assets/sfx/ChadChartIsHere.mp3")
 signal player_took_damage
 
 var AllBarkMusic = preload("res://assets/sfx/AllBark.mp3")
-var NoBikeMusic = preload("res://assets/sfx/NoBike.mp3")
+var NoBikeMusic = preload("res://assets/sfx/NoBike_LongerTail.mp3")
 
 # Timer settings
 var minutes: int = 0
@@ -315,7 +315,10 @@ func player_take_damage():
 
 		if NoDamage:
 			return
-		gameManager.reduce_HP(20          )
+		if isPhaseOne:
+			gameManager.reduce_HP(10)
+		else:
+			gameManager.reduce_HP(5)
 
 func _on_invincible_timer_timeout():
 	$TheDawg/InvincibleAnimation.stop()
@@ -380,7 +383,7 @@ func play_background_music():
 	if isPhaseOne:
 		music_player.play(0)
 	else:
-		music_player.play(11.5)
+		music_player.play(11.1)
 	 
 func _input(event):
 	if gameManager.isGameOver:
@@ -484,7 +487,7 @@ func _on_speed_changed(new_speed: float):
 func transition_to_phase_transition():
 	# Capture current positions and state
 	# Load transition scene
-	get_tree().change_scene_to_file("res://scenes/main/transistion_phase.tscn")
+	get_tree().change_scene_to_file("res://scenes/main/transition_phase.tscn")
 	
 func _on_chadchart_appears():
 	play_chadchart_appears_sound()

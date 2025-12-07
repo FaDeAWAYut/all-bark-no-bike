@@ -9,7 +9,7 @@ extends Node2D
 @onready var white_flash = $WhiteFlash
 
 # Background music
-var transition_music = preload("res://assets/sfx/NoBike.mp3")
+var transition_music = preload("res://assets/sfx/NoBike_LongerTail.mp3")
 var music_player: AudioStreamPlayer
 
 func _ready():
