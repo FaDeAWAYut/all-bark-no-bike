@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://dq4qgvtssgtc7"]
+
+[ext_resource type="Texture2D" uid="uid://djc86mu3lbldx" path="res://assets/ShootButton.png" id="1_nyofq"]
+
+[node name="ShootButtonMobile" type="TouchScreenButton"]
+scale = Vector2(0.5, 0.5)
+texture_normal = ExtResource("1_nyofq")
+action = "shoot"
+visibility_mode = 1

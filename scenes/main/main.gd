@@ -1,6 +1,7 @@
 extends Node
 
 @onready var isPhaseOne = self.name == "Phase1"
+@onready var useTouchscreen = DisplayServer.is_touchscreen_available()
 
 # Preload the obstacle scenes
 var carScenes
@@ -99,6 +100,9 @@ func _ready():
 		bossHealthController.died.emit()
 
 func initialize_modules():
+	$Joystick.visible = useTouchscreen
+	$ShootButtonMobile.visible = useTouchscreen
+	
 	gameManager = GameManager.new()
 	add_child(gameManager)
 	
