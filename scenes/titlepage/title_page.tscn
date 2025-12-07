@@ -54,11 +54,7 @@ theme_override_constants/separation = 10
 
 [node name="NewGameButton" type="Button" parent="MainMenu/MenuOptions"]
 layout_mode = 2
-text = "New Game"
-
-[node name="ContinueButton" type="Button" parent="MainMenu/MenuOptions"]
-layout_mode = 2
-text = "Continue"
+text = "Start"
 
 [node name="LevelsButton" type="Button" parent="MainMenu/MenuOptions"]
 layout_mode = 2
