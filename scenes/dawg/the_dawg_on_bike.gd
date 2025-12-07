@@ -21,3 +21,6 @@ func _input(event):
 		elif sprite.animation == &"chadchart_active_barking":
 			sprite.animation = &"chadchart_active"
 		
+func take_damage():
+	if get_parent() and get_parent().has_method("player_take_damage"):
+		get_parent().player_take_damage()
