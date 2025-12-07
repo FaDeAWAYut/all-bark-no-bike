@@ -39,7 +39,7 @@ var gameTime: float = 0.0
 
 @export var timeLimit: float = 134.0 #2.14 minutes
 
-var screenSize : Vector2i
+@export var screenSize : Vector2i = Vector2(896, 512)
 
 var hurtSFX = preload("res://assets/sfx/hurtsfx.mp3")
 var shieldSFX = preload("res://assets/sfx/shieldmonk.mp3")
@@ -82,7 +82,6 @@ var previousHP: int = 100
 
 func _ready():
 	get_tree().paused = false # unpause from gameover
-	screenSize = get_window().size
 	initialize_modules()
 	setup_signal_connections()
 	new_game()
