@@ -53,7 +53,7 @@ func _ready():
 	# Get reference to motorbike and determine phase
 	motorbike = get_parent() as Motorbike
 	# Phase 2 status provided by motorbike
-	is_phase_two = motorbike != null and motorbike.is_phase_two
+	is_phase_two = motorbike != null and !($"../..".isPhaseOne)
 	
 	# Use appropriate max health based on phase
 	if is_phase_two:

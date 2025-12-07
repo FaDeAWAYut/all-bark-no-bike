@@ -66,7 +66,7 @@ var speedManager: SpeedManager
 
 @export_category("State Variables")
 @onready var timer: Timer = $Timer
-var base_stunned_duration: float = 3.0
+@export var base_stunned_duration: float = 3.0
 var stunnable_objects: Array[Stunnable] = []
 
 func _ready():
