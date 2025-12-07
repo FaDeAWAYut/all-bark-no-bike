@@ -51,7 +51,6 @@ position = Vector2(448, 252)
 [node name="HUD" parent="." instance=ExtResource("4_dwgw2")]
 
 [node name="Motorbike" parent="." node_paths=PackedStringArray("HealthController") groups=["enemy"] instance=ExtResource("5_6q06x")]
-z_index = 1
 position = Vector2(448, 173)
 scale = Vector2(2, 2)
 hide_speed_multiplier = 0.5
