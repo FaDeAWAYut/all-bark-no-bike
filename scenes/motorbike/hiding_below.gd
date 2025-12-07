@@ -88,30 +88,14 @@ func handle_moving_down(delta: float):
 	boss.velocity = Vector2.ZERO
 	boss.move_and_slide()
 
-func handle_moving_back(delta: float):
-	# Interpolate from current position back to original position over slide_back_duration
-	slide_timer += delta
-	
-	if slide_timer >= slide_back_duration:
-		# Slide back complete
-		boss.global_position.y = original_position.y
-		is_moving_back = false
-		boss.is_positioned = true
-		# Transition back to driving state
-		finished.emit(DRIVING)
-	else:
-		# Smooth interpolation
-		var progress = slide_timer / slide_back_duration
-		boss.global_position.y = lerp(target_y, original_position.y, progress)
-	
-	boss.velocity = Vector2.ZERO
-	boss.move_and_slide()
-
 # Public method that can be called from external scripts
 func start_showing():
-	if not boss or not boss.is_hiding:
+	if not boss or not boss.is_hidden:
 		return
-
+	
+	# Show the bike before starting to move back
+	boss.show()
+	
 	# Re-enable raycasts
 	if boss.ray_cast_left:
 		boss.ray_cast_left.enabled = true
@@ -123,3 +107,23 @@ func start_showing():
 	is_moving_back = true
 	slide_timer = 0.0
 	boss.direction = 0
+
+func handle_moving_back(delta: float):
+	# Interpolate from current position back to original position over slide_back_duration
+	slide_timer += delta
+	
+	if slide_timer >= slide_back_duration:
+		# Slide back complete
+		boss.global_position.y = original_position.y
+		is_moving_back = false
+		boss.is_positioned = true
+		boss.is_hidden = false
+		# Transition back to driving state
+		finished.emit(DRIVING)
+	else:
+		# Smooth interpolation
+		var progress = slide_timer / slide_back_duration
+		boss.global_position.y = lerp(target_y, original_position.y, progress)
+	
+	boss.velocity = Vector2.ZERO
+	boss.move_and_slide()

@@ -172,13 +172,8 @@ func turn_around_pivot():
 	tween.tween_callback(_start_reset_delay)
 
 func _start_reset_delay():
-	# Tell the active hide/turn state to start showing the motorbike
-	var target_state_name := "Turning"
-	if motorbike and motorbike.is_phase_two:
-		target_state_name = "HidingBelow"
-	var target_state = motorbike.state_machine.get_node_or_null(target_state_name)
-	if target_state and motorbike.state_machine.state == target_state:
-		target_state.start_showing()
+	var target_state = motorbike.state_machine.get_current_state()
+	target_state.start_showing()
 	
 	# Create a new tween for the delay
 	var delay_tween = create_tween()
