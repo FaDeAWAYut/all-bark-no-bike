@@ -24,8 +24,6 @@ func show_objective(text: String, auto_hide: bool = true):
 	label.text = text
 	visible = true
 	
-	print("Showing objective after 2-second delay: ", text)
-	
 	# Fade in
 	var tween = create_tween()
 	tween.tween_property(self, "modulate:a", 1.0, fade_duration)
@@ -38,8 +36,6 @@ func show_objective(text: String, auto_hide: bool = true):
 func show_objective_immediately(text: String, auto_hide: bool = true):
 	label.text = text
 	visible = true
-	
-	print("Showing objective immediately: ", text)
 	
 	# Fade in
 	var tween = create_tween()
