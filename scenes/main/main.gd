@@ -37,7 +37,7 @@ var invincibleTimer: Timer = Timer.new()
 # Background scrolling settings
 var gameTime: float = 0.0
 
-@export var timeLimit: float = 135.0 #2.15 minutes
+@export var timeLimit: float = 134.0 #2.14 minutes
 
 var screenSize : Vector2i
 
@@ -50,7 +50,7 @@ var chadchartActiveSFX = preload("res://assets/sfx/ChadChartIsHere.mp3")
 signal player_took_damage
 
 var AllBarkMusic = preload("res://assets/sfx/AllBark.mp3")
-var NoBikeMusic = preload("res://assets/sfx/NoBike.mp3")
+var NoBikeMusic = preload("res://assets/sfx/NoBike_LongerTail.mp3")
 
 # Timer settings
 var minutes: int = 0
@@ -383,7 +383,7 @@ func play_background_music():
 	if isPhaseOne:
 		music_player.play(0)
 	else:
-		music_player.play(11.5)
+		music_player.play(11.1)
 	 
 func _input(event):
 	if gameManager.isGameOver:
