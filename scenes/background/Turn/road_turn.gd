@@ -126,7 +126,10 @@ func display_turn():
 	motorbike.state_machine._transition_to_next_state(target_state)
 	for friend in motorbike_friends:
 		if friend.state_machine:
-			friend.state_machine._transition_to_next_state("Turning")
+			# Skip transitioning if friend is already stunned
+			var current_state = friend.state_machine.state
+			if current_state and current_state.name != "Stunned":
+				friend.state_machine._transition_to_next_state("Turning")
 	collectables_manager.stop_spawning()
 	obstacle_spawner.stop_spawning()
 
@@ -183,8 +186,10 @@ func _start_reset_delay():
 	target_state.start_showing()
 
 	for friend in motorbike_friends:
-		if friend.state_machine:
+		if friend.state_machine and friend.state_machine.get_current_state().name == "Turning":
 			friend.state_machine.get_current_state().start_showing()
+		else:
+			friend.state_machine.get_current_state()._on_player_took_damage()
 	
 	# Create a new tween for the delay
 	var delay_tween = create_tween()
