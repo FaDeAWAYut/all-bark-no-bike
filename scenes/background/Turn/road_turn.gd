@@ -37,6 +37,8 @@ var distance_from_camera: float
 @onready var parallaxBGBuilding: Sprite2D = self.get_parent().get_node_or_null(^"ParallaxBG/Parallax2D/building")
 var timeToChangeZIndex: float = 0
 
+var motorbike_friends: Array = []
+
 func _ready() -> void:
 	timer.wait_time = timer_duration
 	screen_size = get_viewport().get_visible_rect().size
@@ -52,6 +54,12 @@ func _ready() -> void:
 		motorbike.motorbike_hidden.connect(_on_motorbike_hidden)
 	collectables_manager.collectables_cleared.connect(_on_collectables_cleared)
 	obstacle_spawner.obstacles_cleared.connect(_on_obstacles_cleared)
+	
+	# Find all MotorbikeFriend instances in the scene
+	motorbike_friends = []
+	for node in get_tree().get_nodes_in_group("root"): # root group is not used, so we iterate all nodes
+		if node is MotorbikeFriend:
+			motorbike_friends.append(node)
 	
 	hide()
 

@@ -73,8 +73,6 @@ script = ExtResource("7_ulevm")
 [node name="Stunned" type="Node" parent="StateMachine"]
 script = ExtResource("8_8bteb")
 
-[node name="Node" type="Node" parent="StateMachine"]
-
 [node name="HealthController" type="Node" parent="."]
 script = ExtResource("8_ab7kq")
 max_health = 150
