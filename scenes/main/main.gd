@@ -487,7 +487,7 @@ func _on_speed_changed(new_speed: float):
 func transition_to_phase_transition():
 	# Capture current positions and state
 	# Load transition scene
-	get_tree().change_scene_to_file("res://scenes/main/transistion_phase.tscn")
+	get_tree().change_scene_to_file("res://scenes/main/transition_phase.tscn")
 	
 func _on_chadchart_appears():
 	play_chadchart_appears_sound()
