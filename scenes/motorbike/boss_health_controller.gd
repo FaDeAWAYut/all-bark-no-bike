@@ -4,7 +4,12 @@ extends Node
 @export var phase_two_max_health: int = 100
 @export var current_health: int
 var hud: Node
+@export_group("Throwing Level Changes")
+@export var hp_percent_to_change: float = 0.0
+@export var new_throw_level: int = 2
+var is_throw_level_changed = false
 
+@export_group("Volume Settings")
 var hurtSounds: Array = [
 	preload("res://assets/sfx/smalldamage1.mp3"),
 	preload("res://assets/sfx/smalldamage2.mp3"),
@@ -22,6 +27,14 @@ var bikerSounds: Array = [
 	preload("res://assets/sfx/biker3.mp3"),
 	preload("res://assets/sfx/biker4.mp3"),
 ]
+
+var sound_thresholds: Array[Dictionary] = [
+	{"threshold": 1500, "sound_index": 1, "played": false},
+	{"threshold": 1000, "sound_index": 2, "played": false},
+	{"threshold": 500,  "sound_index": 3, "played": false},
+]
+var max_health_sound_played: bool = false
+
 @export var biker_volume_db: float = 0
 
 var small_impact_scene = preload("res://scenes/impact/small_impact.tscn")
@@ -36,11 +49,13 @@ signal died
 var motorbike: Motorbike
 var is_phase_two: bool = false
 
+@onready var isPhaseOne = get_parent().get_parent().name == "Phase1"
+
 func _ready():
 	# Get reference to motorbike and determine phase
 	motorbike = get_parent() as Motorbike
 	# Phase 2 status provided by motorbike
-	is_phase_two = motorbike != null and motorbike.is_phase_two
+	is_phase_two = motorbike != null and !(isPhaseOne)
 	
 	# Use appropriate max health based on phase
 	if is_phase_two:
@@ -51,6 +66,9 @@ func _ready():
 
 # UPDATED: Add bark_type parameter to distinguish between normal and charge bark
 func take_damage(damage_amount: int, impact_position: Vector2 = Vector2.ZERO, bark_type: String = "normal"):
+	# Store old health for threshold checking
+	var old_health = current_health
+	
 	# Prevent damage while stunned
 	if motorbike and motorbike.state_machine.state.name == "Stunned":
 		return
@@ -59,7 +77,8 @@ func take_damage(damage_amount: int, impact_position: Vector2 = Vector2.ZERO, ba
 	health_changed.emit(current_health)
 	update_hp_label()
 	
-	play_biker_sound(current_health)
+	# NEW: Play biker sound based on threshold crossings
+	play_biker_sound_by_threshold(old_health, current_health)
 	
 	# UPDATED: Play different sound based on bark type
 	if bark_type == "charge":
@@ -85,6 +104,11 @@ func take_damage(damage_amount: int, impact_position: Vector2 = Vector2.ZERO, ba
 			motorbike.state_machine._transition_to_next_state("Stunned")
 		else:
 			died.emit()
+
+	if !is_throw_level_changed:
+		if float(current_health)/float(max_health) <= hp_percent_to_change:
+			$"..".throwing_level = new_throw_level
+			is_throw_level_changed = true
 
 func restore_health(heal_amount: int):
 	var current_max = phase_two_max_health if is_phase_two else max_health
@@ -147,19 +171,30 @@ func spawn_big_impact_effect(position: Vector2):
 		impact.global_position = position + Vector2(0,big_impact_offset) # + some offset
 		get_tree().current_scene.add_child(impact)
 
-func play_biker_sound(current_health):
-	var sound_player = AudioStreamPlayer.new()
-	var selected_sound
-	# CAN ADJUST ACCORDING TO THE STATE MACHINE NA
-	if current_health == 1990:
-		selected_sound = bikerSounds[0] #เห้ย อะไรวะ
-	elif current_health == 1500:
-		selected_sound = bikerSounds[1] #ไอหมาส้ม หยุด
-	elif current_health == 1000:
-		selected_sound = bikerSounds[2] #ไอหมาเวน
-	elif current_health == 500:
-		selected_sound = bikerSounds[3] #เห่าเหี้ยไรนักหนา
+func play_biker_sound_by_threshold(old_health: int, new_health: int):
+	# Check if we just crossed below max health for the first time
+	if not max_health_sound_played and new_health < old_health:
+		var max_hp = phase_two_max_health if is_phase_two else max_health
+		if old_health == max_hp and new_health < max_hp:
+			play_specific_biker_sound(0)  # "เห้ย อะไรวะ"
+			max_health_sound_played = true
 	
+	# Check all other thresholds
+	for threshold_data in sound_thresholds:
+		if not threshold_data["played"]:
+			# Check if we crossed the threshold from above
+			if old_health > threshold_data["threshold"] and new_health <= threshold_data["threshold"]:
+				play_specific_biker_sound(threshold_data["sound_index"])
+				threshold_data["played"] = true
+
+# Helper function to play a specific biker sound
+func play_specific_biker_sound(sound_index: int):
+	if sound_index < 0 or sound_index >= bikerSounds.size():
+		push_warning("Invalid biker sound index: ", sound_index)
+		return
+	
+	var selected_sound = bikerSounds[sound_index]
+	var sound_player = AudioStreamPlayer.new()
 	sound_player.stream = selected_sound
 	sound_player.volume_db = biker_volume_db
 	sound_player.finished.connect(sound_player.queue_free)

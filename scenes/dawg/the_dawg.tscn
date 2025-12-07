@@ -82,6 +82,8 @@ _data = {
 
 [node name="The Dawg" type="CharacterBody2D"]
 z_index = 1
+collision_layer = 17
+collision_mask = 17
 script = ExtResource("1_jfyaa")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]

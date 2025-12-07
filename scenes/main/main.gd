@@ -45,7 +45,7 @@ var save_path = "user://score.save"
 
 @export var timeLimit: float = 134.0 #2.14 minutes
 
-var screenSize : Vector2i
+@export var screenSize : Vector2i = Vector2(896, 512)
 
 var hurtSFX = preload("res://assets/sfx/hurtsfx.mp3")
 var shieldSFX = preload("res://assets/sfx/shieldmonk.mp3")
@@ -82,12 +82,12 @@ var coughDropSounds: Array = [
 
 @onready var parallax = $ParallaxBG/Parallax2D
 @onready var bossHealthController = $Motorbike/BossHealthController
+@onready var objective_panel = $ObjectivePanel
 
 var previousHP: int = 100
 
 func _ready():
 	get_tree().paused = false # unpause from gameover
-	screenSize = get_window().size
 	initialize_modules()
 	setup_signal_connections()
 	new_game()
@@ -95,6 +95,9 @@ func _ready():
 	load_score()
 	
 	previousHP = gameManager.playerHp
+	
+	# NEW: Show initial objective
+	show_initial_objective()
 	
 	# Skip Phase One debug option
 	if SkipPhaseOne:
@@ -246,6 +249,32 @@ func setup_signal_connections():
 	
 	# Connect speed manager signals
 	speedManager.speed_changed.connect(_on_speed_changed)
+	
+func show_initial_objective():
+	if objective_panel:
+		var objective_text = "Objective: "
+		
+		if isPhaseOne:
+			objective_text += "Take him down!"
+		else:
+			objective_text += "Survive the timer!"
+		
+		objective_panel.show_objective(objective_text, true)  # Auto-hide after duration
+	else:
+		push_warning("Objective panel not found!")
+		
+func show_objective(text: String, duration: float = 5.0):
+	if objective_panel:
+		objective_panel.show_objective(text, duration > 0)
+		
+		# Set custom duration if provided
+		if duration > 0 and objective_panel.has_node("Timer"):
+			objective_panel.get_node("Timer").wait_time = duration
+
+# NEW: Update objective when phase changes (for transition)
+func update_objective_for_phase_two():
+	if objective_panel:
+		objective_panel.show_objective("Objective: Survive the timer!", true)
 
 func _on_boss_died():
 	if isPhaseOne:

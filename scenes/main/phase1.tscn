@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://p3b5yajekrdr"]
+[gd_scene load_steps=19 format=3 uid="uid://p3b5yajekrdr"]
 
 [ext_resource type="Script" uid="uid://ct048k6rsjfbb" path="res://scenes/main/main.gd" id="1_e2v34"]
 [ext_resource type="PackedScene" uid="uid://dfnmfcww2cu6i" path="res://scenes/dawg/the_dawg.tscn" id="2_631s2"]
@@ -15,6 +15,7 @@
 [ext_resource type="AudioStream" uid="uid://cotg1jtn26twy" path="res://assets/sfx/chargebarksfx.mp3" id="13_7smn1"]
 [ext_resource type="PackedScene" uid="uid://dy6jmp88qig88" path="res://scenes/gameoveroverlay/game_over.tscn" id="14_eu2pp"]
 [ext_resource type="Script" uid="uid://bujgehfwg2nkx" path="res://scripts/SpeedManager.gd" id="15_dobbf"]
+[ext_resource type="PackedScene" path="res://scenes/hud/objective_panel.tscn" id="16_7a0md"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_blune"]
 size = Vector2(64, 504)
@@ -60,6 +61,7 @@ hit_flash_duration = 1.0
 [node name="BossHealthController" type="Node" parent="Motorbike"]
 script = ExtResource("8_th5th")
 max_health = 2000
+hp_percent_to_change = 0.75
 
 [node name="CollectablesManager" type="Node" parent="." node_paths=PackedStringArray("cough_drop_pool")]
 script = ExtResource("6_ow5a4")
@@ -111,3 +113,6 @@ script = ExtResource("15_dobbf")
 metadata/_custom_type_script = "uid://bujgehfwg2nkx"
 
 [node name="BgmPlayer" type="AudioStreamPlayer2D" parent="."]
+
+[node name="ObjectivePanel" parent="." instance=ExtResource("16_7a0md")]
+z_index = 10
