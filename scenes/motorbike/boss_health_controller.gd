@@ -49,11 +49,13 @@ signal died
 var motorbike: Motorbike
 var is_phase_two: bool = false
 
+@onready var isPhaseOne = get_parent().get_parent().name == "Phase1"
+
 func _ready():
 	# Get reference to motorbike and determine phase
 	motorbike = get_parent() as Motorbike
 	# Phase 2 status provided by motorbike
-	is_phase_two = motorbike != null and !($"../..".isPhaseOne)
+	is_phase_two = motorbike != null and !(isPhaseOne)
 	
 	# Use appropriate max health based on phase
 	if is_phase_two:
