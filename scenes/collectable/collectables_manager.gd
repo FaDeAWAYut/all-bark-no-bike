@@ -108,7 +108,7 @@ func _on_cough_drop_collected(collectable):
 		if gameManager and gameManager.has_method("add_charge"):
 			gameManager.add_charge(1)
 	elif collectable.collectable_type == "health":
-		gameManager.add_health(10)
+		gameManager.add_health(20)
 	elif collectable.collectable_type == "shield":
 		gameManager.use_shield(10.0, false)
 	elif collectable.collectable_type == "chadchart":

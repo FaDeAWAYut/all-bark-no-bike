@@ -315,7 +315,10 @@ func player_take_damage():
 
 		if NoDamage:
 			return
-		gameManager.reduce_HP(20          )
+		if isPhaseOne:
+			gameManager.reduce_HP(20)
+		else:
+			gameManager.reduce_HP(5)
 
 func _on_invincible_timer_timeout():
 	$TheDawg/InvincibleAnimation.stop()
