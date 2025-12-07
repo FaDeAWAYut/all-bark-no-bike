@@ -11,6 +11,8 @@ enum CharacterType { FLASH, FOODPANDA, GRAB }
 
 @export var HealthController: Node
 
+@export var throwing_level: int = 2
+
 @export_group("Movement Settings")
 @export var speed_x: float = 200.0
 @export var escape_speed: float = 400.0

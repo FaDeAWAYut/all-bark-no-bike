@@ -128,7 +128,7 @@ func display_turn():
 		if friend.state_machine:
 			# Skip transitioning if friend is already stunned
 			var current_state = friend.state_machine.state
-			if current_state and current_state.name != "Stunned":
+			if current_state and current_state.name != "Stunned" and current_state.name != "Waiting":
 				friend.state_machine._transition_to_next_state("Turning")
 	collectables_manager.stop_spawning()
 	obstacle_spawner.stop_spawning()
@@ -183,7 +183,8 @@ func turn_around_pivot():
 
 func _start_reset_delay():
 	var target_state = motorbike.state_machine.get_current_state()
-	target_state.start_showing()
+	if target_state.has_method("start_showing"):
+		target_state.start_showing()
 
 	for friend in motorbike_friends:
 		if friend.state_machine and friend.state_machine.get_current_state().name == "Turning":

@@ -5,10 +5,23 @@ var timer: float = 0.0
 var change_direction_time: float = 2.0
 var obstacle_timer: float = 0.0
 
+var is_driving = false
+
+# Interruption
+#@export var smoke_scene: PackedScene 
+@onready var level: int =  $"../..".throwing_level
+@export var cigarette_scene: PackedScene
+@export var rock_scene: PackedScene
+@export var bouncy_ball_scene: PackedScene
+var projectile_scenes: Array[PackedScene] = []
+#@onready var smoke_timer = $"../../SmokeTimer"
+@onready var throw_timer = $"../../ThrowTimer"
+
 @onready var zooming_timer : Timer = $ZoomingTimer
 
 func enter(_previous_state_path: String, _data := {}) -> void:
 	# Initialize driving state
+	is_driving = true
 	timer = 0.0
 	change_direction_time = randf_range(0.5, 1.5)
 	obstacle_timer = 0.0
@@ -20,9 +33,18 @@ func enter(_previous_state_path: String, _data := {}) -> void:
 	zooming_timer.wait_time = $"../..".zooming_time
 	zooming_timer.one_shot = true
 	zooming_timer.start()
+	
+	throw_timer.timeout.connect(_on_throw_timer_timeout)
+
+	#smoke_timer.start()
+	throw_timer.start()
+
+	projectile_scenes = [cigarette_scene, rock_scene, bouncy_ball_scene]
 
 func exit() -> void:
 	zooming_timer.stop()
+	throw_timer.stop()
+	is_driving = false
 
 func physics_update(delta: float) -> void:
 	if not boss:
@@ -141,3 +163,33 @@ func enforce_boundaries():
 
 func _on_zooming_timer_timeout() -> void:
 	finished.emit(ZOOMING)
+	
+func _on_throw_timer_timeout():
+	level = $"../..".throwing_level
+	if level < 2:
+		return
+
+	var chosen_projectile_scene:PackedScene = projectile_scenes.pick_random()
+	if !chosen_projectile_scene:
+		return
+
+	var player = get_tree().get_first_node_in_group("player")
+	
+	if not player:
+		return
+
+	var projectile = chosen_projectile_scene.instantiate()
+	get_parent().add_child(projectile)
+	projectile.global_position = $"../..".global_position
+
+	var throw_direction: Vector2 = (player.global_position - $"../..".global_position).normalized()
+	
+	var projectile_speed = 400.0
+	var chosen_projectile_name = chosen_projectile_scene.resource_path.get_file().get_basename()
+	if level == 3 and chosen_projectile_name == "ball": # increase ball launch speed
+		throw_direction.y -= 0.5
+	
+	projectile.launch(throw_direction * projectile_speed)
+
+	throw_timer.wait_time = randf_range(1.0, 3.0)
+	throw_timer.start()
