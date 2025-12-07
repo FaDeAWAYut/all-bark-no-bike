@@ -72,6 +72,7 @@ var coughDropSounds: Array = [
 
 @export_category("Debug Options")
 @export var SkipPhaseOne := false
+@export var NoDamage := false
 
 @onready var parallax = $ParallaxBG/Parallax2D
 @onready var bossHealthController = $Motorbike/BossHealthController
@@ -302,8 +303,7 @@ func _on_obstacle_collision(body):
 func player_take_damage():
 	if gameManager.has_active_shield():
 		return
-	if !dogIsInvincible:
-		gameManager.reduce_HP(20          )
+	if !dogIsInvincible:		
 		screenEffects.screen_shake(5, 0.4)
 		screenEffects.screen_damage_flash(0.2, 0.8)
 		play_hurt_sound()
@@ -312,6 +312,10 @@ func player_take_damage():
 		invincibleTimer.start(dogInvincibleDuration)
 		# Emit player damage signal for motorbike friend
 		player_took_damage.emit()
+
+		if NoDamage:
+			return
+		gameManager.reduce_HP(20          )
 
 func _on_invincible_timer_timeout():
 	$TheDawg/InvincibleAnimation.stop()

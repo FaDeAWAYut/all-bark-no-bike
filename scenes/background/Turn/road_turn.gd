@@ -37,6 +37,8 @@ var distance_from_camera: float
 @onready var parallaxBGBuilding: Sprite2D = self.get_parent().get_node_or_null(^"ParallaxBG/Parallax2D/building")
 var timeToChangeZIndex: float = 0
 
+var motorbike_friends: Array = []
+
 func _ready() -> void:
 	timer.wait_time = timer_duration
 	screen_size = get_viewport().get_visible_rect().size
@@ -53,6 +55,8 @@ func _ready() -> void:
 	collectables_manager.collectables_cleared.connect(_on_collectables_cleared)
 	obstacle_spawner.obstacles_cleared.connect(_on_obstacles_cleared)
 	
+	# Find all MotorbikeFriend instances in the scene
+	motorbike_friends = get_tree().get_nodes_in_group("bikefriend")
 	hide()
 
 func _process(_delta: float) -> void:
@@ -115,8 +119,17 @@ func _on_timer_timeout():
 			scale.x = -2
 		display_turn() 
 func display_turn():
-	# Transition motorbike to turning state
-	motorbike.state_machine._transition_to_next_state("Turning")
+	# Transition motorbike based on phase: phase 2 uses hiding_below instead of turning
+	var target_state := "Turning"
+	if motorbike and motorbike.is_phase_two:
+		target_state = "HidingBelow"
+	motorbike.state_machine._transition_to_next_state(target_state)
+	for friend in motorbike_friends:
+		if friend.state_machine:
+			# Skip transitioning if friend is already stunned
+			var current_state = friend.state_machine.state
+			if current_state and current_state.name != "Stunned":
+				friend.state_machine._transition_to_next_state("Turning")
 	collectables_manager.stop_spawning()
 	obstacle_spawner.stop_spawning()
 
@@ -169,10 +182,14 @@ func turn_around_pivot():
 	tween.tween_callback(_start_reset_delay)
 
 func _start_reset_delay():
-	# Tell the turning state to start showing the motorbike
-	var turning_state = motorbike.state_machine.get_node("Turning")
-	if turning_state and motorbike.state_machine.state == turning_state:
-		turning_state.start_showing()
+	var target_state = motorbike.state_machine.get_current_state()
+	target_state.start_showing()
+
+	for friend in motorbike_friends:
+		if friend.state_machine and friend.state_machine.get_current_state().name == "Turning":
+			friend.state_machine.get_current_state().start_showing()
+		else:
+			friend.state_machine.get_current_state()._on_player_took_damage()
 	
 	# Create a new tween for the delay
 	var delay_tween = create_tween()

@@ -52,6 +52,7 @@ var is_hiding: bool = false
 var is_hidden: bool = false
 var is_showing: bool = false
 var is_positioned: bool = true
+var is_phase_two: bool = false
 
 # Visual effect variables
 var original_position: Vector2
@@ -81,6 +82,10 @@ var stunnable_objects: Array[Stunnable] = []
 func _ready():
 	# set sprite
 	sprite.animation = StringName(setSprite)
+
+	# Determine phase based on current scene name
+	var current_scene = get_tree().current_scene
+	is_phase_two = current_scene != null and current_scene.name == "Phase2"
 	
 	# Create and setup speed manager
 	speedManager = SpeedManager.new()

@@ -130,6 +130,6 @@ metadata/_custom_type_script = "uid://bujgehfwg2nkx"
 
 [node name="ChadchartSfxPlayer" type="AudioStreamPlayer2D" parent="."]
 
-[node name="MotorbikeFriend" parent="." groups=["enemy"] instance=ExtResource("16_flnuf")]
+[node name="MotorbikeFriend" parent="." groups=["bikefriend", "enemy"] instance=ExtResource("16_flnuf")]
 position = Vector2(336, 513)
 scale = Vector2(2, 2)

@@ -1,4 +1,4 @@
-extends MotorbikeFriendState
+extends BossState
 
 @export var sprite_height: float = 200.0
 @export var slide_down_duration: float = 1.0
@@ -90,6 +90,10 @@ func handle_moving_down(delta: float):
 
 # Public method that can be called from external scripts
 func start_showing():
+	if not boss or not boss.is_hidden:
+		return
+	
+	# Show the bike before starting to move back
 	boss.show()
 	
 	# Re-enable raycasts
