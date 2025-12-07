@@ -34,6 +34,8 @@ func take_damage(damage_amount: int, impact_position: Vector2 = Vector2.ZERO, ba
 	# Prevent damage while stunned
 	if get_parent() and get_parent().state_machine and get_parent().state_machine.state.name == "Stunned":
 		return
+	if get_parent() and get_parent().state_machine and get_parent().state_machine.state.name == "Waiting":
+		return
 	
 	current_health = max(0, current_health - damage_amount)
 	health_changed.emit(current_health)
