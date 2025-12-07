@@ -66,6 +66,7 @@ text = "Boss Health"
 position = Vector2(448, 515)
 scale = Vector2(2, 2)
 setSprite = "no_bike"
+throwing_level = 3
 hide_speed_multiplier = 0.5
 HealthController = NodePath("BossHealthController")
 hit_flash_duration = 1.0
@@ -73,6 +74,7 @@ hit_flash_duration = 1.0
 [node name="BossHealthController" type="Node" parent="Motorbike"]
 script = ExtResource("7_nbgot")
 max_health = 2000
+new_throw_level = 3
 small_impact_offset = 25
 big_impact_offset = 50
 
