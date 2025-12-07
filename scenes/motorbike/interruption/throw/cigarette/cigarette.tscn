@@ -1,17 +1,26 @@
-[gd_scene load_steps=4 format=3 uid="uid://cslgo50esooie"]
+[gd_scene load_steps=5 format=3 uid="uid://cslgo50esooie"]
 
 [ext_resource type="Script" uid="uid://bq6174vokxytw" path="res://scenes/motorbike/interruption/throw/cigarette/cigarette.gd" id="1_x75ap"]
 [ext_resource type="Texture2D" uid="uid://c2u3cw6e3booh" path="res://assets/cigarette.png" id="2_5w6i1"]
+[ext_resource type="Texture2D" uid="uid://ckmuowugp2t8w" path="res://assets/projectiles_shadow.png" id="2_bsd3w"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8d6nm"]
 size = Vector2(63, 38)
 
 [node name="Cigarette" type="Area2D"]
+scale = Vector2(0.8, 0.8)
 script = ExtResource("1_x75ap")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(4.5, -8)
 shape = SubResource("RectangleShape2D_8d6nm")
+
+[node name="Shadow" type="Sprite2D" parent="."]
+self_modulate = Color(1, 1, 1, 0.25882354)
+texture_filter = 1
+position = Vector2(4.999999, 10)
+scale = Vector2(1.6129031, 0.80645156)
+texture = ExtResource("2_bsd3w")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(-1, 0.999999)
