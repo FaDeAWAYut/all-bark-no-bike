@@ -71,6 +71,15 @@ func handle_moving_down(delta: float):
 		boss.global_position.y = target_y
 		is_moving_down = false
 		boss.is_hiding = false
+		# If bike is below the camera viewport, emit signal and hide
+		var camera = boss.get_viewport().get_camera_2d()
+		if camera:
+			var screen_size = boss.get_viewport().get_visible_rect().size
+			var camera_bottom = camera.global_position.y + screen_size.y / 2
+			if boss.global_position.y > camera_bottom + 100:  # Add 100px buffer
+				boss.hide()
+				boss.motorbike_hidden.emit()
+				boss.is_hidden = true
 	else:
 		# Smooth interpolation
 		var progress = slide_timer / slide_down_duration

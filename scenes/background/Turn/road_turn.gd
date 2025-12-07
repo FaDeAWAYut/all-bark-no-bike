@@ -115,8 +115,11 @@ func _on_timer_timeout():
 			scale.x = -2
 		display_turn() 
 func display_turn():
-	# Transition motorbike to turning state
-	motorbike.state_machine._transition_to_next_state("Turning")
+	# Transition motorbike based on phase: phase 2 uses hiding_below instead of turning
+	var target_state := "Turning"
+	if motorbike and motorbike.is_phase_two:
+		target_state = "HidingBelow"
+	motorbike.state_machine._transition_to_next_state(target_state)
 	collectables_manager.stop_spawning()
 	obstacle_spawner.stop_spawning()
 
@@ -169,10 +172,13 @@ func turn_around_pivot():
 	tween.tween_callback(_start_reset_delay)
 
 func _start_reset_delay():
-	# Tell the turning state to start showing the motorbike
-	var turning_state = motorbike.state_machine.get_node("Turning")
-	if turning_state and motorbike.state_machine.state == turning_state:
-		turning_state.start_showing()
+	# Tell the active hide/turn state to start showing the motorbike
+	var target_state_name := "Turning"
+	if motorbike and motorbike.is_phase_two:
+		target_state_name = "HidingBelow"
+	var target_state = motorbike.state_machine.get_node_or_null(target_state_name)
+	if target_state and motorbike.state_machine.state == target_state:
+		target_state.start_showing()
 	
 	# Create a new tween for the delay
 	var delay_tween = create_tween()
