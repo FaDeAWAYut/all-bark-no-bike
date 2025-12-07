@@ -316,7 +316,7 @@ func player_take_damage():
 		if NoDamage:
 			return
 		if isPhaseOne:
-			gameManager.reduce_HP(20)
+			gameManager.reduce_HP(10)
 		else:
 			gameManager.reduce_HP(5)
 
