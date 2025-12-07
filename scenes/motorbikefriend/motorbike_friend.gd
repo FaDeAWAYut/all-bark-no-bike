@@ -6,6 +6,9 @@ enum CharacterType { FLASH, FOODPANDA, GRAB }
 @export var character_type: CharacterType = CharacterType.FLASH
 @onready var sprite_node = $"Sprite2D"
 
+@export var entrance_time: float = 1.0
+@export var zooming_time: float = 10
+
 @export var HealthController: Node
 
 @export_group("Movement Settings")

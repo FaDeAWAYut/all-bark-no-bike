@@ -54,6 +54,7 @@ height = 154.0
 script = ExtResource("1_rhn00")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 1
 texture_filter = 1
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_jfpr2")

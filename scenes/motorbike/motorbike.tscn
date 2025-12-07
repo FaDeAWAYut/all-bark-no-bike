@@ -11,7 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://co7c2okay1p8l" path="res://scenes/motorbike/interruption/throw/rock/rock.tscn" id="4_78t68"]
 [ext_resource type="Script" uid="uid://ffqrcdp00q8d" path="res://scripts/statemachine/throwing.gd" id="5_6mq4i"]
 [ext_resource type="PackedScene" uid="uid://c22gh5obgnvfy" path="res://scenes/motorbike/interruption/throw/ball/ball.tscn" id="5_ocqm2"]
-[ext_resource type="Script" uid="uid://bunovwwifxp1s" path="res://scripts/statemachine/stunned.gd" id="8_lpxf4"]
+[ext_resource type="Script" path="res://scripts/statemachine/stunned.gd" id="8_lpxf4"]
 [ext_resource type="Script" uid="uid://br8bbhu23qfm8" path="res://scenes/motorbike/hiding_below.gd" id="13_ocqm2"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1bwdf"]
@@ -79,6 +79,7 @@ rock_scene = ExtResource("4_78t68")
 bouncy_ball_scene = ExtResource("5_ocqm2")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 1
 texture_filter = 1
 position = Vector2(0, -32)
 sprite_frames = SubResource("SpriteFrames_3dlxh")

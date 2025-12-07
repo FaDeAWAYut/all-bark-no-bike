@@ -5,6 +5,7 @@ const TURNING = "Turning"
 const THROWING = "Throwing"
 const ZOOMING = "Zooming"
 const STUNNED = "Stunned"
+const WAITING = "Waiting"
 
 var boss: MotorbikeFriend
 
