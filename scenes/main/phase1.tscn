@@ -60,7 +60,7 @@ hit_flash_duration = 1.0
 [node name="BossHealthController" type="Node" parent="Motorbike"]
 script = ExtResource("8_th5th")
 max_health = 2000
-hp_percent_to_change = 0.7
+hp_percent_to_change = 0.75
 
 [node name="CollectablesManager" type="Node" parent="." node_paths=PackedStringArray("cough_drop_pool")]
 script = ExtResource("6_ow5a4")
