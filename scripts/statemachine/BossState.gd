@@ -2,8 +2,10 @@ class_name BossState extends State
 
 const DRIVING = "Driving"
 const TURNING = "Turning"
+const HIDING = "HidingBelow"
 const THROWING = "Throwing"
 const HURTING = "Hurting"
+const STUNNED = "Stunned"
 
 var boss: Motorbike
 

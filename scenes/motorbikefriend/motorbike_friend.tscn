@@ -1,0 +1,105 @@
+[gd_scene load_steps=13 format=3 uid="uid://bv5t0i620xpop"]
+
+[ext_resource type="Texture2D" uid="uid://c8urtn7s80qbd" path="res://assets/motorbikeFriend_Flash.png" id="1_d03wb"]
+[ext_resource type="Script" uid="uid://ckwrvr6jqi8t2" path="res://scenes/motorbikefriend/motorbike_friend.gd" id="1_x8yn3"]
+[ext_resource type="Script" uid="uid://y2jsbpc2gabf" path="res://scripts/statemachine/state_machine.gd" id="3_ulevm"]
+[ext_resource type="Script" uid="uid://b6taeeft41png" path="res://scripts/statemachine/motorbike_friend_driving.gd" id="4_x8yn3"]
+[ext_resource type="Script" uid="uid://6we8v6kaf6x1" path="res://scripts/statemachine/motorbike_friend_turning.gd" id="5_x8yn3"]
+[ext_resource type="Script" path="res://scripts/statemachine/motorbike_friend_throwing.gd" id="6_ulevm"]
+[ext_resource type="Script" uid="uid://c8qasji16ecpn" path="res://scripts/statemachine/motorbike_friend_zooming.gd" id="7_ulevm"]
+[ext_resource type="Script" uid="uid://7snsa825eoyp" path="res://scenes/motorbikefriend/stunned.gd" id="8_8bteb"]
+[ext_resource type="Script" uid="uid://e088l0k2u315" path="res://scenes/motorbikefriend/motorbike_friend_health_controller.gd" id="8_ab7kq"]
+[ext_resource type="Script" uid="uid://23o72mi2hh2u" path="res://scripts/statemachine/motorbike_friend_waiting.gd" id="9_8j1uf"]
+[ext_resource type="Texture2D" uid="uid://b64sm0rjr0n8a" path="res://assets/small_hp_under.png" id="9_tehww"]
+[ext_resource type="Texture2D" uid="uid://pqspuwo830gg" path="res://assets/small_hp_progress.png" id="10_8bteb"]
+
+[node name="MotorbikeFriend" type="CharacterBody2D" node_paths=PackedStringArray("HealthController")]
+texture_filter = 1
+motion_mode = 1
+script = ExtResource("1_x8yn3")
+HealthController = NodePath("HealthController")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 1
+position = Vector2(0, -32)
+texture = ExtResource("1_d03wb")
+
+[node name="DamageArea2D" type="Area2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="DamageArea2D"]
+position = Vector2(0, -32)
+polygon = PackedVector2Array(-2, -30, 2, -30, 5, -27, 5, -20, 8, -19, 10, -10, 15, -6, 15, -4, 11, -4, 8, -3, 12, 6, 9, 19, 3, 23, 3, 31, -3, 31, -3, 23, -9, 19, -12, 6, -8, -3, -11, -4, -15, -4, -15, -6, -10, -10, -8, -19, -5, -20, -5, -27)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+position = Vector2(0, -32)
+polygon = PackedVector2Array(-2, -29, 2, -29, 4, -27, 5, -20, 7, -19, 10, -10, 14, -6, 14, -4, 11, -4, 8, -3, 10, 3, 11, 6, 9, 19, 3, 22, 2, 31, -2, 31, -3, 22, -9, 19, -11, 6, -10, 3, -8, -3, -11, -4, -14, -4, -14, -6, -10, -10, -7, -19, -5, -20, -4, -27)
+
+[node name="RayCastCenter" type="RayCast2D" parent="."]
+position = Vector2(0, -32)
+target_position = Vector2(0, -60)
+collision_mask = 8
+collide_with_areas = true
+
+[node name="RayCastLeft" type="RayCast2D" parent="."]
+position = Vector2(0, -32)
+target_position = Vector2(-19, -40)
+collision_mask = 8
+collide_with_areas = true
+
+[node name="RayCastRight" type="RayCast2D" parent="."]
+position = Vector2(0, -32)
+target_position = Vector2(19, -40)
+collision_mask = 8
+collide_with_areas = true
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("3_ulevm")
+initial_state = NodePath("Waiting")
+
+[node name="Driving" type="Node" parent="StateMachine"]
+script = ExtResource("4_x8yn3")
+
+[node name="ZoomingTimer" type="Timer" parent="StateMachine/Driving"]
+one_shot = true
+
+[node name="Turning" type="Node" parent="StateMachine"]
+script = ExtResource("5_x8yn3")
+
+[node name="Throwing" type="Node" parent="StateMachine"]
+script = ExtResource("6_ulevm")
+
+[node name="Zooming" type="Node" parent="StateMachine"]
+script = ExtResource("7_ulevm")
+
+[node name="Stunned" type="Node" parent="StateMachine"]
+script = ExtResource("8_8bteb")
+
+[node name="Waiting" type="Node" parent="StateMachine"]
+script = ExtResource("9_8j1uf")
+
+[node name="WaitingTimer" type="Timer" parent="StateMachine/Waiting"]
+one_shot = true
+
+[node name="HealthController" type="Node" parent="."]
+script = ExtResource("8_ab7kq")
+max_health = 50
+small_impact_offset = 25
+big_impact_offset = 50
+
+[node name="HealthBar" type="TextureProgressBar" parent="."]
+z_index = 1
+texture_filter = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = -8.0
+offset_top = -70.0
+offset_right = 8.0
+offset_bottom = -60.0
+grow_horizontal = 2
+max_value = 50.0
+texture_under = ExtResource("9_tehww")
+texture_progress = ExtResource("10_8bteb")
+
+[connection signal="body_entered" from="DamageArea2D" to="StateMachine/Zooming" method="_on_area_2d_body_entered"]
+[connection signal="timeout" from="StateMachine/Driving/ZoomingTimer" to="StateMachine/Driving" method="_on_zooming_timer_timeout"]
+[connection signal="timeout" from="StateMachine/Waiting/WaitingTimer" to="StateMachine/Waiting" method="_on_waiting_timer_timeout"]

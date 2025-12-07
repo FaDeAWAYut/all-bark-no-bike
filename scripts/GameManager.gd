@@ -6,7 +6,7 @@ signal game_started
 signal game_ended
 signal hp_changed(new_hp)
 signal charge_changed(current_charge, max_charge)
-signal shield_changed(has_shield)
+signal shield_changed(has_shield, is_chadchart)
 
 var playerHp : int = 100
 var isGameOver : bool = false
@@ -16,6 +16,7 @@ var maxCharge: int = 3
 var chargePercentage: float = 0.0
 
 var has_shield: bool = false
+var has_chadchart: bool = false # for checking if we should spawn another chadchart
 var shield_timer: Timer
 
 func start_new_game():
@@ -24,22 +25,20 @@ func start_new_game():
 	currentCharge = 0  # RESET: Reset charges on new game
 	chargePercentage = 0.0
 	has_shield = false
+	has_chadchart = false
 	game_started.emit()
 	charge_changed.emit(currentCharge, maxCharge)  # EMIT: Signal charge change
-	shield_changed.emit(has_shield)
+	shield_changed.emit(has_shield, false)
 
 func _ready():
-	# NEW: Create shield timer
+	# Create timer for both shield and chadchart 
 	shield_timer = Timer.new()
 	shield_timer.one_shot = true
 	shield_timer.timeout.connect(_on_shield_timeout)
 	add_child(shield_timer)
 	
 func reduce_HP(hp : int):
-	if isGameOver:
-		return
-		
-	if has_shield:
+	if isGameOver or has_shield:
 		return
 		
 	playerHp = max(0, playerHp - hp)
@@ -56,18 +55,22 @@ func add_health(hp: int):
 	playerHp = min(100, playerHp + hp)
 	hp_changed.emit(playerHp)
 
-func use_shield(duration: float):
+# for both shield and chadchart item -- both items use the same timer
+func use_shield(duration: float, is_chadchart: bool):
 	if isGameOver:
 		return false
 	
 	has_shield = true
+	if is_chadchart:
+		has_chadchart = true
+		
 	shield_timer.start(duration)
-	shield_changed.emit(has_shield)
+	shield_changed.emit(has_shield, is_chadchart)
 	return true
 
 func _on_shield_timeout():
 	has_shield = false
-	shield_changed.emit(has_shield)
+	shield_changed.emit(has_shield, false) # the second argument doesn't matter here, so we just use false
 
 func has_active_shield() -> bool:
 	return has_shield
@@ -100,7 +103,8 @@ func has_full_charge() -> bool:
 func end_game():
 	isGameOver = true
 	game_ended.emit()
-	
+	start_new_game()
+
 func _on_boss_died():
 	get_tree().change_scene_to_file("res://scenes/main/transition_phase.tscn")
 	

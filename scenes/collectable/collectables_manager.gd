@@ -2,15 +2,19 @@ extends Node
 
 class_name CollectablesManager
 
+@onready var isPhaseOne = true if get_parent().name == "Phase1" else false
+
 @export var spawn_offset_y: float = 1000.0
 
 @export_group("Cough Drops")
 @export var cough_drop_pool: Pool
 @export var upgrade_pool_1: Pool
 @export var upgrade_pool_2: Pool
+@export var chadchart_pool: Pool
 @export var min_spawn_interval: float = 1.0
 @export var max_spawn_interval: float = 5.0
-@export var upgrade_spawn_chance: float = 0.3
+@export var upgrade_spawn_chance: float = 0.3 
+@onready var chadchart_spawn_chance: float = 0.0 if isPhaseOne else 0.1
 @export var cough_drop_scale: float = 2
 @export var collectable_speed_multiplier: float = 0.8
 
@@ -24,6 +28,7 @@ var spawning_enabled: bool = true
 var cleared_signal_emitted: bool = false
 
 signal collectables_cleared
+signal chadchart_appears
 
 func update(delta: float, camera_y_position: float, screen_size_x: float, current_speed: float):
 	move_drop(delta)
@@ -62,8 +67,20 @@ func spawn_cough_drops(camera_y_position: float, screen_size_x: float):
 	var drop_y_level = camera_y_position - spawn_offset_y 
 	var drop_x_level = screen_size_x * randf_range(0.3, 0.7)
 	var random_value = randf()
-	
-	if random_value < upgrade_spawn_chance and upgrade_pool_1 and upgrade_pool_2:
+
+	if random_value < chadchart_spawn_chance and chadchart_pool and len(chadchart_pool.active_objects) == 0 and !gameManager.has_chadchart:
+		#print("spawning chadchart") # for DEBUG
+		# Spawn chadchart
+		var chadchart = chadchart_pool.get_object()
+		chadchart.position = Vector2(800, -70)
+		chadchart.scale = Vector2(1, 1)
+		chadchart_appears.emit()
+			
+		if chadchart.has_signal("coughdrop_collected")  and not chadchart.coughdrop_collected.is_connected(_on_cough_drop_collected):
+			chadchart.coughdrop_collected.connect(_on_cough_drop_collected)
+		
+	elif random_value < upgrade_spawn_chance and upgrade_pool_1 and upgrade_pool_2:
+		#print("spawning bone") # for DEBUG
 		# Spawn bone
 		var upgrade = upgrade_pool_1.get_object() if randf() > 0.5 else upgrade_pool_2.get_object()
 		upgrade.position = Vector2(drop_x_level, drop_y_level)
@@ -75,6 +92,7 @@ func spawn_cough_drops(camera_y_position: float, screen_size_x: float):
 	else:
 		# Spawn cough drop (more frequent)
 		if cough_drop_pool:
+			#print("spawning cough drop") # for DEBUG
 			var cough_drop = cough_drop_pool.get_object()
 			cough_drop.position = Vector2(drop_x_level, drop_y_level)
 			cough_drop.scale = Vector2(cough_drop_scale, cough_drop_scale)
@@ -92,7 +110,9 @@ func _on_cough_drop_collected(collectable):
 	elif collectable.collectable_type == "health":
 		gameManager.add_health(10)
 	elif collectable.collectable_type == "shield":
-		gameManager.use_shield(10.0)
+		gameManager.use_shield(10.0, false)
+	elif collectable.collectable_type == "chadchart":
+		gameManager.use_shield(11.5, true) # 11.5 sec to sync with audio
 
 func stop_spawning():
 	spawning_enabled = false
@@ -124,6 +144,10 @@ func cleanup_offscreen_collectables(camera_y_position: float, screen_size_y: flo
 		if collectable.position.y > (camera_y_position + screen_size_y):
 			upgrades_to_remove.append(collectable)
 	
+	for collectable in chadchart_pool.active_objects:
+		if collectable.position.y > (camera_y_position + screen_size_y) or collectable.position.x < 0: # chadchart walks out of screen
+			upgrades_to_remove.append(collectable)
+	
 	for collectable in upgrades_to_remove:
 		collectable.return_to_pool()
 			
@@ -145,6 +169,9 @@ func check_and_emit_cleared():
 	if upgrade_pool_2 and upgrade_pool_2.active_objects.size() > 0:
 		all_pools_empty = false
 	
+	if chadchart_pool and chadchart_pool.active_objects.size() > 0:
+		all_pools_empty = false
+		
 	if all_pools_empty:
 		cleared_signal_emitted = true
 		collectables_cleared.emit()

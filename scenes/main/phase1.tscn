@@ -22,11 +22,11 @@ size = Vector2(64, 504)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_th5th"]
 size = Vector2(896, 16)
 
-[node name="Phase1" type="Node" node_paths=PackedStringArray("obstacleSpawner", "barkController", "collectablesManager")]
+[node name="Phase1" type="Node" node_paths=PackedStringArray("obstacleSpawner", "collectablesManager", "barkController")]
 script = ExtResource("1_e2v34")
 obstacleSpawner = NodePath("ObstacleSpawner")
-barkController = NodePath("BarkController")
 collectablesManager = NodePath("CollectablesManager")
+barkController = NodePath("BarkController")
 dogStartPosition = Vector2i(448, 400)
 camStartPosition = Vector2i(448, 252)
 
@@ -50,12 +50,12 @@ position = Vector2(448, 252)
 
 [node name="HUD" parent="." instance=ExtResource("4_dwgw2")]
 
-[node name="Motorbike" parent="." node_paths=PackedStringArray("BossHealthController") groups=["enemy"] instance=ExtResource("5_6q06x")]
+[node name="Motorbike" parent="." node_paths=PackedStringArray("HealthController") groups=["enemy"] instance=ExtResource("5_6q06x")]
 z_index = 1
 position = Vector2(448, 173)
 scale = Vector2(2, 2)
 hide_speed_multiplier = 0.5
-BossHealthController = NodePath("BossHealthController")
+HealthController = NodePath("BossHealthController")
 hit_flash_duration = 1.0
 
 [node name="BossHealthController" type="Node" parent="Motorbike"]
@@ -110,3 +110,5 @@ z_index = 10
 [node name="SpeedManager" type="Node" parent="."]
 script = ExtResource("15_dobbf")
 metadata/_custom_type_script = "uid://bujgehfwg2nkx"
+
+[node name="BgmPlayer" type="AudioStreamPlayer2D" parent="."]
