@@ -107,6 +107,8 @@ func start_showing():
 	is_moving_back = true
 	slide_timer = 0.0
 	boss.direction = 0
+	
+	original_position.y = target_y - sprite_height + 10
 
 func handle_moving_back(delta: float):
 	# Interpolate from current position back to original position over slide_back_duration

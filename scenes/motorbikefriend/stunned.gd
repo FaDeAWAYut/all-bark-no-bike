@@ -58,6 +58,8 @@ func _on_player_took_damage() -> void:
 		is_moving_back = true
 		current_down_position = boss.global_position
 		slide_timer = 0.0
+		
+		original_position.y = target_y - sprite_height + 10
 
 func physics_update(delta: float) -> void:
 	if not boss:
