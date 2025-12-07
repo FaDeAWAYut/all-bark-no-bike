@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bjkire0p1dmae"]
+
+[ext_resource type="PackedScene" uid="uid://dmj6eoyf11sy5" path="res://scenes/car/car.tscn" id="1_xq1te"]
+[ext_resource type="Texture2D" uid="uid://rb46q6wbjst8" path="res://assets/sportcar_black_front.png" id="2_xq1te"]
+
+[node name="Blackcar" instance=ExtResource("1_xq1te")]
+collision_layer = 9
+
+[node name="Sprite2D" parent="." index="0"]
+scale = Vector2(2, 2)
+texture = ExtResource("2_xq1te")
+
+[node name="CollisionPolygon2D" parent="." index="1"]
+polygon = PackedVector2Array(6, -12.75, 7.25, -9.25, 8.25, -7.5, 7.5, -6.25, 7.5, 10.75, 5.5, 14.75, -5.25, 14.75, -7.5, 10.75, -7.5, -6, -8.25, -7.25, -7.25, -9, -5.75, -13, -0.25, -14.75)

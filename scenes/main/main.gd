@@ -1,7 +1,9 @@
 extends Node
 
+@onready var isPhaseOne = self.name == "Phase1"
+
 # Preload the obstacle scenes
-var carScenes = [preload("res://scenes/car/black_car.tscn"), preload("res://scenes/car/mini_car.tscn"),preload("res://scenes/car/truck_car.tscn")]
+var carScenes
 var sideScenes = [preload("res://scenes/sideobstacles/meow.tscn"), preload("res://scenes/sideobstacles/banner.tscn"), preload("res://scenes/sideobstacles/bonsai.tscn")]
 var chadchartWalkout = preload("res://scenes/collectable/chadchart_walkout.tscn").instantiate()
 
@@ -17,8 +19,6 @@ var screenEffects: ScreenEffects
 @export var music_player: AudioStreamPlayer
 @onready var chadchartSfxPlayer: AudioStreamPlayer
 #@onready var BGM_BUS_ID = AudioServer.get_bus_index("BGM") # for when we implement volume settings
-
-@onready var isPhaseOne = self.name == "Phase1"
 
 # Game constants
 @export var dogStartPosition := Vector2i(960, 920)
@@ -109,6 +109,11 @@ func initialize_modules():
 	chadchartSfxPlayer = AudioStreamPlayer.new()
 	chadchartSfxPlayer.name = "ChadchartSfxPlayer"
 	add_child(chadchartSfxPlayer)
+	
+	if isPhaseOne:
+		carScenes = [preload("res://scenes/car/black_car.tscn"), preload("res://scenes/car/mini_car.tscn"),preload("res://scenes/car/truck_car.tscn")]
+	else:
+		carScenes = [preload("res://scenes/car/black_car_front.tscn"), preload("res://scenes/car/mini_car_front.tscn"),preload("res://scenes/car/truck_car_front.tscn")]
 	
 	# Create car pool and add to obstacle spawner FIRST
 	var car_pool = Pool.new()

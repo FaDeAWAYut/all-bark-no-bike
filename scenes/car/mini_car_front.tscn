@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://0mitbxvrbmdo"]
+
+[ext_resource type="PackedScene" uid="uid://dmj6eoyf11sy5" path="res://scenes/car/car.tscn" id="1_iob4n"]
+[ext_resource type="Texture2D" uid="uid://bhr7o5jpld473" path="res://assets/minicar_red_front.png" id="2_iob4n"]
+
+[node name="Minicar" instance=ExtResource("1_iob4n")]
+collision_layer = 9
+
+[node name="Sprite2D" parent="." index="0"]
+scale = Vector2(2, 1.9999999)
+texture = ExtResource("2_iob4n")
+
+[node name="CollisionPolygon2D" parent="." index="1"]
+polygon = PackedVector2Array(5, -7.75, 6.25, -6, 6.25, -0.75, 6, 8.25, 4.75, 9.5, 0, 9.5, -4.75, 9.5, -6, 8.25, -6.25, -0.75, -6.25, -6, -5, -7.75, -4.25, -9.5, 0, -9.5, 4.25, -9.5)
