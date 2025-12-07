@@ -68,10 +68,9 @@ hide_speed_multiplier = 0.5
 BossHealthController = NodePath("BossHealthController")
 hit_flash_duration = 1.0
 
-[node name="BossHealthController" type="Node" parent="Motorbike" node_paths=PackedStringArray("hp_label")]
+[node name="BossHealthController" type="Node" parent="Motorbike"]
 script = ExtResource("7_nbgot")
 max_health = 2000
-hp_label = NodePath("../../HUD/PlaceholderBossHP")
 small_impact_offset = 25
 big_impact_offset = 50
 

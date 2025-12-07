@@ -1,0 +1,370 @@
+[gd_scene load_steps=44 format=3 uid="uid://cyft5wwcfbkc2"]
+
+[ext_resource type="Script" uid="uid://dytn7lixtc06n" path="res://scenes/main/ending_animation.gd" id="1_2hlfi"]
+[ext_resource type="PackedScene" uid="uid://bsf3igehijgig" path="res://scenes/background/parallax_bg.tscn" id="1_x1g6r"]
+[ext_resource type="Texture2D" uid="uid://d3tmm68h2ma8x" path="res://assets/baiRun.png" id="2_g5u60"]
+[ext_resource type="Texture2D" uid="uid://dfyu3yb8ljp8g" path="res://assets/motorbike.png" id="3_imygn"]
+[ext_resource type="Texture2D" uid="uid://b7wcsauy7nqkt" path="res://assets/TheDawg.png" id="4_fe0t4"]
+[ext_resource type="Texture2D" uid="uid://2y3hqwi7jx71" path="res://assets/TheDawgOnBike.png" id="5_b7k3u"]
+[ext_resource type="Texture2D" uid="uid://c85ufidup5rhg" path="res://assets/motorbike_empty.png" id="6_2hlfi"]
+[ext_resource type="Texture2D" uid="uid://500d87navbuy" path="res://assets/motorbikeFriend_Grab.png" id="7_imygn"]
+[ext_resource type="Script" uid="uid://bkfpgt2q2xd5i" path="res://scenes/main/animation_player_end.gd" id="8_b7k3u"]
+[ext_resource type="Texture2D" uid="uid://c8urtn7s80qbd" path="res://assets/motorbikeFriend_Flash.png" id="8_yimrl"]
+[ext_resource type="Script" uid="uid://bujgehfwg2nkx" path="res://scripts/SpeedManager.gd" id="9_2hlfi"]
+[ext_resource type="Texture2D" uid="uid://dqwcda8fdphiv" path="res://assets/motorbikeFriend_FoodPanda.png" id="9_hluii"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5rlxp"]
+atlas = ExtResource("2_g5u60")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_es6xp"]
+atlas = ExtResource("2_g5u60")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yg3qw"]
+atlas = ExtResource("2_g5u60")
+region = Rect2(32, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vidnv"]
+atlas = ExtResource("2_g5u60")
+region = Rect2(0, 64, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sehvv"]
+atlas = ExtResource("2_g5u60")
+region = Rect2(32, 64, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_djoet"]
+atlas = ExtResource("3_imygn")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bg1o1"]
+atlas = ExtResource("4_fe0t4")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m0bp2"]
+atlas = ExtResource("5_b7k3u")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qivht"]
+atlas = ExtResource("5_b7k3u")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1anp8"]
+atlas = ExtResource("5_b7k3u")
+region = Rect2(32, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lhugt"]
+atlas = ExtResource("6_2hlfi")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ylff8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5rlxp")
+}],
+"loop": true,
+"name": &"bai",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_es6xp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yg3qw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vidnv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sehvv")
+}],
+"loop": true,
+"name": &"baianimated",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_djoet")
+}],
+"loop": true,
+"name": &"bike",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bg1o1")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m0bp2")
+}],
+"loop": true,
+"name": &"dogandmotor",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qivht")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1anp8")
+}],
+"loop": true,
+"name": &"dogandmotoranimated",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lhugt")
+}],
+"loop": true,
+"name": &"motorbike",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hluii"]
+atlas = ExtResource("8_yimrl")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ylff8"]
+atlas = ExtResource("9_hluii")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fe0t4"]
+atlas = ExtResource("7_imygn")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_b7k3u"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hluii")
+}],
+"loop": true,
+"name": &"Flash",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ylff8")
+}],
+"loop": true,
+"name": &"Food Panda",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fe0t4")
+}],
+"loop": true,
+"name": &"Grab",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a33qg"]
+atlas = ExtResource("2_g5u60")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1x8ac"]
+atlas = ExtResource("2_g5u60")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7u5ui"]
+atlas = ExtResource("2_g5u60")
+region = Rect2(32, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mr4es"]
+atlas = ExtResource("2_g5u60")
+region = Rect2(0, 64, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hmibh"]
+atlas = ExtResource("2_g5u60")
+region = Rect2(32, 64, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lal8u"]
+atlas = ExtResource("3_imygn")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0gwnl"]
+atlas = ExtResource("4_fe0t4")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sff2f"]
+atlas = ExtResource("5_b7k3u")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i8lfd"]
+atlas = ExtResource("5_b7k3u")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_033kb"]
+atlas = ExtResource("5_b7k3u")
+region = Rect2(32, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qu163"]
+atlas = ExtResource("6_2hlfi")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_hluii"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a33qg")
+}],
+"loop": true,
+"name": &"bai",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1x8ac")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7u5ui")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mr4es")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hmibh")
+}],
+"loop": true,
+"name": &"baianimated",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lal8u")
+}],
+"loop": true,
+"name": &"bike",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0gwnl")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sff2f")
+}],
+"loop": true,
+"name": &"dogandmotor",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i8lfd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_033kb")
+}],
+"loop": true,
+"name": &"dogandmotoranimated",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qu163")
+}],
+"loop": true,
+"name": &"motorbike",
+"speed": 5.0
+}]
+
+[sub_resource type="Animation" id="Animation_g5u60"]
+resource_name = "ending_animation"
+length = 30.0
+
+[sub_resource type="Animation" id="Animation_b7k3u"]
+length = 0.001
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_imygn"]
+_data = {
+&"RESET": SubResource("Animation_b7k3u"),
+&"ending_animation": SubResource("Animation_g5u60")
+}
+
+[node name="EndingAnimation" type="Node2D"]
+script = ExtResource("1_2hlfi")
+
+[node name="ParallaxBG" parent="." instance=ExtResource("1_x1g6r")]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(448, 252)
+
+[node name="Bai_animated" type="Node2D" parent="."]
+position = Vector2(977.23, -1438.688)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Bai_animated"]
+texture_filter = 1
+position = Vector2(-529.23, 1862.688)
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_ylff8")
+animation = &"baianimated"
+autoplay = "baianimated"
+
+[node name="Grab" type="Node2D" parent="."]
+z_index = 5
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Grab"]
+texture_filter = 1
+position = Vector2(600, 488)
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_b7k3u")
+animation = &"Grab"
+
+[node name="FoodPanda" type="Node2D" parent="."]
+z_index = 5
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="FoodPanda"]
+texture_filter = 1
+position = Vector2(384, 504)
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_b7k3u")
+animation = &"Flash"
+
+[node name="Flash" type="Node2D" parent="."]
+z_index = 5
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Flash"]
+texture_filter = 1
+position = Vector2(264, 480)
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_b7k3u")
+animation = &"Food Panda"
+
+[node name="DogAndMotorbike_animated" type="Node2D" parent="."]
+position = Vector2(0, -923.929)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="DogAndMotorbike_animated"]
+texture_filter = 1
+position = Vector2(448, 1091.997)
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_hluii")
+animation = &"dogandmotoranimated"
+autoplay = "dogandmotoranimated"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_imygn")
+}
+script = ExtResource("8_b7k3u")
+
+[node name="SpeedManager" type="Node" parent="AnimationPlayer"]
+script = ExtResource("9_2hlfi")
