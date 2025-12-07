@@ -71,10 +71,6 @@ animations = [{
 [node name="Motorbike" type="CharacterBody2D"]
 motion_mode = 1
 script = ExtResource("1_1bwdf")
-level = 2
-cigarette_scene = ExtResource("3_aa8o7")
-rock_scene = ExtResource("4_78t68")
-bouncy_ball_scene = ExtResource("5_ocqm2")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 z_index = 1
@@ -114,6 +110,10 @@ initial_state = NodePath("Driving")
 
 [node name="Driving" type="Node" parent="StateMachine"]
 script = ExtResource("4_6mq4i")
+level = 2
+cigarette_scene = ExtResource("3_aa8o7")
+rock_scene = ExtResource("4_78t68")
+bouncy_ball_scene = ExtResource("5_ocqm2")
 
 [node name="Turning" type="Node" parent="StateMachine"]
 script = ExtResource("4_0xr2y")

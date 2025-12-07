@@ -23,15 +23,6 @@ var offset_from_camera: Vector2 = Vector2(0, 0)
 
 @export var HealthController: Node
 
-	# Interruption
-#@export var smoke_scene: PackedScene 
-@export var level = 1 
-@export var cigarette_scene: PackedScene
-@export var rock_scene: PackedScene
-@export var bouncy_ball_scene: PackedScene
-
-var projectile_scenes = []
-
 @warning_ignore("unused_signal")
 signal motorbike_hidden
 
@@ -69,9 +60,6 @@ var speedManager: SpeedManager
 @onready var ray_cast_center = $RayCastCenter
 @onready var state_machine = $StateMachine
 
-	# Interruption
-#@onready var smoke_timer = $SmokeTimer
-@onready var throw_timer = $ThrowTimer
 @onready var motorbike_sprite = $Sprite2D
 
 @export_category("State Variables")
@@ -105,14 +93,6 @@ func _ready():
 	# Set initial position within screen bounds
 	global_position.x = clamp(global_position.x, min_x, max_x)
 	
-		# Interrruption
-	#smoke_timer.timeout.connect(_on_smoke_timer_timeout)
-	throw_timer.timeout.connect(_on_throw_timer_timeout)
-
-	#smoke_timer.start()
-	throw_timer.start()
-
-	projectile_scenes = [cigarette_scene, rock_scene, bouncy_ball_scene]
 	# Find all Stunnable objects in the scene
 	if get_tree().has_group("stunnable"):
 		var nodes = get_tree().get_nodes_in_group("stunnable")
@@ -165,43 +145,3 @@ func get_stun_multiplier() -> int:
 		if stunnable_object.is_stunned():
 			stunned_count += 1
 	return stunned_count
-	
-	# Interruption
-#func _on_smoke_timer_timeout():
-	#if !smoke_scene:
-	#	return 
-
-	#var smoke = smoke_scene.instantiate()
-	#get_parent().add_child(smoke)
-	#smoke.global_position = global_position - Vector2(100, 0) 
-
-	#smoke_timer.wait_time = randf_range(2.0, 5.0)
-	#smoke_timer.start()
-
-func _on_throw_timer_timeout():
-	
-	if level < 2:
-		return
-
-	var chosen_projectile_scene = projectile_scenes.pick_random()
-	if !chosen_projectile_scene:
-		return
-
-	var player = get_tree().get_first_node_in_group("player")
-	
-	if not player:
-		return
-
-	var projectile = chosen_projectile_scene.instantiate()
-	get_parent().add_child(projectile)
-	projectile.global_position = global_position
-
-	var throw_direction = (player.global_position - global_position).normalized()
-	
-	var projectile_speed = 400.0
-	
-	projectile.launch(throw_direction * projectile_speed)
-
-	throw_timer.wait_time = randf_range(1.0, 3.0)
-	throw_timer.start()
-	
