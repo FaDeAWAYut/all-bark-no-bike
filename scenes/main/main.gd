@@ -569,7 +569,7 @@ func calculate_score():
 		score = (base_score_phase1 - bossHealthController.current_health)*5
 	else:
 		var timeLeft = max(timeLimit - gameTime, 0)
-		score = (base_score_phase2 - timeLeft*(base_score_phase2/timeLimit))*5
+		score = (base_score_phase2 + base_score_phase1 - timeLeft*(base_score_phase2/timeLimit))*5
 		
 func display_score():
 	var panel = $GameOver.get_node("Panel")
