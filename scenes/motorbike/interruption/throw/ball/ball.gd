@@ -9,5 +9,5 @@ func launch(initial_velocity):
 
 func _on_body_entered(body):
 	if body.is_in_group("player"):
-		#body.take_damage(30)
+		body.take_damage()
 		pass
