@@ -37,7 +37,7 @@ var invincibleTimer: Timer = Timer.new()
 # Background scrolling settings
 var gameTime: float = 0.0
 
-var timeLimit: float = 135.0 #2.15 minutes
+@export var timeLimit: float = 135.0 #2.15 minutes
 
 var screenSize : Vector2i
 
@@ -467,8 +467,8 @@ func show_timer():
 		timerPanel.get_node("MinutesLabel").text = "%02d:" % minutes
 		
 		if timeLeft <= 0 and not gameManager.isGameOver:
-			print("You wonn")
-			gameManager.end_game()
+			# Player wins the game (phase 2)
+			get_tree().change_scene_to_file("res://scenes/main/ending_animation.tscn")
 			
 func _on_game_ended():
 	$GameOver.show()

@@ -1,9 +1,13 @@
-[gd_scene load_steps=18 format=3 uid="uid://ddn1ps3111twg"]
+[gd_scene load_steps=22 format=3 uid="uid://ddn1ps3111twg"]
 
 [ext_resource type="PackedScene" uid="uid://bsf3igehijgig" path="res://scenes/background/parallax_bg.tscn" id="1_478tx"]
 [ext_resource type="Texture2D" uid="uid://dfyu3yb8ljp8g" path="res://assets/motorbike.png" id="2_478tx"]
 [ext_resource type="Texture2D" uid="uid://b7wcsauy7nqkt" path="res://assets/TheDawg.png" id="3_tax8a"]
+[ext_resource type="AudioStream" uid="uid://8d1cx0v687d" path="res://assets/sfx/pantingsfx.mp3" id="4_pexh1"]
+[ext_resource type="AudioStream" uid="uid://bwc4nv5x2ep81" path="res://assets/sfx/bikerev.mp3" id="4_q5abj"]
 [ext_resource type="Script" uid="uid://bus8ubh05p7qm" path="res://scenes/main/level_1_intro_animation_player.gd" id="4_tax8a"]
+[ext_resource type="AudioStream" uid="uid://d2gjdtyqfdeqk" path="res://assets/sfx/riser.mp3" id="4_topco"]
+[ext_resource type="AudioStream" uid="uid://bqmbjufht3uqk" path="res://assets/sfx/barkingsfx.mp3" id="4_ujykw"]
 [ext_resource type="Script" uid="uid://bujgehfwg2nkx" path="res://scripts/SpeedManager.gd" id="5_c1mq0"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1bwdf"]
@@ -94,6 +98,54 @@ tracks/1/keys = {
 "update": 0,
 "values": [Vector2(448, 600), Vector2(448, 400)]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("BikeRev:playing")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Barking:playing")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(2.6333334),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Riser:playing")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(6.4666667),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Panting:playing")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(4.1),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="Animation" id="Animation_478tx"]
 resource_name = "motorbike_intro"
@@ -162,6 +214,21 @@ frame_progress = 0.11201086
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="The Dawg"]
 shape = SubResource("CapsuleShape2D_xr6vp")
+
+[node name="Panting" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_pexh1")
+volume_db = 1.0
+
+[node name="Riser" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_topco")
+volume_db = 5.0
+
+[node name="Barking" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_ujykw")
+
+[node name="BikeRev" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_q5abj")
+volume_db = -1.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
