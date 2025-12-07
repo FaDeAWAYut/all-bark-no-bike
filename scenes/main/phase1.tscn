@@ -53,6 +53,7 @@ position = Vector2(448, 252)
 [node name="Motorbike" parent="." node_paths=PackedStringArray("HealthController") groups=["enemy"] instance=ExtResource("5_6q06x")]
 position = Vector2(448, 173)
 scale = Vector2(2, 2)
+throwing_level = 1
 hide_speed_multiplier = 0.5
 HealthController = NodePath("BossHealthController")
 hit_flash_duration = 1.0

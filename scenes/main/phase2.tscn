@@ -65,6 +65,7 @@ text = "Boss Health"
 position = Vector2(448, 515)
 scale = Vector2(2, 2)
 setSprite = "no_bike"
+throwing_level = 3
 hide_speed_multiplier = 0.5
 HealthController = NodePath("BossHealthController")
 hit_flash_duration = 1.0

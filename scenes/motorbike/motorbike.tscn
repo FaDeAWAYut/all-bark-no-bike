@@ -110,7 +110,6 @@ initial_state = NodePath("Driving")
 
 [node name="Driving" type="Node" parent="StateMachine"]
 script = ExtResource("4_6mq4i")
-level = 2
 cigarette_scene = ExtResource("3_aa8o7")
 rock_scene = ExtResource("4_78t68")
 bouncy_ball_scene = ExtResource("5_ocqm2")

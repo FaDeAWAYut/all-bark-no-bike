@@ -4,7 +4,9 @@ var offset_from_camera: Vector2 = Vector2(0, 0)
 @export var setSprite : String = "default"
 @onready var sprite : AnimatedSprite2D = $AnimatedSprite2D
 
-# Movement settings
+@export var throwing_level: int = 1
+
+@export_group("Movement Settings")
 @export var speed_x: float = 200.0
 @export var escape_speed: float = 400.0
 @export var min_x: float = 190.0

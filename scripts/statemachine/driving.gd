@@ -9,11 +9,11 @@ var is_driving = false
 
 # Interruption
 #@export var smoke_scene: PackedScene 
-@export var level = 1 
+@onready var level: int =  $"../..".throwing_level
 @export var cigarette_scene: PackedScene
 @export var rock_scene: PackedScene
 @export var bouncy_ball_scene: PackedScene
-var projectile_scenes = []
+var projectile_scenes: Array[PackedScene] = []
 #@onready var smoke_timer = $"../../SmokeTimer"
 @onready var throw_timer = $"../../ThrowTimer"
 
@@ -169,7 +169,7 @@ func _on_throw_timer_timeout():
 	if level < 2:
 		return
 
-	var chosen_projectile_scene = projectile_scenes.pick_random()
+	var chosen_projectile_scene:PackedScene = projectile_scenes.pick_random()
 	if !chosen_projectile_scene:
 		return
 
@@ -182,9 +182,12 @@ func _on_throw_timer_timeout():
 	get_parent().add_child(projectile)
 	projectile.global_position = $"../..".global_position
 
-	var throw_direction = (player.global_position - $"../..".global_position).normalized()
+	var throw_direction: Vector2 = (player.global_position - $"../..".global_position).normalized()
 	
 	var projectile_speed = 400.0
+	var chosen_projectile_name = chosen_projectile_scene.resource_path.get_file().get_basename()
+	if level == 3 and chosen_projectile_name == "ball": # increase ball launch speed
+		throw_direction.y -= 0.5
 	
 	projectile.launch(throw_direction * projectile_speed)
 
