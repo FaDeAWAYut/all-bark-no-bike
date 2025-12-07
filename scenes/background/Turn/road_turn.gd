@@ -56,11 +56,8 @@ func _ready() -> void:
 	obstacle_spawner.obstacles_cleared.connect(_on_obstacles_cleared)
 	
 	# Find all MotorbikeFriend instances in the scene
-	motorbike_friends = []
-	for node in get_tree().get_nodes_in_group("root"): # root group is not used, so we iterate all nodes
-		if node is MotorbikeFriend:
-			motorbike_friends.append(node)
-	
+	motorbike_friends = get_tree().get_nodes_in_group("bikefriend")
+	print("Found motorbike friends: ", motorbike_friends.size())
 	hide()
 
 func _process(_delta: float) -> void:
@@ -128,6 +125,9 @@ func display_turn():
 	if motorbike and motorbike.is_phase_two:
 		target_state = "HidingBelow"
 	motorbike.state_machine._transition_to_next_state(target_state)
+	for friend in motorbike_friends:
+		if friend.state_machine:
+			friend.state_machine._transition_to_next_state("Turning")
 	collectables_manager.stop_spawning()
 	obstacle_spawner.stop_spawning()
 
@@ -182,6 +182,10 @@ func turn_around_pivot():
 func _start_reset_delay():
 	var target_state = motorbike.state_machine.get_current_state()
 	target_state.start_showing()
+
+	for friend in motorbike_friends:
+		if friend.state_machine:
+			friend.state_machine.get_current_state().start_showing()
 	
 	# Create a new tween for the delay
 	var delay_tween = create_tween()

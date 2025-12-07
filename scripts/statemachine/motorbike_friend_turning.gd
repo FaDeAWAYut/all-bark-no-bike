@@ -12,6 +12,7 @@ var target_y: float = 0.0
 
 func enter(_previous_state_path: String, _data := {}) -> void:
 	# Start moving down when entering hiding_below state
+	print("Entering hiding below state")
 	start_moving_down()
 
 func exit() -> void:
