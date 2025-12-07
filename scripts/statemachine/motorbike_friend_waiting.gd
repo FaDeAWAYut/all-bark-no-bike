@@ -115,5 +115,4 @@ func handle_moving_back(delta: float):
 
 
 func _on_waiting_timer_timeout() -> void:
-	print("moving backkkkk")
 	is_moving_back = true
