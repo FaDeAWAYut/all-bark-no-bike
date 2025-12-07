@@ -39,9 +39,8 @@ var is_phase_two: bool = false
 func _ready():
 	# Get reference to motorbike and determine phase
 	motorbike = get_parent() as Motorbike
-	# Phase 2 is tied to the Phase2 scene; default to Phase 1 health otherwise
-	var current_scene = get_tree().current_scene
-	is_phase_two = current_scene != null and current_scene.name == "Phase2"
+	# Phase 2 status provided by motorbike
+	is_phase_two = motorbike != null and motorbike.is_phase_two
 	
 	# Use appropriate max health based on phase
 	if is_phase_two:
