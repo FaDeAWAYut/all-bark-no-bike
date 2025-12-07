@@ -57,7 +57,6 @@ func _ready() -> void:
 	
 	# Find all MotorbikeFriend instances in the scene
 	motorbike_friends = get_tree().get_nodes_in_group("bikefriend")
-	print("Found motorbike friends: ", motorbike_friends.size())
 	hide()
 
 func _process(_delta: float) -> void:

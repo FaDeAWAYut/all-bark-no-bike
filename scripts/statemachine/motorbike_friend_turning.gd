@@ -12,7 +12,6 @@ var target_y: float = 0.0
 
 func enter(_previous_state_path: String, _data := {}) -> void:
 	# Start moving down when entering hiding_below state
-	print("Entering hiding below state")
 	start_moving_down()
 
 func exit() -> void:
@@ -91,10 +90,6 @@ func handle_moving_down(delta: float):
 
 # Public method that can be called from external scripts
 func start_showing():
-	if not boss or not boss.is_hidden:
-		return
-	
-	# Show the bike before starting to move back
 	boss.show()
 	
 	# Re-enable raycasts
