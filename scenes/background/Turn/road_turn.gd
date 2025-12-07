@@ -189,7 +189,8 @@ func _start_reset_delay():
 		if friend.state_machine and friend.state_machine.get_current_state().name == "Turning":
 			friend.state_machine.get_current_state().start_showing()
 		else:
-			friend.state_machine.get_current_state()._on_player_took_damage()
+			if friend.state_machine.get_current_state().has_method("_on_player_took_damage"):
+				friend.state_machine.get_current_state()._on_player_took_damage()
 	
 	# Create a new tween for the delay
 	var delay_tween = create_tween()

@@ -131,5 +131,20 @@ metadata/_custom_type_script = "uid://bujgehfwg2nkx"
 [node name="ChadchartSfxPlayer" type="AudioStreamPlayer2D" parent="."]
 
 [node name="MotorbikeFriend" parent="." groups=["bikefriend", "enemy"] instance=ExtResource("16_flnuf")]
-position = Vector2(336, 513)
+position = Vector2(286, 512)
 scale = Vector2(2, 2)
+character_type = 1
+entrance_time = 15.0
+zooming_time = 7.0
+
+[node name="MotorbikeFriend2" parent="." groups=["bikefriend", "enemy"] instance=ExtResource("16_flnuf")]
+position = Vector2(537, 514)
+scale = Vector2(2, 2)
+entrance_time = 35.0
+
+[node name="MotorbikeFriend3" parent="." groups=["bikefriend", "enemy"] instance=ExtResource("16_flnuf")]
+position = Vector2(656, 512)
+scale = Vector2(2, 2)
+character_type = 2
+entrance_time = 55.0
+zooming_time = 15.0

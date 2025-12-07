@@ -73,6 +73,7 @@ func start_moving_down():
 		var screen_size = boss.get_viewport().get_visible_rect().size
 		var camera_bottom = camera.global_position.y + screen_size.y / 2
 		target_y = camera_bottom + sprite_height
+		original_position.y = camera_bottom + 10
 	
 	# Clear current obstacle state
 	boss.current_obstacle = null
@@ -146,3 +147,5 @@ func _on_stun_timer_timeout():
 	is_moving_back = true
 	slide_timer = 0.0
 	boss.direction = 0
+	
+	original_position.y = target_y - sprite_height + 10

@@ -17,6 +17,7 @@ func enter(_previous_state_path: String, _data := {}) -> void:
 	boss.direction = 0
 	
 	# Set timer to switch state
+	zooming_timer.wait_time = $"../..".zooming_time
 	zooming_timer.one_shot = true
 	zooming_timer.start()
 

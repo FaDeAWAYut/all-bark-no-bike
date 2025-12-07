@@ -2,14 +2,22 @@ class_name MotorbikeFriend extends Stunnable
 
 var offset_from_camera: Vector2 = Vector2(0, 0)
 
-# Movement settings
+enum CharacterType { FLASH, FOODPANDA, GRAB }
+@export var character_type: CharacterType = CharacterType.FLASH
+@onready var sprite_node = $"Sprite2D"
+
+@export var entrance_time: float = 1.0
+@export var zooming_time: float = 10
+
+@export var HealthController: Node
+
+@export_group("Movement Settings")
 @export var speed_x: float = 200.0
 @export var escape_speed: float = 400.0
 @export var min_x: float = 190.0
 @export var max_x: float = 710.0
 @export var direction_rotation_angle: float = 0.05 # radian
 @export var direction_rotation_speed: float = 40.0
-
 @export var hide_speed_multiplier:= 1.5
 
 # Obstacle detection settings
@@ -18,8 +26,6 @@ var offset_from_camera: Vector2 = Vector2(0, 0)
 # Screen boundaries (adjust these based on your camera/screen size)
 @export var screen_top_y: float = 150.0    # Top boundary (pixels from top)
 @export var screen_bottom_y: float = 600 # Bottom boundary (pixels from top)
-
-@export var HealthController: Node
 
 signal motorbike_hidden
 
@@ -61,6 +67,14 @@ var speedManager: SpeedManager
 var main_scene: Node = null
 
 func _ready():	
+	match character_type:
+		CharacterType.FLASH:
+			sprite_node.texture = preload("res://assets/motorbikeFriend_Flash.png")
+		CharacterType.FOODPANDA:
+			sprite_node.texture = preload("res://assets/motorbikeFriend_FoodPanda.png")
+		CharacterType.GRAB:
+			sprite_node.texture = preload("res://assets/motorbikeFriend_Grab.png")
+	
 	# Create and setup speed manager
 	speedManager = SpeedManager.new()
 	add_child(speedManager)
