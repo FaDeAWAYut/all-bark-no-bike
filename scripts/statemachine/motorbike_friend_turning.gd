@@ -1,16 +1,22 @@
 extends MotorbikeFriendState
 
-var is_hiding: bool = false
-var is_showing: bool = false
+@export var sprite_height: float = 200.0
+@export var slide_down_duration: float = 1.0
+@export var slide_back_duration: float = 1.0
+
+var is_moving_down: bool = false
+var is_moving_back: bool = false
+var original_position: Vector2
+var slide_timer: float = 0.0
+var target_y: float = 0.0
 
 func enter(_previous_state_path: String, _data := {}) -> void:
-	# Start hiding when entering turning state
-	start_hiding()
+	# Start moving down when entering hiding_below state
+	start_moving_down()
 
 func exit() -> void:
-	# Clean up any turning-specific state
-	is_hiding = false
-	is_showing = false
+	is_moving_down = false
+	is_moving_back = false
 
 func physics_update(delta: float) -> void:
 	if not boss:
@@ -18,23 +24,32 @@ func physics_update(delta: float) -> void:
 	
 	boss.currentSpeed = boss.speedManager.update(delta)
 	
-	if is_hiding:
-		handle_hiding(delta)
-	elif is_showing:
-		handle_showing(delta)
+	if is_moving_down:
+		handle_moving_down(delta)
+	elif is_moving_back:
+		handle_moving_back(delta)
 
-func start_hiding():
+func start_moving_down():
 	if boss.is_hidden:
 		return
 
 	if not boss.is_positioned:
 		return
 
-	is_hiding = true
+	is_moving_down = true
 	boss.is_hiding = true
 	boss.is_positioned = false
+	original_position = boss.global_position
+	slide_timer = 0.0
 	
-	# Clear current obstacle state - these are used by the driving state
+	# Calculate target position (one screen height below camera, accounting for sprite height)
+	var camera = boss.get_viewport().get_camera_2d()
+	if camera:
+		var screen_size = boss.get_viewport().get_visible_rect().size
+		var camera_bottom = camera.global_position.y + screen_size.y / 2
+		target_y = camera_bottom + sprite_height
+	
+	# Clear current obstacle state
 	boss.current_obstacle = null
 	boss.escape_direction = 0
 	boss.direction = 0
@@ -47,31 +62,40 @@ func start_hiding():
 	if boss.ray_cast_center:
 		boss.ray_cast_center.enabled = false
 
-func handle_hiding(_delta: float):
-	# Use increased velocity to speed up the bike when hiding
-	boss.velocity.x = 0  # Stop horizontal movement
-	boss.velocity.y = -1 * boss.currentSpeed * boss.hide_speed_multiplier
+func handle_moving_down(delta: float):
+	# Interpolate from current position to target position over slide_down_duration
+	slide_timer += delta
 	
-	# Check if bike is outside camera viewport
-	var camera = boss.get_viewport().get_camera_2d()
-	if camera:
-		var screen_size = boss.get_viewport().get_visible_rect().size
-		var camera_top = camera.global_position.y - screen_size.y / 2
-		
-		# If bike is above the camera viewport, emit signal and hide
-		if boss.global_position.y < camera_top - 100:  # Add 100px buffer
-			boss.hide()
-			boss.motorbike_hidden.emit()
-			is_hiding = false
-			boss.is_hiding = false
-			boss.is_hidden = true
+	if slide_timer >= slide_down_duration:
+		# Slide complete
+		boss.global_position.y = target_y
+		is_moving_down = false
+		boss.is_hiding = false
+		# If bike is below the camera viewport, emit signal and hide
+		var camera = boss.get_viewport().get_camera_2d()
+		if camera:
+			var screen_size = boss.get_viewport().get_visible_rect().size
+			var camera_bottom = camera.global_position.y + screen_size.y / 2
+			if boss.global_position.y > camera_bottom + 100:  # Add 100px buffer
+				boss.hide()
+				boss.motorbike_hidden.emit()
+				boss.is_hidden = true
+	else:
+		# Smooth interpolation
+		var progress = slide_timer / slide_down_duration
+		boss.global_position.y = lerp(original_position.y, target_y, progress)
+	
+	boss.velocity = Vector2.ZERO
 	boss.move_and_slide()
 
 # Public method that can be called from external scripts
 func start_showing():
 	if not boss or not boss.is_hidden:
 		return
-
+	
+	# Show the bike before starting to move back
+	boss.show()
+	
 	# Re-enable raycasts
 	if boss.ray_cast_left:
 		boss.ray_cast_left.enabled = true
@@ -80,31 +104,26 @@ func start_showing():
 	if boss.ray_cast_center:
 		boss.ray_cast_center.enabled = true
 
-	var screen_size = boss.get_viewport().get_visible_rect().size
-	var camera = boss.get_viewport().get_camera_2d()
-	# Position at top of camera viewport + screen height above
-	var camera_top = camera.global_position.y - screen_size.y / 2
-	var target = camera_top - screen_size.y  # This puts it one screen height above the top
-
-	boss.global_position = Vector2(boss.global_position.x, target)
+	is_moving_back = true
+	slide_timer = 0.0
 	boss.direction = 0
-	boss.show()
-	is_showing = true
-	boss.is_showing = true
 
-func handle_showing(_delta: float):
-	boss.velocity.x = 0  # Stop horizontal movement while showing
-	boss.velocity.y = boss.currentSpeed * boss.hide_speed_multiplier
+func handle_moving_back(delta: float):
+	# Interpolate from current position back to original position over slide_back_duration
+	slide_timer += delta
 	
-	var camera = boss.get_viewport().get_camera_2d()
-	if camera:
-		var target_y = camera.global_position.y + boss.offset_from_camera.y
-		if boss.global_position.y >= target_y:
-			boss.global_position.y = target_y
-			is_showing = false
-			boss.is_showing = false
-			boss.is_hidden = false
-			boss.is_positioned = true
-			# Transition back to driving state
-			finished.emit(DRIVING)
+	if slide_timer >= slide_back_duration:
+		# Slide back complete
+		boss.global_position.y = original_position.y
+		is_moving_back = false
+		boss.is_positioned = true
+		boss.is_hidden = false
+		# Transition back to driving state
+		finished.emit(DRIVING)
+	else:
+		# Smooth interpolation
+		var progress = slide_timer / slide_back_duration
+		boss.global_position.y = lerp(target_y, original_position.y, progress)
+	
+	boss.velocity = Vector2.ZERO
 	boss.move_and_slide()
