@@ -1,13 +1,16 @@
-[gd_scene load_steps=5 format=3 uid="uid://m6l4wfojk0vm"]
+[gd_scene load_steps=6 format=3 uid="uid://m6l4wfojk0vm"]
 
 [ext_resource type="Theme" uid="uid://dm051kf62our1" path="res://assets/Theme/game_ui_theme.tres" id="1_4a81q"]
 [ext_resource type="Script" uid="uid://xhxeafu86vlh" path="res://scenes/titlepage/title_page.gd" id="1_847ta"]
-[ext_resource type="Texture2D" uid="uid://cfhq38wofkopf" path="res://assets/conceptArt.png" id="1_jr1kj"]
+[ext_resource type="Texture2D" uid="uid://bwma0jb53imgl" path="res://assets/title-screen-art.png" id="3_847ta"]
 
 [sub_resource type="Theme" id="Theme_k57g0"]
 Label/constants/line_spacing = -5
 Label/constants/outline_size = 16
 Label/font_sizes/font_size = 54
+
+[sub_resource type="LabelSettings" id="LabelSettings_847ta"]
+font_size = 18
 
 [node name="TitlePage" type="Control"]
 texture_filter = 1
@@ -24,7 +27,7 @@ script = ExtResource("1_847ta")
 layout_mode = 0
 offset_right = 896.0
 offset_bottom = 512.0
-texture = ExtResource("1_jr1kj")
+texture = ExtResource("3_847ta")
 expand_mode = 1
 stretch_mode = 6
 
@@ -122,12 +125,13 @@ text = "Level 2"
 
 [node name="HighScore" type="Label" parent="."]
 layout_mode = 0
-offset_left = 684.0
-offset_top = 2.0
-offset_right = 895.0
-offset_bottom = 36.132355
+offset_left = 346.0
+offset_top = 360.0
+offset_right = 550.0
+offset_bottom = 393.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "High score = 0"
+label_settings = SubResource("LabelSettings_847ta")
 horizontal_alignment = 1
 vertical_alignment = 1
 

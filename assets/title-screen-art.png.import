@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cfhq38wofkopf"
-path="res://.godot/imported/conceptArt.png-bd98ea4025c83de00a8542c6b4c955e2.ctex"
+uid="uid://bwma0jb53imgl"
+path="res://.godot/imported/title-screen-art.png-e3155b881a2a2b3cc4ed5411e7ea226a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/conceptArt.png"
-dest_files=["res://.godot/imported/conceptArt.png-bd98ea4025c83de00a8542c6b4c955e2.ctex"]
+source_file="res://assets/title-screen-art.png"
+dest_files=["res://.godot/imported/title-screen-art.png-e3155b881a2a2b3cc4ed5411e7ea226a.ctex"]
 
 [params]
 
