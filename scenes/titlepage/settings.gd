@@ -22,7 +22,6 @@ func _input(event: InputEvent) -> void:
 		return
 		
 	if event is InputEventKey:
-		print(event)
 		if event.as_text_key_label() in move_keys:
 			shoot_button.text = "No move keys!"
 			await get_tree().create_timer(1).timeout

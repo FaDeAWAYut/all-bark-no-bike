@@ -142,7 +142,6 @@ func initialize_modules():
 
 	# Create and setup obstacle spawner
 	obstacleSpawner.setup(1.0, -0.5, 5.0, screenSize.x)
-	add_child(obstacleSpawner)
 
 	# Add the already initialized car pool/side pool to obstacle spawner
 	obstacleSpawner.add_obstacle_pool(car_pool)

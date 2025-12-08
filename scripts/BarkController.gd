@@ -52,7 +52,7 @@ func setup(dawgNode: Node2D, game_manager: GameManager):
 	theDawg = dawgNode
 	gameManager = game_manager
 
-func _process(delta: float):
+func _process(_delta: float):
 	# Update charging progress if currently charging
 	if is_charging:
 		var elapsed_time = (Time.get_ticks_msec() - charge_start_time) / 1000.0
