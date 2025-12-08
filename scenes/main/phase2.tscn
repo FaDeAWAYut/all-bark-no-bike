@@ -70,12 +70,7 @@ hit_flash_duration = 1.0
 script = ExtResource("7_nbgot")
 max_health = 2000
 phase_two_max_health = 200
-current_health = null
-hp_percent_to_change = null
 new_throw_level = 3
-hurt_volume_db = null
-big_damage_volume_db = null
-biker_volume_db = null
 small_impact_offset = 25
 big_impact_offset = 50
 
@@ -107,7 +102,6 @@ script = ExtResource("11_bx00b")
 barkSpawnOffset = Vector2(0, 0)
 bulletDirection = Vector2(0, 1)
 charge_orb_offset = Vector2(0, -25)
-normalBarkVolume = -10
 charge_bark_sound = ExtResource("12_4i2q6")
 
 [node name="BarkPool" type="Node" parent="BarkController"]

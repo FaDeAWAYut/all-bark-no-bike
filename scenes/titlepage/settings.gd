@@ -1,4 +1,6 @@
-extends VBoxContainer
+extends Panel
+
+@onready var useTouchscreen = DisplayServer.is_touchscreen_available()
 
 @onready var shoot_label : Label = $KeybindContainer/ShootLabel
 @onready var shoot_button : Button = $KeybindContainer/ShootButton
@@ -8,12 +10,22 @@ var current_button : Button
 var move_keys = ["Up", "Down", "Left", "Right", "W", "A", "S", "D"]
 
 func _ready() -> void:	
+	if useTouchscreen:
+		$Keybind.visible = false
+		$KeybindContainer.visible = false
+		$Audio.position.y = -19.0
+		$AudioContainer.position.y = 22.0
+		get_parent().size.y = 190
+		get_parent().position.y = 200
+		
+	
 	_update_labels() # called to refresh the labels
 	_refresh_audio_settings()
 	
 # Whenever a button is pressed, do:
 func _on_button_pressed(button_name: String) -> void:
 	current_button = $KeybindContainer.get_node(button_name)
+	print(current_button)
 	current_button.text = "Press key"
 
 func _input(event: InputEvent) -> void:
@@ -50,9 +62,8 @@ func _update_labels() -> void:
 	else:
 		shoot_button.text = "Unassigned"
 		
-
 func _on_audio_button_pressed(channel: String) -> void:
-	var button = $AudioContainer.get_node(channel + "Button")
+	var button = $AudioContainer.get_node("TouchScreenButton" + channel).get_node(channel + "Button")
 	var bus_id = AudioServer.get_bus_index(channel)
 	AudioServer.set_bus_mute(bus_id, button.text == "On")
 	button.text = "On" if button.text == "Off" else "Off"
@@ -67,5 +78,5 @@ func _on_audio_button_pressed(channel: String) -> void:
 		
 # refresh in case player plays again (see title screen again)
 func _refresh_audio_settings():
-	$AudioContainer/MusicButton.text = "Off" if AudioServer.is_bus_mute(AudioServer.get_bus_index("Music")) else "On"
-	$AudioContainer/SFXButton.text = "Off" if AudioServer.is_bus_mute(AudioServer.get_bus_index("SFX")) else "On"
+	$AudioContainer/TouchScreenButtonMusic/MusicButton.text = "Off" if AudioServer.is_bus_mute(AudioServer.get_bus_index("Music")) else "On"
+	$AudioContainer/TouchScreenButtonSFX/SFXButton.text = "Off" if AudioServer.is_bus_mute(AudioServer.get_bus_index("SFX")) else "On"
