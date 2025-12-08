@@ -13,6 +13,8 @@ class_name BarkController
 
 @export var bulletDirection = Vector2.UP
 
+@export var NormalBarkVolume = -4
+
 # Charge orb properties
 @export var charge_orb_scene: PackedScene = preload("res://scenes/chargeorb/charge_orb.tscn")
 @export var charge_orb_offset: Vector2 = Vector2(0, -50)  # Y offset from dog position
@@ -269,6 +271,7 @@ func play_random_bark_sound():
 	
 	# Create one-shot audio player
 	var soundPlayer = AudioStreamPlayer.new()
+	soundPlayer.volume_db = NormalBarkVolume
 	soundPlayer.bus = &"SFX"
 	soundPlayer.stream = selectedSound
 	

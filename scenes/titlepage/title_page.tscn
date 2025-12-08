@@ -3,7 +3,7 @@
 [ext_resource type="Theme" uid="uid://dm051kf62our1" path="res://assets/Theme/game_ui_theme.tres" id="1_4a81q"]
 [ext_resource type="Script" uid="uid://xhxeafu86vlh" path="res://scenes/titlepage/title_page.gd" id="1_847ta"]
 [ext_resource type="Texture2D" uid="uid://bwma0jb53imgl" path="res://assets/title-screen-art.png" id="3_847ta"]
-[ext_resource type="Script" uid="uid://bmvkapvoxdsgb" path="res://scenes/titlepage/settings.gd" id="4_4a81q"]
+[ext_resource type="Script" path="res://scenes/titlepage/settings.gd" id="4_4a81q"]
 
 [sub_resource type="Theme" id="Theme_k57g0"]
 Label/constants/line_spacing = -5
@@ -265,8 +265,8 @@ vertical_alignment = 1
 [connection signal="pressed" from="MainMenu/MenuOptions/LevelsButton" to="LevelPanel" method="show"]
 [connection signal="pressed" from="MainMenu/MenuOptions/LevelsButton" to="HighScore" method="hide"]
 [connection signal="pressed" from="MainMenu/MenuOptions/SettingsButton" to="MainMenu/MenuOptions" method="hide"]
-[connection signal="pressed" from="MainMenu/MenuOptions/SettingsButton" to="HighScore" method="hide"]
 [connection signal="pressed" from="MainMenu/MenuOptions/SettingsButton" to="SettingsPanel" method="show"]
+[connection signal="pressed" from="MainMenu/MenuOptions/SettingsButton" to="HighScore" method="hide"]
 [connection signal="pressed" from="MainMenu/MenuOptions/QuitButton" to="." method="_on_quit_button_pressed"]
 [connection signal="pressed" from="LevelPanel/CloseLevelsButton" to="MainMenu/MenuOptions" method="show"]
 [connection signal="pressed" from="LevelPanel/CloseLevelsButton" to="LevelPanel" method="hide"]
@@ -274,8 +274,8 @@ vertical_alignment = 1
 [connection signal="pressed" from="LevelPanel/LevelOptions/Level1Button" to="." method="_on_level_1_button_pressed"]
 [connection signal="pressed" from="LevelPanel/LevelOptions/Level2Button" to="." method="_on_level_2_button_pressed"]
 [connection signal="pressed" from="SettingsPanel/CloseSettingsButton" to="MainMenu/MenuOptions" method="show"]
-[connection signal="pressed" from="SettingsPanel/CloseSettingsButton" to="HighScore" method="show"]
 [connection signal="pressed" from="SettingsPanel/CloseSettingsButton" to="SettingsPanel" method="hide"]
+[connection signal="pressed" from="SettingsPanel/CloseSettingsButton" to="HighScore" method="show"]
 [connection signal="pressed" from="SettingsPanel/Settings/KeybindContainer/ShootButton" to="SettingsPanel/Settings" method="_on_button_pressed" binds= ["ShootButton"]]
 [connection signal="pressed" from="SettingsPanel/Settings/AudioContainer/MusicButton" to="SettingsPanel/Settings" method="_on_audio_button_pressed" binds= ["Music"]]
 [connection signal="pressed" from="SettingsPanel/Settings/AudioContainer/SFXButton" to="SettingsPanel/Settings" method="_on_audio_button_pressed" binds= ["SFX"]]
