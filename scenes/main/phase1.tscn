@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://p3b5yajekrdr"]
+[gd_scene load_steps=22 format=3 uid="uid://p3b5yajekrdr"]
 
 [ext_resource type="Script" uid="uid://ct048k6rsjfbb" path="res://scenes/main/main.gd" id="1_e2v34"]
 [ext_resource type="PackedScene" uid="uid://dfnmfcww2cu6i" path="res://scenes/dawg/the_dawg.tscn" id="2_631s2"]
@@ -18,6 +18,7 @@
 [ext_resource type="PackedScene" uid="uid://dji8f5amt6dio" path="res://scenes/hud/objective_panel.tscn" id="16_7a0md"]
 [ext_resource type="PackedScene" uid="uid://dq4qgvtssgtc7" path="res://scenes/hud/shoot_button_mobile.tscn" id="17_b4rkt"]
 [ext_resource type="PackedScene" uid="uid://6kkbv2l0adlo" path="res://scenes/hud/joystick.tscn" id="17_hgphf"]
+[ext_resource type="Script" uid="uid://bk01852lja6ep" path="res://scenes/main/label_debug.gd" id="19_nbgot"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_blune"]
 size = Vector2(64, 504)
@@ -124,3 +125,10 @@ scale = Vector2(0.8, 0.8)
 [node name="Joystick" parent="." instance=ExtResource("17_hgphf")]
 z_index = 5
 position = Vector2(11, 319)
+
+[node name="LabelDebugX" type="Label" parent="."]
+offset_left = 187.0
+offset_top = 472.0
+offset_right = 227.0
+offset_bottom = 495.0
+script = ExtResource("19_nbgot")
