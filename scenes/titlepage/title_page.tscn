@@ -3,7 +3,7 @@
 [ext_resource type="Theme" uid="uid://dm051kf62our1" path="res://assets/Theme/game_ui_theme.tres" id="1_4a81q"]
 [ext_resource type="Script" uid="uid://xhxeafu86vlh" path="res://scenes/titlepage/title_page.gd" id="1_847ta"]
 [ext_resource type="Texture2D" uid="uid://bwma0jb53imgl" path="res://assets/title-screen-art.png" id="3_847ta"]
-[ext_resource type="Script" uid="uid://bmvkapvoxdsgb" path="res://scenes/titlepage/settings.gd" id="4_4a81q"]
+[ext_resource type="Script" path="res://scenes/titlepage/settings.gd" id="4_4a81q"]
 
 [sub_resource type="Theme" id="Theme_k57g0"]
 Label/constants/line_spacing = -5
@@ -89,7 +89,7 @@ text = "Start"
 metadata/_edit_use_anchors_ = true
 
 [node name="TouchScreenButton2" type="TouchScreenButton" parent="MainMenu/MenuOptions"]
-position = Vector2(100, 75)
+position = Vector2(100, 72)
 shape = SubResource("RectangleShape2D_k57g0")
 
 [node name="LevelsButton" type="Button" parent="MainMenu/MenuOptions/TouchScreenButton2"]
@@ -102,7 +102,7 @@ text = "Levels"
 metadata/_edit_use_anchors_ = true
 
 [node name="TouchScreenButton4" type="TouchScreenButton" parent="MainMenu/MenuOptions"]
-position = Vector2(100, 130)
+position = Vector2(100, 124)
 shape = SubResource("RectangleShape2D_k57g0")
 
 [node name="SettingsButton" type="Button" parent="MainMenu/MenuOptions/TouchScreenButton4"]
@@ -115,7 +115,7 @@ text = "Settings"
 metadata/_edit_use_anchors_ = true
 
 [node name="TouchScreenButton3" type="TouchScreenButton" parent="MainMenu/MenuOptions"]
-position = Vector2(100, 190)
+position = Vector2(100, 175)
 shape = SubResource("RectangleShape2D_k57g0")
 
 [node name="QuitButton" type="Button" parent="MainMenu/MenuOptions/TouchScreenButton3"]
@@ -125,6 +125,7 @@ offset_right = 100.0
 offset_bottom = 23.0
 theme = ExtResource("1_4a81q")
 text = "Quit"
+metadata/_edit_use_anchors_ = true
 
 [node name="LevelPanel" type="Panel" parent="."]
 visible = false
@@ -341,9 +342,9 @@ autowrap_trim_flags = 0
 [node name="HighScore" type="Label" parent="."]
 layout_mode = 0
 offset_left = 346.0
-offset_top = 417.0
+offset_top = 413.0
 offset_right = 550.0
-offset_bottom = 450.0
+offset_bottom = 446.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "High score = 0"
 label_settings = SubResource("LabelSettings_847ta")
