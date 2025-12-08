@@ -370,7 +370,6 @@ func _on_invincible_timer_timeout():
 func play_hurt_sound():
 	var soundPlayer = AudioStreamPlayer.new()
 	soundPlayer.stream = hurtSFX
-	soundPlayer.volume_db = hurtSoundVolume
 	
 	soundPlayer.finished.connect(soundPlayer.queue_free)
 	
@@ -380,7 +379,6 @@ func play_hurt_sound():
 func play_shield_sound():
 	var soundPlayer = AudioStreamPlayer.new()
 	soundPlayer.stream = shieldSFX
-	soundPlayer.volume_db = shieldSoundVolume
 	
 	soundPlayer.finished.connect(soundPlayer.queue_free)
 	
@@ -390,7 +388,6 @@ func play_shield_sound():
 func play_hp_gain_sound():
 	var soundPlayer = AudioStreamPlayer.new()
 	soundPlayer.stream = healingSFX
-	soundPlayer.volume_db = healingSoundVolume
 	
 	soundPlayer.finished.connect(soundPlayer.queue_free)
 	
@@ -494,7 +491,6 @@ func play_cough_drop_sound(charge_level: int):
 	if sound_index < coughDropSounds.size():
 		var sound_player = AudioStreamPlayer.new()
 		sound_player.stream = coughDropSounds[sound_index]
-		sound_player.volume_db = coughDropVolume
 		sound_player.finished.connect(sound_player.queue_free)
 		add_child(sound_player)
 		sound_player.play()

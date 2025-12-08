@@ -37,7 +37,6 @@ var is_charge_ready: bool = false  # Track when charge is ready to fire
 @export var normalBarkVolume = -5
 @export var chargeBarkVolume = -5
 
-@export var normalBarkVolume = -5
 var barkSounds: Array = [
 	preload("res://assets/sfx/normalbark1.mp3"),
 	preload("res://assets/sfx/normalbark2.mp3"),
