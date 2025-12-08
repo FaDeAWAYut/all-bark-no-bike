@@ -82,7 +82,6 @@ var previousHP: int = 100
 
 func _ready():
 	AudioServer.set_bus_volume_db(2, -5.0) # set SFX volume
-	print("main SFX: ",AudioServer.get_bus_volume_db(2))
 
 	get_tree().paused = false # unpause from gameover
 	initialize_modules()
