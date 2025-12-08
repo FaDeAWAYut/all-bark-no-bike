@@ -17,7 +17,7 @@ func _input(event):
 			set_process(false)
 			knob.position = stick_center
 
-func _process(delta):
+func _process(_delta):
 	if self.global_position + Vector2(200,-200) > get_global_mouse_position() :
 		knob.global_position = get_global_mouse_position()
 		knob.position = stick_center + (knob.position - stick_center).limit_length(max_distance)
