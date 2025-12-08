@@ -17,6 +17,7 @@ func enter(_previous_state_path: String, _data := {}) -> void:
 func exit() -> void:
 	is_moving_down = false
 	is_moving_back = false
+	$"../../CollisionPolygon2D".disabled = false
 
 func physics_update(delta: float) -> void:
 	if not boss:
@@ -41,6 +42,8 @@ func start_moving_down():
 	boss.is_positioned = false
 	original_position = boss.global_position
 	slide_timer = 0.0
+	
+	$"../../CollisionPolygon2D".disabled = true
 	
 	# Calculate target position (one screen height below camera, accounting for sprite height)
 	var camera = boss.get_viewport().get_camera_2d()
