@@ -1,0 +1,37 @@
+[gd_scene load_steps=3 format=3 uid="uid://dqlplogp2hvfh"]
+
+[ext_resource type="Script" uid="uid://ca44tpruo608s" path="res://scenes/hud/arrow_buttons.gd" id="1_7uw8v"]
+[ext_resource type="Texture2D" uid="uid://cjrxodfh8qjtj" path="res://assets/arrow-button.png" id="1_bjtuh"]
+
+[node name="ArrowButtons" type="Node2D"]
+scale = Vector2(0.5, 0.5)
+script = ExtResource("1_7uw8v")
+
+[node name="Up" type="TouchScreenButton" parent="."]
+position = Vector2(96, 0)
+texture_normal = ExtResource("1_bjtuh")
+visibility_mode = 1
+
+[node name="Down" type="TouchScreenButton" parent="."]
+position = Vector2(196, 208)
+rotation = 3.1415927
+texture_normal = ExtResource("1_bjtuh")
+
+[node name="Left" type="TouchScreenButton" parent="."]
+position = Vector2(4, 154)
+rotation = 4.712389
+texture_normal = ExtResource("1_bjtuh")
+
+[node name="Right" type="TouchScreenButton" parent="."]
+position = Vector2(288, 56)
+rotation = 1.5707964
+texture_normal = ExtResource("1_bjtuh")
+
+[connection signal="pressed" from="Up" to="." method="_on_pressed" binds= [Vector2(0, -1)]]
+[connection signal="released" from="Up" to="." method="_on_released"]
+[connection signal="pressed" from="Down" to="." method="_on_pressed" binds= [Vector2(0, 1)]]
+[connection signal="released" from="Down" to="." method="_on_released"]
+[connection signal="pressed" from="Left" to="." method="_on_pressed" binds= [Vector2(-1, 0)]]
+[connection signal="released" from="Left" to="." method="_on_released"]
+[connection signal="pressed" from="Right" to="." method="_on_pressed" binds= [Vector2(1, 0)]]
+[connection signal="released" from="Right" to="." method="_on_released"]

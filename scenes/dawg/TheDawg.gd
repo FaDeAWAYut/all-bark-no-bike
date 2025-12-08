@@ -6,7 +6,8 @@ var direction
 
 func _physics_process(_delta):
 	if useTouchscreen:
-		direction = $"../Joystick".get_joystick_dir()
+		#direction = $"../Joystick".get_joystick_dir()
+		direction = $"../ArrowButtons".direction
 	else:
 		direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	

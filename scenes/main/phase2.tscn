@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://y870mw6xbtm6"]
+[gd_scene load_steps=24 format=3 uid="uid://y870mw6xbtm6"]
 
 [ext_resource type="Script" uid="uid://ct048k6rsjfbb" path="res://scenes/main/main.gd" id="1_54jss"]
 [ext_resource type="PackedScene" uid="uid://bsf3igehijgig" path="res://scenes/background/parallax_bg.tscn" id="2_eu2pp"]
@@ -20,8 +20,7 @@
 [ext_resource type="PackedScene" uid="uid://bv5t0i620xpop" path="res://scenes/motorbikefriend/motorbike_friend.tscn" id="16_flnuf"]
 [ext_resource type="PackedScene" uid="uid://dji8f5amt6dio" path="res://scenes/hud/objective_panel.tscn" id="17_bqc62"]
 [ext_resource type="PackedScene" uid="uid://dq4qgvtssgtc7" path="res://scenes/hud/shoot_button_mobile.tscn" id="18_ga6hj"]
-[ext_resource type="PackedScene" uid="uid://6kkbv2l0adlo" path="res://scenes/hud/joystick.tscn" id="19_lno4l"]
-[ext_resource type="Script" uid="uid://bk01852lja6ep" path="res://scenes/main/label_debug.gd" id="22_574qt"]
+[ext_resource type="PackedScene" uid="uid://dqlplogp2hvfh" path="res://scenes/hud/arrow_buttons.tscn" id="21_p0ifs"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_blune"]
 size = Vector2(64, 504)
@@ -166,13 +165,7 @@ z_index = 5
 position = Vector2(751, 366)
 scale = Vector2(0.8, 0.8)
 
-[node name="Joystick" parent="." instance=ExtResource("19_lno4l")]
+[node name="ArrowButtons" parent="." instance=ExtResource("21_p0ifs")]
 z_index = 5
-position = Vector2(11, 319)
-
-[node name="LabelDebugX" type="Label" parent="."]
-offset_left = 187.0
-offset_top = 472.0
-offset_right = 227.0
-offset_bottom = 495.0
-script = ExtResource("22_574qt")
+position = Vector2(12.000002, 346)
+scale = Vector2(0.7, 0.7)
