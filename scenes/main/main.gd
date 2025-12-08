@@ -102,7 +102,8 @@ func _ready():
 		bossHealthController.died.emit()
 
 func initialize_modules():
-	#$Joystick.visible = useTouchscreen
+	if $Joystick: # for debug -- delete line 106 later
+		$Joystick.visible = useTouchscreen
 	$ShootButtonMobile.visible = useTouchscreen
 	
 	gameManager = GameManager.new()

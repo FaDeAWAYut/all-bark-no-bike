@@ -17,7 +17,7 @@
 [ext_resource type="Script" uid="uid://bujgehfwg2nkx" path="res://scripts/SpeedManager.gd" id="15_dobbf"]
 [ext_resource type="PackedScene" uid="uid://dji8f5amt6dio" path="res://scenes/hud/objective_panel.tscn" id="16_7a0md"]
 [ext_resource type="PackedScene" uid="uid://dq4qgvtssgtc7" path="res://scenes/hud/shoot_button_mobile.tscn" id="17_b4rkt"]
-[ext_resource type="PackedScene" uid="uid://dqlplogp2hvfh" path="res://scenes/hud/arrow_buttons.tscn" id="18_u40po"]
+[ext_resource type="PackedScene" uid="uid://6kkbv2l0adlo" path="res://scenes/hud/joystick.tscn" id="18_b4rkt"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_blune"]
 size = Vector2(64, 504)
@@ -121,7 +121,6 @@ z_index = 5
 position = Vector2(751, 366)
 scale = Vector2(0.8, 0.8)
 
-[node name="ArrowButtons" parent="." instance=ExtResource("18_u40po")]
+[node name="Joystick" parent="." instance=ExtResource("18_b4rkt")]
 z_index = 5
-position = Vector2(12.000002, 346)
-scale = Vector2(0.7, 0.7)
+position = Vector2(18, 315)
