@@ -432,6 +432,7 @@ func _input(event):
 	if event.is_action_released("shoot"):
 		# Release charge when space is released
 		barkController.release_charge()
+
 func show_hp():
 	$HUD.get_node("TextureProgressBar").value = gameManager.playerHp
 
@@ -508,6 +509,11 @@ func show_timer():
 		if timeLeft <= 0 and not gameManager.isGameOver:
 			# Player wins the game (phase 2)
 			get_tree().change_scene_to_file("res://scenes/main/ending_animation.tscn")
+			calculate_score()
+			# Check for high score
+			if score > high_score:
+				high_score = score
+				save_high_score()
 			
 func _on_game_ended():
 	calculate_score()
