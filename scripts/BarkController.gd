@@ -21,7 +21,6 @@ var charge_orb_tween: Tween = null
 
 # NEW: Charging sound properties
 @export var charging_sound: AudioStream = preload("res://assets/sfx/chargingsfx.mp3")
-@export var charging_sound_volume_db: float = -5.0
 var charging_sound_player: AudioStreamPlayer = null
 
 # Charging properties
@@ -30,10 +29,6 @@ var charge_start_time: float = 0.0
 var charge_duration: float = 1.5  # 1.5 seconds to charge from 100% to 0%
 var current_charge_progress: float = 0.0  # Goes from 1.0 to 0.0 during charge
 var is_charge_ready: bool = false  # Track when charge is ready to fire
-
-# Audio properties
-@export var normalBarkVolume = -5
-@export var chargeBarkVolume = -5
 
 var barkSounds: Array = [
 	preload("res://assets/sfx/normalbark1.mp3"),
@@ -152,8 +147,8 @@ func play_charging_sound():
 	
 	# Create and configure audio player
 	charging_sound_player = AudioStreamPlayer.new()
+	charging_sound_player.bus = &"SFX"
 	charging_sound_player.stream = charging_sound
-	charging_sound_player.volume_db = charging_sound_volume_db
 	charging_sound_player.autoplay = true
 	
 	# Make it loop
@@ -274,8 +269,8 @@ func play_random_bark_sound():
 	
 	# Create one-shot audio player
 	var soundPlayer = AudioStreamPlayer.new()
+	soundPlayer.bus = &"SFX"
 	soundPlayer.stream = selectedSound
-	soundPlayer.volume_db = normalBarkVolume
 	
 	# Auto-delete when finished
 	soundPlayer.finished.connect(soundPlayer.queue_free)
@@ -290,8 +285,8 @@ func play_charge_bark_sound():
 	
 	# Create one-shot audio player for charge bark
 	var soundPlayer = AudioStreamPlayer.new()
+	soundPlayer.bus = &"SFX"
 	soundPlayer.stream = charge_bark_sound
-	soundPlayer.volume_db = chargeBarkVolume
 	
 	# Auto-delete when finished
 	soundPlayer.finished.connect(soundPlayer.queue_free)

@@ -16,10 +16,8 @@ var gameManager: GameManager
 @export var barkController: BarkController
 var screenEffects: ScreenEffects
 
-#@onready var music_player = $BgmPlayer
 @export var music_player: AudioStreamPlayer
 @onready var chadchartSfxPlayer: AudioStreamPlayer
-#@onready var BGM_BUS_ID = AudioServer.get_bus_index("BGM") # for when we implement volume settings
 
 # Game constants
 @export var dogStartPosition := Vector2i(960, 920)
@@ -70,13 +68,7 @@ var coughDropSounds: Array = [
 	preload("res://assets/sfx/cough_drop_eating3.mp3")
 ]
 
-@export var hurtSoundVolume = -5
-@export var bgmVolume = -5
-@export var coughDropVolume: float = -5.0
-@export var shieldSoundVolume: float = -5.0
-@export var healingSoundVolume: float = -5.0 
-@export var chadchartAppearsSoundVolume: float = 0.0
-@export var chadchartActiveSoundVolume: float = -5.0
+@export var chadchartAppearsSoundVolume: float = AudioServer.get_bus_volume_db(AudioServer.get_bus_index("SFX")) + 5.0
 
 @export_category("Debug Options")
 @export var SkipPhaseOne := false
@@ -115,10 +107,12 @@ func initialize_modules():
 	add_child(gameManager)
 	
 	music_player = AudioStreamPlayer.new()
+	music_player.bus = &"Music"
 	music_player.name = "BackgroundMusic"
 	add_child(music_player)
 
 	chadchartSfxPlayer = AudioStreamPlayer.new()
+	chadchartSfxPlayer.bus = &"SFX"
 	chadchartSfxPlayer.name = "ChadchartSfxPlayer"
 	add_child(chadchartSfxPlayer)
 	
@@ -372,8 +366,8 @@ func _on_invincible_timer_timeout():
 
 func play_hurt_sound():
 	var soundPlayer = AudioStreamPlayer.new()
+	soundPlayer.bus = &"SFX"
 	soundPlayer.stream = hurtSFX
-	soundPlayer.volume_db = hurtSoundVolume
 	
 	soundPlayer.finished.connect(soundPlayer.queue_free)
 	
@@ -382,8 +376,8 @@ func play_hurt_sound():
 
 func play_shield_sound():
 	var soundPlayer = AudioStreamPlayer.new()
+	soundPlayer.bus = &"SFX"
 	soundPlayer.stream = shieldSFX
-	soundPlayer.volume_db = shieldSoundVolume
 	
 	soundPlayer.finished.connect(soundPlayer.queue_free)
 	
@@ -392,8 +386,8 @@ func play_shield_sound():
 
 func play_hp_gain_sound():
 	var soundPlayer = AudioStreamPlayer.new()
+	soundPlayer.bus = &"SFX"
 	soundPlayer.stream = healingSFX
-	soundPlayer.volume_db = healingSoundVolume
 	
 	soundPlayer.finished.connect(soundPlayer.queue_free)
 	
@@ -411,7 +405,6 @@ func play_chadchart_appears_sound():
 func play_chadchart_active_sound():
 	if chadchartSfxPlayer:
 		chadchartSfxPlayer.stream = chadchartActiveSFX
-		chadchartSfxPlayer.volume_db = chadchartActiveSoundVolume
 		chadchartSfxPlayer.play()
 	
 func play_background_music():
@@ -420,7 +413,6 @@ func play_background_music():
 	else:
 		music_player.stream = NoBikeMusic
 
-	music_player.volume_db = bgmVolume
 	music_player.autoplay = true
 	
 	# Make it loop
@@ -496,8 +488,8 @@ func play_cough_drop_sound(charge_level: int):
 	var sound_index = charge_level - 1
 	if sound_index < coughDropSounds.size():
 		var sound_player = AudioStreamPlayer.new()
+		sound_player.bus = &"SFX"
 		sound_player.stream = coughDropSounds[sound_index]
-		sound_player.volume_db = coughDropVolume
 		sound_player.finished.connect(sound_player.queue_free)
 		add_child(sound_player)
 		sound_player.play()
@@ -556,12 +548,14 @@ func _on_chadchart_appears():
 func activate_chadchart():
 	$TheDawg/AnimatedSprite2D.animation = &"chadchart_active"
 	$TheDawg/AnimatedSprite2D.scale = Vector2(0.25,0.25)
-	music_player.volume_db = -60.0
-	play_chadchart_active_sound()
+	if !AudioServer.is_bus_mute(AudioServer.get_bus_index("SFX")):
+		music_player.volume_db = -60.0
+		play_chadchart_active_sound()
 	await get_tree().create_timer(11.5).timeout
 	
 	# after chadchart use
-	gradually_increase_bgm_volume(5)
+	if !AudioServer.is_bus_mute(AudioServer.get_bus_index("SFX")):
+		gradually_increase_bgm_volume(5)
 	add_child(chadchartWalkout)
 	chadchartWalkout.get_child(2).hide() # hide Control node
 	chadchartWalkout.position = Vector2($TheDawg.position.x,$TheDawg.position.y)
@@ -577,7 +571,7 @@ func gradually_increase_bgm_volume(duration_sec: float):
 	const muteVolume = -60.0
 	for i in range(1, duration_sec*10+1): # *10 for less increase in each step -> smoother increase
 		await get_tree().create_timer(0.1).timeout
-		music_player.volume_db = muteVolume + (bgmVolume - muteVolume) * (i/(duration_sec*10))
+		music_player.volume_db = muteVolume + (AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Music")) - muteVolume) * (i/(duration_sec*10))
 		
 func calculate_score():
 	# calculate total score after game ended

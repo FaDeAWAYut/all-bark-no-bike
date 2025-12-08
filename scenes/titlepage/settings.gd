@@ -1,17 +1,19 @@
 extends VBoxContainer
 
-@onready var shoot_label : Label = $GridContainer/ShootLabel
-@onready var shoot_button : Button = $GridContainer/ShootButton
+@onready var shoot_label : Label = $KeybindContainer/ShootLabel
+@onready var shoot_button : Button = $KeybindContainer/ShootButton
+@export var bark_sound = preload("res://assets/sfx/normalbark1.mp3")
 
 var current_button : Button
 var move_keys = ["Up", "Down", "Left", "Right", "W", "A", "S", "D"]
 
 func _ready() -> void:	
 	_update_labels() # called to refresh the labels
-
+	_refresh_audio_settings()
+	
 # Whenever a button is pressed, do:
 func _on_button_pressed(button_name: String) -> void:
-	current_button = $GridContainer.get_node(button_name)
+	current_button = $AudioContainer.get_node(button_name)
 	current_button.text = "Press key"
 
 func _input(event: InputEvent) -> void:
@@ -48,3 +50,23 @@ func _update_labels() -> void:
 			shoot_button.text = key_text
 	else:
 		shoot_button.text = "Unassigned"
+		
+
+func _on_audio_button_pressed(channel: String) -> void:
+	var button = $AudioContainer.get_node(channel + "Button")
+	var bus_id = AudioServer.get_bus_index(channel)
+	AudioServer.set_bus_mute(bus_id, button.text == "On")
+	button.text = "On" if button.text == "Off" else "Off"
+	
+	if channel == "SFX": # let players hear sound for testing
+		var soundPlayer = AudioStreamPlayer.new()
+		soundPlayer.bus = &"SFX"
+		soundPlayer.stream = bark_sound
+		soundPlayer.finished.connect(soundPlayer.queue_free) 	# Auto-delete when finished
+		add_child(soundPlayer)
+		soundPlayer.play()
+		
+# refresh in case player plays again (see title screen again)
+func _refresh_audio_settings():
+	$AudioContainer/MusicButton.text = "Off" if AudioServer.is_bus_mute(AudioServer.get_bus_index("Music")) else "On"
+	$AudioContainer/SFXButton.text = "Off" if AudioServer.is_bus_mute(AudioServer.get_bus_index("SFX")) else "On"
