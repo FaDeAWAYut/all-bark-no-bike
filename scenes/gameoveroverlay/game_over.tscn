@@ -1,8 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://dy6jmp88qig88"]
+[gd_scene load_steps=5 format=3 uid="uid://dy6jmp88qig88"]
 
 [ext_resource type="Theme" uid="uid://dm051kf62our1" path="res://assets/Theme/game_ui_theme.tres" id="1_u4q6w"]
 [ext_resource type="Texture2D" uid="uid://bvohuvwhigav4" path="res://assets/bg_barrier.png" id="2_2icov"]
 [ext_resource type="Script" uid="uid://0phgw26dlny0" path="res://scenes/gameoveroverlay/game_over.gd" id="2_8qhjl"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2icov"]
+size = Vector2(100, 42)
 
 [node name="GameOver" type="Control"]
 texture_filter = 1
@@ -61,20 +64,28 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_2icov")
 
-[node name="Exit" type="Button" parent="Panel"]
-layout_mode = 0
-offset_left = 20.0
-offset_top = 200.0
-offset_right = 120.0
-offset_bottom = 242.0
+[node name="TouchScreenButton" type="TouchScreenButton" parent="Panel"]
+position = Vector2(70, 221)
+shape = SubResource("RectangleShape2D_2icov")
+
+[node name="Exit" type="Button" parent="Panel/TouchScreenButton"]
+offset_left = -50.0
+offset_top = -21.0
+offset_right = 50.0
+offset_bottom = 21.0
+theme = ExtResource("1_u4q6w")
 text = "Give up"
 
-[node name="RetryButton" type="Button" parent="Panel"]
-layout_mode = 0
-offset_left = 240.0
-offset_top = 200.0
-offset_right = 340.0
-offset_bottom = 242.0
+[node name="TouchScreenButton2" type="TouchScreenButton" parent="Panel"]
+position = Vector2(290, 221)
+shape = SubResource("RectangleShape2D_2icov")
+
+[node name="RetryButton" type="Button" parent="Panel/TouchScreenButton2"]
+offset_left = -50.0
+offset_top = -21.0
+offset_right = 50.0
+offset_bottom = 21.0
+theme = ExtResource("1_u4q6w")
 text = "Retry"
 
 [node name="Score" type="Label" parent="Panel"]
@@ -86,5 +97,7 @@ text = "Score = 0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[connection signal="pressed" from="Panel/Exit" to="." method="_on_exit_pressed"]
-[connection signal="pressed" from="Panel/RetryButton" to="." method="_on_retry_button_pressed"]
+[connection signal="pressed" from="Panel/TouchScreenButton" to="." method="_on_exit_pressed"]
+[connection signal="pressed" from="Panel/TouchScreenButton/Exit" to="." method="_on_exit_pressed"]
+[connection signal="pressed" from="Panel/TouchScreenButton2" to="." method="_on_retry_button_pressed"]
+[connection signal="pressed" from="Panel/TouchScreenButton2/RetryButton" to="." method="_on_retry_button_pressed"]
