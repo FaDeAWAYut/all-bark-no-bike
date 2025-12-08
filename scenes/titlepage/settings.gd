@@ -11,7 +11,7 @@ var move_keys = ["Up", "Down", "Left", "Right", "W", "A", "S", "D"]
 
 func _ready() -> void:	
 	AudioServer.set_bus_volume_db(2, -5.0) # set SFX volume
-	print("setting SFX: ",AudioServer.get_bus_volume_db(2))
+
 	if useTouchscreen:
 		$Keybind.visible = false
 		$KeybindContainer.visible = false

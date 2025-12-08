@@ -11,7 +11,6 @@ var music_player: AudioStreamPlayer
 
 func _ready():
 	AudioServer.set_bus_volume_db(2, 0.0) # set SFX volume
-	print("ending SFX: ",AudioServer.get_bus_volume_db(2))
 
 	# Stop all movement
 	setup_static_scene()

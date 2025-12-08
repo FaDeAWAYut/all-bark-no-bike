@@ -68,14 +68,7 @@ var coughDropSounds: Array = [
 	preload("res://assets/sfx/cough_drop_eating3.mp3")
 ]
 
-@export var hurtSoundVolume = -5
 @export var bgmVolume = -5
-@export var coughDropVolume: float = -5.0
-@export var shieldSoundVolume: float = -5.0
-@export var healingSoundVolume: float = -5.0 
-@export var chadchartAppearsSoundVolume: float = 0.0
-@export var chadchartActiveSoundVolume: float = -5.0
-#@export var chadchartAppearsSoundVolume: float = AudioServer.get_bus_volume_db(AudioServer.get_bus_index("SFX")) + 5.0
 
 @export_category("Debug Options")
 @export var SkipPhaseOne := false
@@ -376,7 +369,6 @@ func _on_invincible_timer_timeout():
 func play_hurt_sound():
 	var soundPlayer = AudioStreamPlayer.new()
 	soundPlayer.bus = &"SFX"
-	soundPlayer.volume_db = hurtSoundVolume
 	soundPlayer.stream = hurtSFX
 	
 	soundPlayer.finished.connect(soundPlayer.queue_free)
@@ -388,7 +380,6 @@ func play_shield_sound():
 	var soundPlayer = AudioStreamPlayer.new()
 	soundPlayer.bus = &"SFX"
 	soundPlayer.stream = shieldSFX
-	soundPlayer.volume_db = shieldSoundVolume
 	
 	soundPlayer.finished.connect(soundPlayer.queue_free)
 	
@@ -399,7 +390,6 @@ func play_hp_gain_sound():
 	var soundPlayer = AudioStreamPlayer.new()
 	soundPlayer.bus = &"SFX"
 	soundPlayer.stream = healingSFX
-	soundPlayer.volume_db = healingSoundVolume
 	
 	soundPlayer.finished.connect(soundPlayer.queue_free)
 	
@@ -411,13 +401,11 @@ func play_hp_gain_sound():
 func play_chadchart_appears_sound():
 	if chadchartSfxPlayer:
 		chadchartSfxPlayer.stream = chadchartAppearsSFX
-		chadchartSfxPlayer.volume_db = chadchartAppearsSoundVolume
 		chadchartSfxPlayer.play()
 	
 func play_chadchart_active_sound():
 	if chadchartSfxPlayer:
 		chadchartSfxPlayer.stream = chadchartActiveSFX
-		chadchartSfxPlayer.volume_db = chadchartActiveSFX
 		chadchartSfxPlayer.play()
 	
 func play_background_music():
@@ -503,7 +491,6 @@ func play_cough_drop_sound(charge_level: int):
 		var sound_player = AudioStreamPlayer.new()
 		sound_player.bus = &"SFX"
 		sound_player.stream = coughDropSounds[sound_index]
-		sound_player.volume_db = coughDropVolume
 		sound_player.finished.connect(sound_player.queue_free)
 		add_child(sound_player)
 		sound_player.play()
