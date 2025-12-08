@@ -2,8 +2,17 @@ extends CharacterBody2D
 
 @onready var sprite : AnimatedSprite2D = $AnimatedSprite2D
 
+@onready var useTouchscreen = DisplayServer.is_touchscreen_available()
+var speed = 300
+var direction
+
 func _physics_process(delta):
-	velocity = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down") * 300
+	if useTouchscreen:
+		direction = $"../Joystick".get_joystick_dir()
+	else:
+		direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+	
+	velocity = direction * speed
 	move_and_slide()
 
 func _input(event):

@@ -1,0 +1,19 @@
+[gd_scene load_steps=5 format=3 uid="uid://6kkbv2l0adlo"]
+
+[ext_resource type="Texture2D" uid="uid://d0e7iuyw0diqx" path="res://assets/JoystickBorder.png" id="1_qr223"]
+[ext_resource type="Script" uid="uid://dkkyxnmg5sqwl" path="res://scenes/hud/joystick.gd" id="2_qx702"]
+[ext_resource type="Texture2D" uid="uid://ctdj6g7bfodxk" path="res://assets/JoystickKnob.png" id="3_w4crr"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8h5ii"]
+radius = 150.0
+
+[node name="Joystick" type="TouchScreenButton"]
+scale = Vector2(0.5, 0.5)
+texture_normal = ExtResource("1_qr223")
+shape = SubResource("CircleShape2D_8h5ii")
+visibility_mode = 1
+script = ExtResource("2_qx702")
+
+[node name="Knob" type="Sprite2D" parent="."]
+position = Vector2(178, 178)
+texture = ExtResource("3_w4crr")

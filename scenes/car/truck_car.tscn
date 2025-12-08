@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://dmj6eoyf11sy5" path="res://scenes/car/car.tscn" id="1_uqqbx"]
 [ext_resource type="Texture2D" uid="uid://c4y3nelxiymk5" path="res://assets/pickup_white_back.png" id="2_3r5vb"]
 
-[node name="Car" instance=ExtResource("1_uqqbx")]
+[node name="Truck" instance=ExtResource("1_uqqbx")]
 collision_layer = 9
 
 [node name="Sprite2D" parent="." index="0"]
