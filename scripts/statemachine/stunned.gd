@@ -26,7 +26,15 @@ func enter(_previous_state_path: String, _data := {}) -> void:
 	var stun_multiplier = boss.get_stun_multiplier()
 	if stun_multiplier <= 0:
 		stun_multiplier = 1  
-	stun_duration = boss.base_stunned_duration * stun_multiplier
+
+	var stun_time = $"../..".get_parent().timeLeft
+	if stun_time > 100: # 5 sec stun duration
+		stun_duration = boss.twomin_stunned_duration * stun_multiplier
+	elif stun_time <= 60: # 3 sec stun duration
+		stun_duration = boss.base_stunned_duration * stun_multiplier
+	elif stun_time <= 100: # 4 sec stun duration
+		stun_duration = boss.onehalf_stunned_duration * stun_multiplier
+	
 	
 	# Start moving down
 	start_moving_down()

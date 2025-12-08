@@ -45,6 +45,7 @@ var base_score_phase2 = 2000
 var save_path = "user://score.save"
 
 @export var timeLimit: float = 134.0 #2.14 minutes
+@export var timeLeft: float
 
 @export var screenSize : Vector2i = Vector2(896, 512)
 
@@ -509,7 +510,7 @@ func show_timer():
 		timerPanel.get_node("SecondsLabel").text = "%02d" % seconds
 		timerPanel.get_node("MinutesLabel").text = "%02d:" % minutes
 	else:
-		var timeLeft = max(timeLimit - gameTime, 0)
+		timeLeft = max(timeLimit - gameTime, 0)
 		seconds = fmod(timeLeft, 60)
 		minutes = fmod(timeLeft, 3600) / 60
 		timerPanel.get_node("SecondsLabel").text = "%02d" % seconds
@@ -583,7 +584,7 @@ func calculate_score():
 	if isPhaseOne:
 		score = (base_score_phase1 - bossHealthController.current_health)*5
 	else:
-		var timeLeft = max(timeLimit - gameTime, 0)
+		timeLeft = max(timeLimit - gameTime, 0)
 		score = (base_score_phase2 + base_score_phase1 - timeLeft*(base_score_phase2/timeLimit))*5
 		
 func display_score():
