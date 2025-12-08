@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://2y3hqwi7jx71" path="res://assets/TheDawgOnBike.png" id="5_b7k3u"]
 [ext_resource type="Texture2D" uid="uid://c85ufidup5rhg" path="res://assets/motorbike_empty.png" id="6_2hlfi"]
 [ext_resource type="Texture2D" uid="uid://500d87navbuy" path="res://assets/motorbikeFriend_Grab.png" id="7_imygn"]
-[ext_resource type="Script" path="res://scenes/main/animation_player_end.gd" id="8_b7k3u"]
+[ext_resource type="Script" uid="uid://bkfpgt2q2xd5i" path="res://scenes/main/animation_player_end.gd" id="8_b7k3u"]
 [ext_resource type="Texture2D" uid="uid://c8urtn7s80qbd" path="res://assets/motorbikeFriend_Flash.png" id="8_yimrl"]
 [ext_resource type="Script" uid="uid://bujgehfwg2nkx" path="res://scripts/SpeedManager.gd" id="9_2hlfi"]
 [ext_resource type="Texture2D" uid="uid://dqwcda8fdphiv" path="res://assets/motorbikeFriend_FoodPanda.png" id="9_hluii"]
@@ -1426,33 +1426,41 @@ offset_bottom = 528.0
 [node name="DogJump" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("14_033kb")
 volume_db = 6.0
+bus = &"SFX"
 
 [node name="DogSlide" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("14_i8lfd")
 volume_db = 2.0
+bus = &"SFX"
 
 [node name="DogRunning" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("14_sff2f")
+bus = &"SFX"
 
 [node name="BaiGotHit" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("14_0gwnl")
 volume_db = 5.0
+bus = &"SFX"
 
 [node name="Explosion3" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("14_lal8u")
 volume_db = 3.0
+bus = &"SFX"
 
 [node name="Explosion2" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("14_hmibh")
 volume_db = 3.0
+bus = &"SFX"
 
 [node name="Explosion1" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("15_lal8u")
 volume_db = 3.0
+bus = &"SFX"
 
 [node name="Brake" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("14_7u5ui")
 volume_db = 3.0
+bus = &"SFX"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

@@ -78,7 +78,6 @@ script = ExtResource("10_a8run")
 script = ExtResource("11_ouso4")
 theDawg = NodePath("../TheDawg")
 barkSpawnOffset = Vector2(0, 0)
-normalBarkVolume = -10
 charge_bark_sound = ExtResource("13_7smn1")
 
 [node name="BarkPool" type="Node" parent="BarkController"]
@@ -113,8 +112,6 @@ z_index = 10
 [node name="SpeedManager" type="Node" parent="."]
 script = ExtResource("15_dobbf")
 metadata/_custom_type_script = "uid://bujgehfwg2nkx"
-
-[node name="BgmPlayer" type="AudioStreamPlayer2D" parent="."]
 
 [node name="ObjectivePanel" parent="." instance=ExtResource("16_7a0md")]
 z_index = 10

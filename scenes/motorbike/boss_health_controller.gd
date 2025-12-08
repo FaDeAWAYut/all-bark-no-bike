@@ -16,11 +16,9 @@ var hurtSounds: Array = [
 	preload("res://assets/sfx/smalldamage2.mp3"),
 	preload("res://assets/sfx/smalldamage3.mp3")
 ]
-@export var hurt_volume_db: float = -5.0
 
 # NEW: Big damage sound for charge bark
 var big_damage_sound: AudioStream = preload("res://assets/sfx/bigdamage.mp3")
-@export var big_damage_volume_db: float = -5.0  # Volume for big damage sound
 
 var bikerSounds: Array = [
 	preload("res://assets/sfx/biker1.mp3"),
@@ -135,8 +133,8 @@ func play_random_hurt_sound():
 	
 	# Create one-shot audio player
 	var sound_player = AudioStreamPlayer.new()
+	sound_player.bus = &"SFX"
 	sound_player.stream = selected_sound
-	sound_player.volume_db = hurt_volume_db
 	
 	# Auto-delete when finished
 	sound_player.finished.connect(sound_player.queue_free)
@@ -152,8 +150,8 @@ func play_big_damage_sound():
 	
 	# Create one-shot audio player for big damage
 	var sound_player = AudioStreamPlayer.new()
+	sound_player.bus = &"SFX"
 	sound_player.stream = big_damage_sound
-	sound_player.volume_db = big_damage_volume_db
 	
 	# Auto-delete when finished
 	sound_player.finished.connect(sound_player.queue_free)
@@ -198,6 +196,7 @@ func play_specific_biker_sound(sound_index: int):
 	
 	var selected_sound = bikerSounds[sound_index]
 	var sound_player = AudioStreamPlayer.new()
+	sound_player.bus = &"SFX"
 	sound_player.stream = selected_sound
 	sound_player.volume_db = 5.0
 	sound_player.finished.connect(sound_player.queue_free)
