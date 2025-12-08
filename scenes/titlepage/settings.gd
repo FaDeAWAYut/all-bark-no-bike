@@ -13,7 +13,7 @@ func _ready() -> void:
 	
 # Whenever a button is pressed, do:
 func _on_button_pressed(button_name: String) -> void:
-	current_button = $AudioContainer.get_node(button_name)
+	current_button = $KeybindContainer.get_node(button_name)
 	current_button.text = "Press key"
 
 func _input(event: InputEvent) -> void:
