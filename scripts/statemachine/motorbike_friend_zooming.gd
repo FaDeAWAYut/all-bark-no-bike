@@ -28,6 +28,15 @@ func start_zooming():
 	boss.velocity.y = vertical_speed
 	boss.escape_direction = 0
 	boss.direction = 0
+	
+	var soundPlayer = AudioStreamPlayer.new()
+	soundPlayer.stream = preload("res://assets/sfx/zoomingsfx.mp3")
+	soundPlayer.volume_db = -2
+	
+	soundPlayer.finished.connect(soundPlayer.queue_free)
+	
+	add_child(soundPlayer)
+	soundPlayer.play()
 
 func handle_zooming():
 	var camera = boss.get_viewport().get_camera_2d()
