@@ -107,7 +107,7 @@ texture_under = ExtResource("9_tehww")
 texture_progress = ExtResource("10_8bteb")
 
 [node name="ThrowTimer" type="Timer" parent="."]
-wait_time = 6.0
+wait_time = 1.7999999999999998
 
 [connection signal="body_entered" from="DamageArea2D" to="StateMachine/Zooming" method="_on_area_2d_body_entered"]
 [connection signal="timeout" from="StateMachine/Driving/ZoomingTimer" to="StateMachine/Driving" method="_on_zooming_timer_timeout"]
