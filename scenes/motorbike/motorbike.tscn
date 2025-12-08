@@ -11,7 +11,7 @@
 [ext_resource type="Script" uid="uid://ffqrcdp00q8d" path="res://scripts/statemachine/throwing.gd" id="5_6mq4i"]
 [ext_resource type="PackedScene" uid="uid://c22gh5obgnvfy" path="res://scenes/motorbike/interruption/throw/ball/ball.tscn" id="5_ocqm2"]
 [ext_resource type="Script" uid="uid://bunovwwifxp1s" path="res://scripts/statemachine/stunned.gd" id="8_lpxf4"]
-[ext_resource type="Script" uid="uid://br8bbhu23qfm8" path="res://scenes/motorbike/hiding_below.gd" id="13_ocqm2"]
+[ext_resource type="Script" path="res://scenes/motorbike/hiding_below.gd" id="13_ocqm2"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1bwdf"]
 atlas = ExtResource("1_w1uch")

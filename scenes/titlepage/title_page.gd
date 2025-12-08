@@ -3,6 +3,7 @@ extends Control
 @onready var high_score_label = $HighScore
 var high_score = 0
 @onready var menu_music = preload("res://assets/sfx/AllBarkNoBikeMenu.mp3")
+@export var menu_music_volume_db: float = -5.0
 var music_player: AudioStreamPlayer
 
 # Called when the node enters the scene tree for the first time.
@@ -18,8 +19,8 @@ func _input(event):
 
 func play_menu_music():
 	music_player = AudioStreamPlayer.new()
-	music_player.bus = &"Music"
 	music_player.stream = menu_music
+	music_player.volume_db = menu_music_volume_db
 	music_player.autoplay = true
 	music_player.name = "MenuMusic"
 

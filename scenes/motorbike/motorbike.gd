@@ -62,6 +62,8 @@ var speedManager: SpeedManager
 @onready var ray_cast_center = $RayCastCenter
 @onready var state_machine = $StateMachine
 
+@onready var motorbike_sprite = $Sprite2D
+
 @export_category("State Variables")
 @onready var timer: Timer = $Timer
 @export var base_stunned_duration: float = 3.0

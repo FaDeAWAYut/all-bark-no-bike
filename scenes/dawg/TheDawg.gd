@@ -4,7 +4,7 @@ extends CharacterBody2D
 var speed = 300
 var direction
 
-func _physics_process(_delta):
+func _physics_process(delta):
 	if useTouchscreen:
 		direction = $"../Joystick".get_joystick_dir()
 	else:
