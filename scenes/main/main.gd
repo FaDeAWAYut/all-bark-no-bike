@@ -401,11 +401,13 @@ func play_hp_gain_sound():
 func play_chadchart_appears_sound():
 	if chadchartSfxPlayer:
 		chadchartSfxPlayer.stream = chadchartAppearsSFX
+		chadchartSfxPlayer.volume_db = 5
 		chadchartSfxPlayer.play()
 	
 func play_chadchart_active_sound():
 	if chadchartSfxPlayer:
 		chadchartSfxPlayer.stream = chadchartActiveSFX
+		chadchartSfxPlayer.volume_db = 0
 		chadchartSfxPlayer.play()
 	
 func play_background_music():
@@ -572,7 +574,7 @@ func gradually_increase_bgm_volume(duration_sec: float):
 	const muteVolume = -60.0
 	for i in range(1, duration_sec*10+1): # *10 for less increase in each step -> smoother increase
 		await get_tree().create_timer(0.1).timeout
-		music_player.volume_db = muteVolume + (AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Music")) - muteVolume) * (i/(duration_sec*10))
+		music_player.volume_db = muteVolume + (0 - muteVolume) * (i/(duration_sec*10))
 		
 func calculate_score():
 	# calculate total score after game ended

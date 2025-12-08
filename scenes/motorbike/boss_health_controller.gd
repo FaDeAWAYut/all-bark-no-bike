@@ -198,6 +198,7 @@ func play_specific_biker_sound(sound_index: int):
 	var sound_player = AudioStreamPlayer.new()
 	sound_player.bus = &"SFX"
 	sound_player.stream = selected_sound
+	sound_player.volume_db = 5.0
 	sound_player.finished.connect(sound_player.queue_free)
 	get_tree().current_scene.add_child(sound_player)
 	sound_player.play()
