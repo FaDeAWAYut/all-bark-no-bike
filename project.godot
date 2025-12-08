@@ -13,7 +13,8 @@ config_version=5
 config/name="All Bark, No Bike"
 run/main_scene="uid://m6l4wfojk0vm"
 config/features=PackedStringArray("4.5", "Mobile")
-config/icon="res://icon.svg"
+boot_splash/image="uid://cehmqjwdyvjim"
+config/icon="uid://dyi8xp56h3jdy"
 
 [display]
 
