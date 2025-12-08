@@ -12,7 +12,7 @@
 [ext_resource type="Script" uid="uid://c8qasji16ecpn" path="res://scripts/statemachine/motorbike_friend_zooming.gd" id="7_ulevm"]
 [ext_resource type="Script" uid="uid://7snsa825eoyp" path="res://scenes/motorbikefriend/stunned.gd" id="8_8bteb"]
 [ext_resource type="Script" uid="uid://e088l0k2u315" path="res://scenes/motorbikefriend/motorbike_friend_health_controller.gd" id="8_ab7kq"]
-[ext_resource type="Script" uid="uid://23o72mi2hh2u" path="res://scripts/statemachine/motorbike_friend_waiting.gd" id="9_8j1uf"]
+[ext_resource type="Script" path="res://scripts/statemachine/motorbike_friend_waiting.gd" id="9_8j1uf"]
 [ext_resource type="Texture2D" uid="uid://b64sm0rjr0n8a" path="res://assets/small_hp_under.png" id="9_tehww"]
 [ext_resource type="Texture2D" uid="uid://pqspuwo830gg" path="res://assets/small_hp_progress.png" id="10_8bteb"]
 
