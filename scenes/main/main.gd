@@ -38,6 +38,12 @@ var invincibleTimer: Timer = Timer.new()
 # Background scrolling settings
 var gameTime: float = 0.0
 
+var score = 0
+var high_score = 0
+var base_score_phase1 = 2000
+var base_score_phase2 = 2000
+var save_path = "user://score.save"
+
 @export var timeLimit: float = 134.0 #2.14 minutes
 
 @export var screenSize : Vector2i = Vector2(896, 512)
@@ -87,6 +93,7 @@ func _ready():
 	setup_signal_connections()
 	new_game()
 	play_background_music()
+	load_score()
 	
 	previousHP = gameManager.playerHp
 	
@@ -434,6 +441,7 @@ func _input(event):
 	if event.is_action_released("shoot"):
 		# Release charge when space is released
 		barkController.release_charge()
+
 func show_hp():
 	$HUD.get_node("TextureProgressBar").value = gameManager.playerHp
 
@@ -510,8 +518,22 @@ func show_timer():
 		if timeLeft <= 0 and not gameManager.isGameOver:
 			# Player wins the game (phase 2)
 			get_tree().change_scene_to_file("res://scenes/main/ending_animation.tscn")
+			calculate_score()
+			# Check for high score
+			if score > high_score:
+				high_score = score
+				save_high_score()
 			
 func _on_game_ended():
+	calculate_score()
+	# Check for high score
+	if score > high_score:
+		high_score = score
+		save_high_score()
+	
+	# Display score in GameOver panel
+	display_score()
+	
 	$GameOver.show()
 	Engine.time_scale = 0.1
 	await get_tree().create_timer(0.05).timeout
@@ -555,3 +577,26 @@ func gradually_increase_bgm_volume(duration_sec: float):
 	for i in range(1, duration_sec*10+1): # *10 for less increase in each step -> smoother increase
 		await get_tree().create_timer(0.1).timeout
 		music_player.volume_db = muteVolume + (bgmVolume - muteVolume) * (i/(duration_sec*10))
+		
+func calculate_score():
+	# calculate total score after game ended
+	if isPhaseOne:
+		score = (base_score_phase1 - bossHealthController.current_health)*5
+	else:
+		var timeLeft = max(timeLimit - gameTime, 0)
+		score = (base_score_phase2 + base_score_phase1 - timeLeft*(base_score_phase2/timeLimit))*5
+		
+func display_score():
+	var panel = $GameOver.get_node("Panel")
+	panel.get_node("Score").text = "High Score: %d\nScore: %d" % [high_score, score]
+
+func save_high_score():
+	var file = FileAccess.open(save_path, FileAccess.WRITE)
+	file.store_var(high_score)
+
+func load_score():
+	if FileAccess.file_exists(save_path):
+		var file = FileAccess.open(save_path, FileAccess.READ)
+		high_score = file.get_var()
+	else:
+		high_score = 0

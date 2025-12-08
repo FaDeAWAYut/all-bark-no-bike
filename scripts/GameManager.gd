@@ -107,4 +107,3 @@ func end_game():
 
 func _on_boss_died():
 	get_tree().change_scene_to_file("res://scenes/main/transition_phase.tscn")
-	

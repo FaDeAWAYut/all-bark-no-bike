@@ -120,6 +120,17 @@ text = "Level 1"
 layout_mode = 2
 text = "Level 2"
 
+[node name="HighScore" type="Label" parent="."]
+layout_mode = 0
+offset_left = 684.0
+offset_top = 2.0
+offset_right = 895.0
+offset_bottom = 36.132355
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "High score = 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [connection signal="pressed" from="MainMenu/MenuOptions/NewGameButton" to="." method="_on_new_game_button_pressed"]
 [connection signal="pressed" from="MainMenu/MenuOptions/LevelsButton" to="MainMenu/MenuOptions" method="hide"]
 [connection signal="pressed" from="MainMenu/MenuOptions/LevelsButton" to="LevelPanel" method="show"]

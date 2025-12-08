@@ -2,7 +2,7 @@ extends Node
 
 @export var max_health: int = 100
 @export var phase_two_max_health: int = 100
-var current_health: int
+@export var current_health: int
 var hud: Node
 @export_group("Throwing Level Changes")
 @export var hp_percent_to_change: float = 0.0
