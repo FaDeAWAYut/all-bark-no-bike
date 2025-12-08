@@ -10,6 +10,8 @@ var transition_music = preload("res://assets/sfx/NoBikeEndRiff_Piano.mp3")
 var music_player: AudioStreamPlayer
 
 func _ready():
+	AudioServer.set_bus_volume_db(2, 0.0) # set SFX volume
+
 	# Stop all movement
 	setup_static_scene()
 	
@@ -27,8 +29,8 @@ func setup_static_scene():
 
 func play_transition_music():
 	music_player = AudioStreamPlayer.new()
+	music_player.bus = &"Music"
 	music_player.stream = transition_music
-	music_player.volume_db = -5.0
 	music_player.autoplay = true
 	music_player.finished.connect(music_player.play)
 	add_child(music_player)

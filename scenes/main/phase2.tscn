@@ -18,7 +18,7 @@
 [ext_resource type="PackedScene" uid="uid://dy6jmp88qig88" path="res://scenes/gameoveroverlay/game_over.tscn" id="14_ogru6"]
 [ext_resource type="Script" uid="uid://bujgehfwg2nkx" path="res://scripts/SpeedManager.gd" id="15_ogru6"]
 [ext_resource type="PackedScene" uid="uid://bv5t0i620xpop" path="res://scenes/motorbikefriend/motorbike_friend.tscn" id="16_flnuf"]
-[ext_resource type="PackedScene" path="res://scenes/hud/objective_panel.tscn" id="17_bqc62"]
+[ext_resource type="PackedScene" uid="uid://dji8f5amt6dio" path="res://scenes/hud/objective_panel.tscn" id="17_bqc62"]
 [ext_resource type="PackedScene" uid="uid://dq4qgvtssgtc7" path="res://scenes/hud/shoot_button_mobile.tscn" id="18_ga6hj"]
 [ext_resource type="PackedScene" uid="uid://6kkbv2l0adlo" path="res://scenes/hud/joystick.tscn" id="19_lno4l"]
 
@@ -70,12 +70,7 @@ hit_flash_duration = 1.0
 script = ExtResource("7_nbgot")
 max_health = 2000
 phase_two_max_health = 200
-current_health = null
-hp_percent_to_change = null
 new_throw_level = 3
-hurt_volume_db = null
-big_damage_volume_db = null
-biker_volume_db = null
 small_impact_offset = 25
 big_impact_offset = 50
 
@@ -107,7 +102,6 @@ script = ExtResource("11_bx00b")
 barkSpawnOffset = Vector2(0, 0)
 bulletDirection = Vector2(0, 1)
 charge_orb_offset = Vector2(0, -25)
-normalBarkVolume = -10
 charge_bark_sound = ExtResource("12_4i2q6")
 
 [node name="BarkPool" type="Node" parent="BarkController"]
@@ -143,10 +137,6 @@ z_index = 10
 script = ExtResource("15_ogru6")
 startSpeed = 400.0
 metadata/_custom_type_script = "uid://bujgehfwg2nkx"
-
-[node name="BgmPlayer" type="AudioStreamPlayer2D" parent="."]
-
-[node name="ChadchartSfxPlayer" type="AudioStreamPlayer2D" parent="."]
 
 [node name="MotorbikeFriend" parent="." groups=["bikefriend", "enemy"] instance=ExtResource("16_flnuf")]
 position = Vector2(286, 512)

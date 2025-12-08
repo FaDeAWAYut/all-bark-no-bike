@@ -1,16 +1,36 @@
-[gd_scene load_steps=6 format=3 uid="uid://m6l4wfojk0vm"]
+[gd_scene load_steps=13 format=3 uid="uid://m6l4wfojk0vm"]
 
 [ext_resource type="Theme" uid="uid://dm051kf62our1" path="res://assets/Theme/game_ui_theme.tres" id="1_4a81q"]
 [ext_resource type="Script" uid="uid://xhxeafu86vlh" path="res://scenes/titlepage/title_page.gd" id="1_847ta"]
 [ext_resource type="Texture2D" uid="uid://bwma0jb53imgl" path="res://assets/title-screen-art.png" id="3_847ta"]
+[ext_resource type="Script" path="res://scenes/titlepage/settings.gd" id="4_4a81q"]
 
 [sub_resource type="Theme" id="Theme_k57g0"]
 Label/constants/line_spacing = -5
 Label/constants/outline_size = 16
 Label/font_sizes/font_size = 54
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4a81q"]
+size = Vector2(200, 42)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k57g0"]
+size = Vector2(200, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k60p2"]
+size = Vector2(160, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ghepo"]
+size = Vector2(200, 42)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4a81q"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_k57g0"]
+
 [sub_resource type="LabelSettings" id="LabelSettings_847ta"]
 font_size = 18
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 0
 
 [node name="TitlePage" type="Control"]
 texture_filter = 1
@@ -55,17 +75,57 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_constants/separation = 10
 
-[node name="NewGameButton" type="Button" parent="MainMenu/MenuOptions"]
-layout_mode = 2
+[node name="TouchScreenButton" type="TouchScreenButton" parent="MainMenu/MenuOptions"]
+position = Vector2(100, 21)
+shape = SubResource("RectangleShape2D_4a81q")
+
+[node name="NewGameButton" type="Button" parent="MainMenu/MenuOptions/TouchScreenButton"]
+offset_left = -100.0
+offset_top = -21.0
+offset_right = 100.0
+offset_bottom = 21.0
+theme = ExtResource("1_4a81q")
 text = "Start"
+metadata/_edit_use_anchors_ = true
 
-[node name="LevelsButton" type="Button" parent="MainMenu/MenuOptions"]
-layout_mode = 2
+[node name="TouchScreenButton2" type="TouchScreenButton" parent="MainMenu/MenuOptions"]
+position = Vector2(100, 72)
+shape = SubResource("RectangleShape2D_k57g0")
+
+[node name="LevelsButton" type="Button" parent="MainMenu/MenuOptions/TouchScreenButton2"]
+offset_left = -100.0
+offset_top = -20.0
+offset_right = 100.0
+offset_bottom = 22.0
+theme = ExtResource("1_4a81q")
 text = "Levels"
+metadata/_edit_use_anchors_ = true
 
-[node name="QuitButton" type="Button" parent="MainMenu/MenuOptions"]
-layout_mode = 2
+[node name="TouchScreenButton4" type="TouchScreenButton" parent="MainMenu/MenuOptions"]
+position = Vector2(100, 124)
+shape = SubResource("RectangleShape2D_k57g0")
+
+[node name="SettingsButton" type="Button" parent="MainMenu/MenuOptions/TouchScreenButton4"]
+offset_left = -100.0
+offset_top = -20.0
+offset_right = 100.0
+offset_bottom = 22.0
+theme = ExtResource("1_4a81q")
+text = "Settings"
+metadata/_edit_use_anchors_ = true
+
+[node name="TouchScreenButton3" type="TouchScreenButton" parent="MainMenu/MenuOptions"]
+position = Vector2(100, 175)
+shape = SubResource("RectangleShape2D_k57g0")
+
+[node name="QuitButton" type="Button" parent="MainMenu/MenuOptions/TouchScreenButton3"]
+offset_left = -100.0
+offset_top = -19.0
+offset_right = 100.0
+offset_bottom = 23.0
+theme = ExtResource("1_4a81q")
 text = "Quit"
+metadata/_edit_use_anchors_ = true
 
 [node name="LevelPanel" type="Panel" parent="."]
 visible = false
@@ -83,65 +143,248 @@ offset_bottom = 144.00012
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="CloseLevelsButton" type="Button" parent="LevelPanel"]
-layout_mode = 0
-offset_left = 2.0
-offset_right = 202.0
-offset_bottom = 42.0
+[node name="TouchScreenButton" type="TouchScreenButton" parent="LevelPanel"]
+position = Vector2(44, 21)
+shape = SubResource("RectangleShape2D_k60p2")
+
+[node name="CloseLevelsButton" type="Button" parent="LevelPanel/TouchScreenButton"]
+offset_left = -42.0
+offset_top = -21.0
+offset_right = 158.0
+offset_bottom = 21.0
+theme = ExtResource("1_4a81q")
 theme_type_variation = &"FlatButton"
 text = "< Back"
 flat = true
 alignment = 0
 
-[node name="LevelOptions" type="VBoxContainer" parent="LevelPanel"]
+[node name="Label" type="Label" parent="LevelPanel"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 0
+offset_left = 25.0
+offset_top = 23.0
+offset_right = 225.0
+offset_bottom = 63.0
+text = "Levels"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="LevelPanel"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 68.0
+offset_right = 225.0
+offset_bottom = 68.0
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="LevelPanel/PanelContainer"]
+position = Vector2(100, 21)
+shape = SubResource("RectangleShape2D_ghepo")
+
+[node name="Level1Button" type="Button" parent="LevelPanel/PanelContainer/TouchScreenButton"]
+offset_left = -100.0
+offset_top = -21.0
+offset_right = 100.0
+offset_bottom = 21.0
+theme = ExtResource("1_4a81q")
+text = "Level 1"
+metadata/_edit_use_anchors_ = true
+
+[node name="TouchScreenButton2" type="TouchScreenButton" parent="LevelPanel/PanelContainer"]
+position = Vector2(100, 83)
+shape = SubResource("RectangleShape2D_ghepo")
+
+[node name="Level2Button" type="Button" parent="LevelPanel/PanelContainer/TouchScreenButton2"]
+offset_left = -100.0
+offset_top = -20.0
+offset_right = 100.0
+offset_bottom = 22.0
+theme = ExtResource("1_4a81q")
+text = "Level 2"
+metadata/_edit_use_anchors_ = true
+
+[node name="SettingsPanel" type="Panel" parent="."]
+visible = false
+custom_minimum_size = Vector2(250, 190)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -100.0
-offset_top = -21.0
-offset_right = 100.0
-offset_bottom = 21.0
+offset_left = -136.0
+offset_top = -72.0
+offset_right = 136.0
+offset_bottom = 228.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="LevelPanel/LevelOptions"]
+[node name="TouchScreenButton" type="TouchScreenButton" parent="SettingsPanel"]
+position = Vector2(44, 21)
+shape = SubResource("RectangleShape2D_k60p2")
+
+[node name="CloseSettingsButton" type="Button" parent="SettingsPanel/TouchScreenButton"]
+offset_left = -42.0
+offset_top = -22.0
+offset_right = 158.0
+offset_bottom = 20.0
+theme = ExtResource("1_4a81q")
+theme_type_variation = &"FlatButton"
+text = "< Back"
+flat = true
+alignment = 0
+
+[node name="Settings" type="Panel" parent="SettingsPanel"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 51.0
+offset_right = 253.0
+offset_bottom = 303.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_4a81q")
+script = ExtResource("4_4a81q")
+
+[node name="Keybind" type="Label" parent="SettingsPanel/Settings"]
 custom_minimum_size = Vector2(0, 40)
-layout_mode = 2
-text = "Levels"
+layout_mode = 0
+offset_top = -19.0
+offset_right = 228.0
+offset_bottom = 21.0
+text = "Keybind"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Level1Button" type="Button" parent="LevelPanel/LevelOptions"]
-layout_mode = 2
-text = "Level 1"
+[node name="KeybindContainer" type="GridContainer" parent="SettingsPanel/Settings"]
+layout_mode = 0
+offset_top = 22.0
+offset_right = 228.0
+offset_bottom = 64.0
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+columns = 2
 
-[node name="Level2Button" type="Button" parent="LevelPanel/LevelOptions"]
+[node name="ShootLabel" type="Label" parent="SettingsPanel/Settings/KeybindContainer"]
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
-text = "Level 2"
+text = "Shoot"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ShootButton" type="Button" parent="SettingsPanel/Settings/KeybindContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Space"
+autowrap_trim_flags = 0
+
+[node name="Audio" type="Label" parent="SettingsPanel/Settings"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 0
+offset_top = 86.0
+offset_right = 228.0
+offset_bottom = 126.0
+text = "Audio"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AudioContainer" type="Panel" parent="SettingsPanel/Settings"]
+layout_mode = 0
+offset_top = 123.0
+offset_right = 228.0
+offset_bottom = 217.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_k57g0")
+
+[node name="MusicLabel" type="Label" parent="SettingsPanel/Settings/AudioContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 0
+offset_right = 56.0
+offset_bottom = 40.0
+text = "Music"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TouchScreenButtonMusic" type="TouchScreenButton" parent="SettingsPanel/Settings/AudioContainer"]
+position = Vector2(147, 21)
+shape = SubResource("RectangleShape2D_k60p2")
+
+[node name="MusicButton" type="Button" parent="SettingsPanel/Settings/AudioContainer/TouchScreenButtonMusic"]
+offset_left = -81.0
+offset_top = -21.0
+offset_right = 81.0
+offset_bottom = 21.0
+size_flags_horizontal = 3
+theme = ExtResource("1_4a81q")
+text = "On"
+autowrap_trim_flags = 0
+
+[node name="SFXLabel" type="Label" parent="SettingsPanel/Settings/AudioContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 0
+offset_left = 1.0
+offset_top = 51.0
+offset_right = 37.0
+offset_bottom = 91.0
+text = "SFX"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TouchScreenButtonSFX" type="TouchScreenButton" parent="SettingsPanel/Settings/AudioContainer"]
+position = Vector2(147, 72)
+shape = SubResource("RectangleShape2D_k60p2")
+
+[node name="SFXButton" type="Button" parent="SettingsPanel/Settings/AudioContainer/TouchScreenButtonSFX"]
+offset_left = -81.0
+offset_top = -22.0
+offset_right = 81.0
+offset_bottom = 20.0
+size_flags_horizontal = 3
+theme = ExtResource("1_4a81q")
+text = "On"
+autowrap_trim_flags = 0
 
 [node name="HighScore" type="Label" parent="."]
 layout_mode = 0
 offset_left = 346.0
-offset_top = 360.0
+offset_top = 417.0
 offset_right = 550.0
-offset_bottom = 393.0
+offset_bottom = 446.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "High score = 0"
 label_settings = SubResource("LabelSettings_847ta")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[connection signal="pressed" from="MainMenu/MenuOptions/NewGameButton" to="." method="_on_new_game_button_pressed"]
-[connection signal="pressed" from="MainMenu/MenuOptions/LevelsButton" to="MainMenu/MenuOptions" method="hide"]
-[connection signal="pressed" from="MainMenu/MenuOptions/LevelsButton" to="LevelPanel" method="show"]
-[connection signal="pressed" from="MainMenu/MenuOptions/LevelsButton" to="HighScore" method="hide"]
-[connection signal="pressed" from="MainMenu/MenuOptions/QuitButton" to="." method="_on_quit_button_pressed"]
-[connection signal="pressed" from="LevelPanel/CloseLevelsButton" to="MainMenu/MenuOptions" method="show"]
-[connection signal="pressed" from="LevelPanel/CloseLevelsButton" to="LevelPanel" method="hide"]
-[connection signal="pressed" from="LevelPanel/CloseLevelsButton" to="HighScore" method="show"]
-[connection signal="pressed" from="LevelPanel/LevelOptions/Level1Button" to="." method="_on_level_1_button_pressed"]
-[connection signal="pressed" from="LevelPanel/LevelOptions/Level2Button" to="." method="_on_level_2_button_pressed"]
+[connection signal="pressed" from="MainMenu/MenuOptions/TouchScreenButton" to="." method="_on_new_game_button_pressed"]
+[connection signal="pressed" from="MainMenu/MenuOptions/TouchScreenButton/NewGameButton" to="." method="_on_new_game_button_pressed"]
+[connection signal="pressed" from="MainMenu/MenuOptions/TouchScreenButton2" to="MainMenu" method="hide"]
+[connection signal="pressed" from="MainMenu/MenuOptions/TouchScreenButton2" to="LevelPanel" method="show"]
+[connection signal="pressed" from="MainMenu/MenuOptions/TouchScreenButton2" to="HighScore" method="hide"]
+[connection signal="pressed" from="MainMenu/MenuOptions/TouchScreenButton2/LevelsButton" to="MainMenu/MenuOptions" method="hide"]
+[connection signal="pressed" from="MainMenu/MenuOptions/TouchScreenButton2/LevelsButton" to="LevelPanel" method="show"]
+[connection signal="pressed" from="MainMenu/MenuOptions/TouchScreenButton2/LevelsButton" to="HighScore" method="hide"]
+[connection signal="pressed" from="MainMenu/MenuOptions/TouchScreenButton4" to="MainMenu" method="hide"]
+[connection signal="pressed" from="MainMenu/MenuOptions/TouchScreenButton4" to="SettingsPanel" method="show"]
+[connection signal="pressed" from="MainMenu/MenuOptions/TouchScreenButton4" to="HighScore" method="hide"]
+[connection signal="pressed" from="MainMenu/MenuOptions/TouchScreenButton4/SettingsButton" to="MainMenu/MenuOptions" method="hide"]
+[connection signal="pressed" from="MainMenu/MenuOptions/TouchScreenButton4/SettingsButton" to="SettingsPanel" method="show"]
+[connection signal="pressed" from="MainMenu/MenuOptions/TouchScreenButton4/SettingsButton" to="HighScore" method="hide"]
+[connection signal="pressed" from="MainMenu/MenuOptions/TouchScreenButton3" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="MainMenu/MenuOptions/TouchScreenButton3/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="LevelPanel/TouchScreenButton" to="MainMenu" method="show"]
+[connection signal="pressed" from="LevelPanel/TouchScreenButton" to="LevelPanel" method="hide"]
+[connection signal="pressed" from="LevelPanel/TouchScreenButton" to="HighScore" method="show"]
+[connection signal="pressed" from="LevelPanel/TouchScreenButton/CloseLevelsButton" to="MainMenu/MenuOptions" method="show"]
+[connection signal="pressed" from="LevelPanel/TouchScreenButton/CloseLevelsButton" to="LevelPanel" method="hide"]
+[connection signal="pressed" from="LevelPanel/TouchScreenButton/CloseLevelsButton" to="HighScore" method="show"]
+[connection signal="pressed" from="LevelPanel/PanelContainer/TouchScreenButton" to="." method="_on_level_1_button_pressed"]
+[connection signal="pressed" from="LevelPanel/PanelContainer/TouchScreenButton/Level1Button" to="." method="_on_level_1_button_pressed"]
+[connection signal="pressed" from="LevelPanel/PanelContainer/TouchScreenButton2" to="." method="_on_level_2_button_pressed"]
+[connection signal="pressed" from="LevelPanel/PanelContainer/TouchScreenButton2/Level2Button" to="." method="_on_level_2_button_pressed"]
+[connection signal="pressed" from="SettingsPanel/TouchScreenButton" to="MainMenu" method="show"]
+[connection signal="pressed" from="SettingsPanel/TouchScreenButton" to="SettingsPanel" method="hide"]
+[connection signal="pressed" from="SettingsPanel/TouchScreenButton" to="HighScore" method="show"]
+[connection signal="pressed" from="SettingsPanel/TouchScreenButton/CloseSettingsButton" to="MainMenu/MenuOptions" method="show"]
+[connection signal="pressed" from="SettingsPanel/TouchScreenButton/CloseSettingsButton" to="SettingsPanel" method="hide"]
+[connection signal="pressed" from="SettingsPanel/TouchScreenButton/CloseSettingsButton" to="HighScore" method="show"]
+[connection signal="pressed" from="SettingsPanel/Settings/KeybindContainer/ShootButton" to="SettingsPanel/Settings" method="_on_button_pressed" binds= ["ShootButton"]]
+[connection signal="pressed" from="SettingsPanel/Settings/AudioContainer/TouchScreenButtonMusic" to="SettingsPanel/Settings" method="_on_audio_button_pressed" binds= ["Music"]]
+[connection signal="pressed" from="SettingsPanel/Settings/AudioContainer/TouchScreenButtonMusic/MusicButton" to="SettingsPanel/Settings" method="_on_audio_button_pressed" binds= ["Music"]]
+[connection signal="pressed" from="SettingsPanel/Settings/AudioContainer/TouchScreenButtonSFX" to="SettingsPanel/Settings" method="_on_audio_button_pressed" binds= ["SFX"]]
+[connection signal="pressed" from="SettingsPanel/Settings/AudioContainer/TouchScreenButtonSFX/SFXButton" to="SettingsPanel/Settings" method="_on_audio_button_pressed" binds= ["SFX"]]
