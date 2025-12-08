@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://m6l4wfojk0vm"]
+[gd_scene load_steps=7 format=3 uid="uid://m6l4wfojk0vm"]
 
 [ext_resource type="Theme" uid="uid://dm051kf62our1" path="res://assets/Theme/game_ui_theme.tres" id="1_4a81q"]
 [ext_resource type="Script" uid="uid://xhxeafu86vlh" path="res://scenes/titlepage/title_page.gd" id="1_847ta"]
 [ext_resource type="Texture2D" uid="uid://bwma0jb53imgl" path="res://assets/title-screen-art.png" id="3_847ta"]
+[ext_resource type="Script" uid="uid://bmvkapvoxdsgb" path="res://scenes/titlepage/settings.gd" id="4_4a81q"]
 
 [sub_resource type="Theme" id="Theme_k57g0"]
 Label/constants/line_spacing = -5
@@ -11,6 +12,9 @@ Label/font_sizes/font_size = 54
 
 [sub_resource type="LabelSettings" id="LabelSettings_847ta"]
 font_size = 18
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 0
 
 [node name="TitlePage" type="Control"]
 texture_filter = 1
@@ -62,6 +66,10 @@ text = "Start"
 [node name="LevelsButton" type="Button" parent="MainMenu/MenuOptions"]
 layout_mode = 2
 text = "Levels"
+
+[node name="SettingsButton" type="Button" parent="MainMenu/MenuOptions"]
+layout_mode = 2
+text = "Settings"
 
 [node name="QuitButton" type="Button" parent="MainMenu/MenuOptions"]
 layout_mode = 2
@@ -123,12 +131,87 @@ text = "Level 1"
 layout_mode = 2
 text = "Level 2"
 
+[node name="SettingsPanel" type="Panel" parent="."]
+custom_minimum_size = Vector2(250, 200)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -136.0
+offset_top = -56.0
+offset_right = 136.0
+offset_bottom = 144.00012
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CloseSettingsButton" type="Button" parent="SettingsPanel"]
+layout_mode = 0
+offset_left = 2.0
+offset_right = 202.0
+offset_bottom = 42.0
+theme_type_variation = &"FlatButton"
+text = "< Back"
+flat = true
+alignment = 0
+
+[node name="Settings" type="VBoxContainer" parent="SettingsPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -115.0
+offset_top = -67.0
+offset_right = 113.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+script = ExtResource("4_4a81q")
+
+[node name="Label" type="Label" parent="SettingsPanel/Settings"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "Settings"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Keybind" type="Label" parent="SettingsPanel/Settings"]
+visible = false
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "Keybind"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="SettingsPanel/Settings"]
+layout_mode = 2
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+columns = 2
+
+[node name="ShootLabel" type="Label" parent="SettingsPanel/Settings/GridContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "Shoot"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ShootButton" type="Button" parent="SettingsPanel/Settings/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Space"
+autowrap_trim_flags = 0
+
 [node name="HighScore" type="Label" parent="."]
 layout_mode = 0
 offset_left = 346.0
-offset_top = 360.0
+offset_top = 417.0
 offset_right = 550.0
-offset_bottom = 393.0
+offset_bottom = 450.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "High score = 0"
 label_settings = SubResource("LabelSettings_847ta")
@@ -139,9 +222,16 @@ vertical_alignment = 1
 [connection signal="pressed" from="MainMenu/MenuOptions/LevelsButton" to="MainMenu/MenuOptions" method="hide"]
 [connection signal="pressed" from="MainMenu/MenuOptions/LevelsButton" to="LevelPanel" method="show"]
 [connection signal="pressed" from="MainMenu/MenuOptions/LevelsButton" to="HighScore" method="hide"]
+[connection signal="pressed" from="MainMenu/MenuOptions/SettingsButton" to="MainMenu/MenuOptions" method="hide"]
+[connection signal="pressed" from="MainMenu/MenuOptions/SettingsButton" to="HighScore" method="hide"]
+[connection signal="pressed" from="MainMenu/MenuOptions/SettingsButton" to="SettingsPanel" method="show"]
 [connection signal="pressed" from="MainMenu/MenuOptions/QuitButton" to="." method="_on_quit_button_pressed"]
 [connection signal="pressed" from="LevelPanel/CloseLevelsButton" to="MainMenu/MenuOptions" method="show"]
 [connection signal="pressed" from="LevelPanel/CloseLevelsButton" to="LevelPanel" method="hide"]
 [connection signal="pressed" from="LevelPanel/CloseLevelsButton" to="HighScore" method="show"]
 [connection signal="pressed" from="LevelPanel/LevelOptions/Level1Button" to="." method="_on_level_1_button_pressed"]
 [connection signal="pressed" from="LevelPanel/LevelOptions/Level2Button" to="." method="_on_level_2_button_pressed"]
+[connection signal="pressed" from="SettingsPanel/CloseSettingsButton" to="MainMenu/MenuOptions" method="show"]
+[connection signal="pressed" from="SettingsPanel/CloseSettingsButton" to="HighScore" method="show"]
+[connection signal="pressed" from="SettingsPanel/CloseSettingsButton" to="SettingsPanel" method="hide"]
+[connection signal="pressed" from="SettingsPanel/Settings/GridContainer/ShootButton" to="SettingsPanel/Settings" method="_on_button_pressed" binds= ["ShootButton"]]
