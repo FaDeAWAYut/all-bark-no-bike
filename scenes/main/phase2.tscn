@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://y870mw6xbtm6"]
+[gd_scene load_steps=24 format=3 uid="uid://y870mw6xbtm6"]
 
 [ext_resource type="Script" uid="uid://ct048k6rsjfbb" path="res://scenes/main/main.gd" id="1_54jss"]
 [ext_resource type="PackedScene" uid="uid://bsf3igehijgig" path="res://scenes/background/parallax_bg.tscn" id="2_eu2pp"]
@@ -7,7 +7,9 @@
 [ext_resource type="PackedScene" uid="uid://cobth27w6p3ja" path="res://scenes/hud/hud.tscn" id="5_hgphf"]
 [ext_resource type="PackedScene" uid="uid://d4mchi4q55xdb" path="res://scenes/motorbike/motorbike.tscn" id="6_b4rkt"]
 [ext_resource type="Script" uid="uid://b7ufw4rkm38q4" path="res://scenes/motorbike/boss_health_controller.gd" id="7_nbgot"]
+[ext_resource type="Texture2D" uid="uid://b64sm0rjr0n8a" path="res://assets/small_hp_under.png" id="8_p0ifs"]
 [ext_resource type="Script" uid="uid://w5tembhx3n1a" path="res://scenes/collectable/collectables_manager.gd" id="8_u40po"]
+[ext_resource type="Texture2D" uid="uid://pqspuwo830gg" path="res://assets/small_hp_progress.png" id="9_574qt"]
 [ext_resource type="PackedScene" uid="uid://778k268328ak" path="res://scenes/collectable/cough_drops/cough_drops_pool.tscn" id="9_vudo8"]
 [ext_resource type="Script" uid="uid://b4ka507v7wq1c" path="res://scripts/ObstacleSpawner.gd" id="10_jhg8w"]
 [ext_resource type="Script" uid="uid://dddagrng1jobg" path="res://scripts/BarkController.gd" id="11_bx00b"]
@@ -68,9 +70,28 @@ hit_flash_duration = 1.0
 script = ExtResource("7_nbgot")
 max_health = 2000
 phase_two_max_health = 200
+current_health = null
+hp_percent_to_change = null
 new_throw_level = 3
+hurt_volume_db = null
+big_damage_volume_db = null
+biker_volume_db = null
 small_impact_offset = 25
 big_impact_offset = 50
+
+[node name="HealthBar" type="TextureProgressBar" parent="Motorbike"]
+z_index = 1
+texture_filter = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = -8.0
+offset_top = -70.0
+offset_right = 8.0
+offset_bottom = -60.0
+grow_horizontal = 2
+max_value = 200.0
+texture_under = ExtResource("8_p0ifs")
+texture_progress = ExtResource("9_574qt")
 
 [node name="CollectablesManager" type="Node" parent="." node_paths=PackedStringArray("cough_drop_pool")]
 script = ExtResource("8_u40po")

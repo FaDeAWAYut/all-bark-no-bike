@@ -1,16 +1,21 @@
 extends CanvasLayer
 
+@onready var isPhaseOne = get_parent().name == "Phase1"
+
 @onready var healthBar = $TextureProgressBar
 @onready var chargeBar = $TextureProgressBarCharge
 @onready var heart = $Sprite2D
 @onready var bluefire = $Sprite2DCharge
-@onready var timer = $Panel
+@onready var timer = $Timer
 @onready var shield = $TextureRect
 @onready var bosshealth = $TextureProgressBarBoss
 
 @export var floatAmplitude: float = 2
 @export var floatFrequency: float = 0.4
 @export var floatEnabled: bool = true
+
+@onready var timerPositionPhaseOne: Vector2 = Vector2(50, 94)
+@onready var timerPositionPhaseTwo: Vector2 = Vector2(368, 15)
 
 var healthBarOriginalPosition: Vector2
 var heartOriginalPosition: Vector2
@@ -26,9 +31,12 @@ func _ready():
 	heartOriginalPosition = heart.position
 	chargeOriginalPosition = chargeBar.position
 	bluefireOriginalPosition = bluefire.position
-	timerOriginalPosition = timer.position
 	shieldOriginalPosition = shield.position
 	bossOriginalPosition = bosshealth.position
+	
+	timer.global_position = timerPositionPhaseOne if isPhaseOne else timerPositionPhaseTwo
+	timer.scale = Vector2(1.0, 1.0) if isPhaseOne else Vector2(1.5, 1.5)
+	bosshealth.visible = isPhaseOne 
 
 func _process(delta):
 	if not floatEnabled:

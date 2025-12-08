@@ -502,7 +502,7 @@ func play_cough_drop_sound(charge_level: int):
 		sound_player.play()
 		
 func show_timer():
-	var timerPanel = $HUD.get_node("Panel")
+	var timerPanel = $HUD/Timer
 	if isPhaseOne:
 		seconds = fmod(gameTime, 60)
 		minutes = fmod(gameTime, 3600) / 60

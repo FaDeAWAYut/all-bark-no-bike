@@ -3,6 +3,7 @@ extends Node
 @export var max_health: int = 100
 @export var phase_two_max_health: int = 100
 @export var current_health: int
+@onready var health_bar: Node = $"../HealthBar"
 var hud: Node
 @export_group("Throwing Level Changes")
 @export var hp_percent_to_change: float = 0.0
@@ -117,8 +118,10 @@ func restore_health(heal_amount: int):
 	update_hp_label()
 
 func update_hp_label():
-	if hud:
+	if isPhaseOne and hud:
 		hud.get_node("TextureProgressBarBoss").value = current_health
+	elif !isPhaseOne and health_bar:
+		health_bar.value = current_health
 
 
 func play_random_hurt_sound():
@@ -200,3 +203,4 @@ func play_specific_biker_sound(sound_index: int):
 	sound_player.finished.connect(sound_player.queue_free)
 	get_tree().current_scene.add_child(sound_player)
 	sound_player.play()
+	
