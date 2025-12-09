@@ -1,6 +1,7 @@
 extends CanvasLayer
 
 @onready var isPhaseOne = get_parent().name == "Phase1"
+@onready var useTouchscreen = DisplayServer.is_touchscreen_available()
 
 @onready var healthBar = $TextureProgressBar
 @onready var chargeBar = $TextureProgressBarCharge
@@ -29,10 +30,14 @@ var time: float = 0.0
 func _ready():
 	healthBarOriginalPosition = healthBar.position
 	heartOriginalPosition = heart.position
-	chargeOriginalPosition = chargeBar.position
-	bluefireOriginalPosition = bluefire.position
 	shieldOriginalPosition = shield.position
 	bossOriginalPosition = bosshealth.position
+	
+	if useTouchscreen: 
+		$TextureProgressBarCharge.position.y = 53.5
+		$Sprite2DCharge.position.y = 69.5
+	chargeOriginalPosition = chargeBar.position
+	bluefireOriginalPosition = bluefire.position
 	
 	timer.global_position = timerPositionPhaseOne if isPhaseOne else timerPositionPhaseTwo
 	timer.scale = Vector2(1.0, 1.0) if isPhaseOne else Vector2(1.5, 1.5)

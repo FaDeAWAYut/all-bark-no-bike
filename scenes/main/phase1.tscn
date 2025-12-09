@@ -115,12 +115,17 @@ metadata/_custom_type_script = "uid://bujgehfwg2nkx"
 
 [node name="ObjectivePanel" parent="." instance=ExtResource("16_7a0md")]
 z_index = 10
-
-[node name="ShootButtonMobile" parent="." instance=ExtResource("17_b4rkt")]
-z_index = 5
-position = Vector2(751, 366)
-scale = Vector2(0.8, 0.8)
+offset_left = -5.0
+offset_top = 8.0
+offset_right = 891.0
+offset_bottom = 520.0
 
 [node name="Joystick" parent="." instance=ExtResource("18_b4rkt")]
 z_index = 5
-position = Vector2(18, 315)
+position = Vector2(18, 276)
+scale = Vector2(0.60955054, 0.60955054)
+
+[node name="ShootButtonMobile" parent="." instance=ExtResource("17_b4rkt")]
+z_index = 5
+position = Vector2(730, 351)
+scale = Vector2(1.1099995, 1.1099995)

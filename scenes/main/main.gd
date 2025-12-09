@@ -262,8 +262,13 @@ func show_initial_objective():
 		
 		if isPhaseOne:
 			objective_text += "Take him down!"
+			if useTouchscreen:
+				objective_panel.panel.position.x = 256
 		else:
 			objective_text += "Survive the timer!"
+			if useTouchscreen:
+				objective_panel.panel.position.x = 250
+				objective_panel.panel.position.y += 5
 		
 		objective_panel.show_objective(objective_text, true)  # Auto-hide after duration
 	else:

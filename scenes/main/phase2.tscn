@@ -162,8 +162,8 @@ z_index = 10
 
 [node name="ShootButtonMobile" parent="." instance=ExtResource("18_ga6hj")]
 z_index = 5
-position = Vector2(751, 366)
-scale = Vector2(0.8, 0.8)
+position = Vector2(730, 351)
+scale = Vector2(1.1099995, 1.1099995)
 
 [node name="Joystick" parent="." instance=ExtResource("21_p0ifs")]
 z_index = 5
