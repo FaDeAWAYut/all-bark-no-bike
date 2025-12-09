@@ -18,15 +18,12 @@ func _input(event):
 
 func play_menu_music():
 	music_player = AudioStreamPlayer.new()
-	music_player.bus = &"Music"
+	music_player.volume_db = -5.0
 	music_player.stream = menu_music
 	music_player.autoplay = true
 	music_player.name = "MenuMusic"
-
 	music_player.finished.connect(music_player.play)
-
 	add_child(music_player)
-
 
 func _on_quit_button_pressed() -> void:
 	get_tree().quit()

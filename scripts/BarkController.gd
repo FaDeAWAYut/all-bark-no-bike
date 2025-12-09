@@ -149,7 +149,7 @@ func play_charging_sound():
 	
 	# Create and configure audio player
 	charging_sound_player = AudioStreamPlayer.new()
-	charging_sound_player.bus = &"SFX"
+	charging_sound_player.volume_db = -5
 	charging_sound_player.stream = charging_sound
 	charging_sound_player.autoplay = true
 	
@@ -271,7 +271,6 @@ func play_random_bark_sound():
 	
 	# Create one-shot audio player
 	var soundPlayer = AudioStreamPlayer.new()
-	soundPlayer.bus = &"SFX"
 	soundPlayer.stream = selectedSound
 	soundPlayer.volume_db = normalBarkVolume
 	
@@ -288,7 +287,7 @@ func play_charge_bark_sound():
 	
 	# Create one-shot audio player for charge bark
 	var soundPlayer = AudioStreamPlayer.new()
-	soundPlayer.bus = &"SFX"
+	soundPlayer.volume_db = -5
 	soundPlayer.stream = charge_bark_sound
 	
 	# Auto-delete when finished

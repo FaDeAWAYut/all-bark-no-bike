@@ -16,6 +16,10 @@ config/features=PackedStringArray("4.5", "Mobile")
 boot_splash/image="uid://cehmqjwdyvjim"
 config/icon="uid://dyi8xp56h3jdy"
 
+[audio]
+
+buses/default_bus_layout="uid://colr6vus5fd4s"
+
 [display]
 
 window/size/viewport_width=896

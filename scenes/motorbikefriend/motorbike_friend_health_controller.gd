@@ -84,7 +84,7 @@ func play_random_hurt_sound():
 	
 	# Create one-shot audio player
 	var sound_player = AudioStreamPlayer.new()
-	sound_player.bus = &"SFX"
+	sound_player.volume_db = -5.0
 	sound_player.stream = selected_sound
 	
 	# Auto-delete when finished
@@ -101,7 +101,7 @@ func play_big_damage_sound():
 	
 	# Create one-shot audio player for big damage
 	var sound_player = AudioStreamPlayer.new()
-	sound_player.bus = &"SFX"
+	sound_player.volume_db = -5.0
 	sound_player.stream = big_damage_sound
 	
 	# Auto-delete when finished

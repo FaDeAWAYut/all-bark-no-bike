@@ -68,8 +68,6 @@ var coughDropSounds: Array = [
 	preload("res://assets/sfx/cough_drop_eating3.mp3")
 ]
 
-@export var bgmVolume = -5
-
 @export_category("Debug Options")
 @export var SkipPhaseOne := false
 @export var NoDamage := false
@@ -81,8 +79,6 @@ var coughDropSounds: Array = [
 var previousHP: int = 100
 
 func _ready():
-	AudioServer.set_bus_volume_db(2, -5.0) # set SFX volume
-
 	get_tree().paused = false # unpause from gameover
 	initialize_modules()
 	setup_signal_connections()
@@ -110,12 +106,11 @@ func initialize_modules():
 	add_child(gameManager)
 	
 	music_player = AudioStreamPlayer.new()
-	music_player.bus = &"Music"
 	music_player.name = "BackgroundMusic"
+	music_player.volume_db = -5.0
 	add_child(music_player)
 
 	chadchartSfxPlayer = AudioStreamPlayer.new()
-	chadchartSfxPlayer.bus = &"SFX"
 	chadchartSfxPlayer.name = "ChadchartSfxPlayer"
 	add_child(chadchartSfxPlayer)
 	
@@ -373,7 +368,7 @@ func _on_invincible_timer_timeout():
 
 func play_hurt_sound():
 	var soundPlayer = AudioStreamPlayer.new()
-	soundPlayer.bus = &"SFX"
+	soundPlayer.volume_db = -5.0
 	soundPlayer.stream = hurtSFX
 	
 	soundPlayer.finished.connect(soundPlayer.queue_free)
@@ -383,7 +378,7 @@ func play_hurt_sound():
 
 func play_shield_sound():
 	var soundPlayer = AudioStreamPlayer.new()
-	soundPlayer.bus = &"SFX"
+	soundPlayer.volume_db = -5.0
 	soundPlayer.stream = shieldSFX
 	
 	soundPlayer.finished.connect(soundPlayer.queue_free)
@@ -393,7 +388,7 @@ func play_shield_sound():
 
 func play_hp_gain_sound():
 	var soundPlayer = AudioStreamPlayer.new()
-	soundPlayer.bus = &"SFX"
+	soundPlayer.volume_db = -5.0
 	soundPlayer.stream = healingSFX
 	
 	soundPlayer.finished.connect(soundPlayer.queue_free)
@@ -406,13 +401,13 @@ func play_hp_gain_sound():
 func play_chadchart_appears_sound():
 	if chadchartSfxPlayer:
 		chadchartSfxPlayer.stream = chadchartAppearsSFX
-		chadchartSfxPlayer.volume_db = 5
+		chadchartSfxPlayer.volume_db = 0
 		chadchartSfxPlayer.play()
 	
 func play_chadchart_active_sound():
 	if chadchartSfxPlayer:
 		chadchartSfxPlayer.stream = chadchartActiveSFX
-		chadchartSfxPlayer.volume_db = 0
+		chadchartSfxPlayer.volume_db = -5.0
 		chadchartSfxPlayer.play()
 	
 func play_background_music():
@@ -496,7 +491,7 @@ func play_cough_drop_sound(charge_level: int):
 	var sound_index = charge_level - 1
 	if sound_index < coughDropSounds.size():
 		var sound_player = AudioStreamPlayer.new()
-		sound_player.bus = &"SFX"
+		sound_player.volume_db = -5.0
 		sound_player.stream = coughDropSounds[sound_index]
 		sound_player.finished.connect(sound_player.queue_free)
 		add_child(sound_player)
@@ -556,14 +551,12 @@ func _on_chadchart_appears():
 func activate_chadchart():
 	$TheDawg/AnimatedSprite2D.animation = &"chadchart_active"
 	$TheDawg/AnimatedSprite2D.scale = Vector2(0.25,0.25)
-	if !AudioServer.is_bus_mute(AudioServer.get_bus_index("SFX")):
-		music_player.volume_db = -60.0
-		play_chadchart_active_sound()
+	music_player.volume_db = -60.0
+	play_chadchart_active_sound()
 	await get_tree().create_timer(11.5).timeout
 	
 	# after chadchart use
-	if !AudioServer.is_bus_mute(AudioServer.get_bus_index("SFX")):
-		gradually_increase_bgm_volume(5)
+	gradually_increase_bgm_volume(5)
 	add_child(chadchartWalkout)
 	chadchartWalkout.get_child(2).hide() # hide Control node
 	chadchartWalkout.position = Vector2($TheDawg.position.x,$TheDawg.position.y)
@@ -579,7 +572,7 @@ func gradually_increase_bgm_volume(duration_sec: float):
 	const muteVolume = -60.0
 	for i in range(1, duration_sec*10+1): # *10 for less increase in each step -> smoother increase
 		await get_tree().create_timer(0.1).timeout
-		music_player.volume_db = muteVolume + (0 - muteVolume) * (i/(duration_sec*10))
+		music_player.volume_db = muteVolume + (-5.0 - muteVolume) * (i/(duration_sec*10))
 		
 func calculate_score():
 	# calculate total score after game ended
