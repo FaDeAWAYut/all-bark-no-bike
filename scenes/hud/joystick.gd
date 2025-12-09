@@ -11,7 +11,7 @@ func _ready():
 
 func _input(event):
 	if event is InputEventScreenTouch:
-		if event.pressed and active_touch_id == -1:  # Start tracking a new touch
+		if event.pressed and active_touch_id == -1 and event.position < Vector2(400, 400):  # Start tracking a new touch
 			active_touch_id = event.index
 			touch_position = event.position
 		elif not event.pressed and event.index == active_touch_id: 
