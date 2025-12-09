@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My Template</title>
+    <meta charset="UTF-8" />
+    <style>
+      @font-face {
+        font-family: "PixeloidSans";
+        src: url(PixeloidSans-E40en.ttf) format("truetype");
+      }
+      h1 {
+        font-family: "PixeloidSans", sans-serif;
+        text-align: center;
+        text-shadow: 0px 3px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+          1px 1px 0 #000;
+        color: white;
+      }
+      button {
+        font-family: "PixeloidSans", sans-serif;
+        font-size: 20px;
+        text-align: center;
+        padding: 20px;
+        width: 80%;
+        border-radius: 10px;
+        background: #e99308;
+        color: white;
+        text-shadow: 0px 3px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+          1px 1px 0 #000;
+        color: white;
+      }
+      #container {
+        display: flex;
+        flex-direction: column;
+        justify-items: center;
+        align-items: center;
+      }
+      body {
+        background-color: #faebcb;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+    <script src="$GODOT_URL"></script>
+    <script>
+      var engine = new Engine($GODOT_CONFIG);
+
+      function start() {
+        document.getElementById("launch-game").innerHTML = "Loading...";
+        engine.startGame();
+      }
+    </script>
+    <div id="container">
+      <h1>All Bark! No Bike!</h1>
+      <button id="launch-game" onclick="start()">Launch game</button>
+    </div>
+  </body>
+</html>
