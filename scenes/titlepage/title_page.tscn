@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://m6l4wfojk0vm"]
+[gd_scene load_steps=13 format=3 uid="uid://m6l4wfojk0vm"]
 
 [ext_resource type="Theme" uid="uid://dm051kf62our1" path="res://assets/Theme/game_ui_theme.tres" id="1_4a81q"]
 [ext_resource type="Script" uid="uid://xhxeafu86vlh" path="res://scenes/titlepage/title_page.gd" id="1_847ta"]
@@ -23,6 +23,8 @@ size = Vector2(160, 40)
 size = Vector2(200, 42)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4a81q"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_k57g0"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_847ta"]
 font_size = 18
@@ -212,7 +214,7 @@ anchor_bottom = 0.5
 offset_left = -136.0
 offset_top = -72.0
 offset_right = 136.0
-offset_bottom = 63.0
+offset_bottom = 163.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -236,7 +238,7 @@ layout_mode = 0
 offset_left = 25.0
 offset_top = 51.0
 offset_right = 253.0
-offset_bottom = 118.0
+offset_bottom = 216.0
 theme_override_styles/panel = SubResource("StyleBoxEmpty_4a81q")
 script = ExtResource("4_4a81q")
 
@@ -272,6 +274,37 @@ size_flags_horizontal = 3
 text = "Space"
 autowrap_trim_flags = 0
 
+[node name="Audio" type="Label" parent="SettingsPanel/Settings"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 0
+offset_top = 86.0
+offset_right = 228.0
+offset_bottom = 126.0
+text = "Audio"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AudioContainer" type="Panel" parent="SettingsPanel/Settings"]
+layout_mode = 0
+offset_top = 123.0
+offset_right = 228.0
+offset_bottom = 217.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_k57g0")
+
+[node name="TouchScreenButtonMaster" type="TouchScreenButton" parent="SettingsPanel/Settings/AudioContainer"]
+position = Vector2(147, 21)
+shape = SubResource("RectangleShape2D_k60p2")
+
+[node name="MasterButton" type="Button" parent="SettingsPanel/Settings/AudioContainer/TouchScreenButtonMaster"]
+offset_left = -146.0
+offset_top = -21.0
+offset_right = 81.0
+offset_bottom = 21.0
+size_flags_horizontal = 3
+theme = ExtResource("1_4a81q")
+text = "On"
+autowrap_trim_flags = 0
+
 [node name="HighScore" type="Label" parent="."]
 layout_mode = 0
 offset_left = 346.0
@@ -283,16 +316,6 @@ text = "High score = 0"
 label_settings = SubResource("LabelSettings_847ta")
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="LabelForDebug" type="Label" parent="."]
-layout_mode = 0
-offset_left = 19.0
-offset_top = 10.0
-offset_right = 196.0
-offset_bottom = 95.0
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 10
-theme_override_font_sizes/font_size = 24
 
 [connection signal="pressed" from="MainMenu/MenuOptions/TouchScreenButton" to="." method="_on_new_game_button_pressed"]
 [connection signal="pressed" from="MainMenu/MenuOptions/TouchScreenButton/NewGameButton" to="." method="_on_new_game_button_pressed"]
@@ -326,4 +349,5 @@ theme_override_font_sizes/font_size = 24
 [connection signal="pressed" from="SettingsPanel/TouchScreenButton/CloseSettingsButton" to="MainMenu/MenuOptions" method="show"]
 [connection signal="pressed" from="SettingsPanel/TouchScreenButton/CloseSettingsButton" to="SettingsPanel" method="hide"]
 [connection signal="pressed" from="SettingsPanel/TouchScreenButton/CloseSettingsButton" to="HighScore" method="show"]
-[connection signal="pressed" from="SettingsPanel/Settings/KeybindContainer/ShootButton" to="SettingsPanel/Settings" method="_on_button_pressed" binds= ["ShootButton"]]
+[connection signal="pressed" from="SettingsPanel/Settings/AudioContainer/TouchScreenButtonMaster" to="SettingsPanel/Settings" method="_on_audio_button_pressed" binds= ["Master"]]
+[connection signal="pressed" from="SettingsPanel/Settings/AudioContainer/TouchScreenButtonMaster/MasterButton" to="SettingsPanel/Settings" method="_on_audio_button_pressed" binds= ["Master"]]

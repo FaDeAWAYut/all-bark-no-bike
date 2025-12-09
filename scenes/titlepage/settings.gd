@@ -12,10 +12,13 @@ func _ready() -> void:
 	if useTouchscreen:
 		$Keybind.visible = false
 		$KeybindContainer.visible = false
-		get_parent().size.y = 190
+		$Audio.position.y = -19.0
+		$AudioContainer.position.y = 22.0
+		get_parent().size.y = 135
 		get_parent().position.y = 200
 		
 	_update_labels() # called to refresh the labels
+	_refresh_audio_settings()
 	
 # Whenever a button is pressed, do:
 func _on_button_pressed(button_name: String) -> void:
@@ -55,3 +58,13 @@ func _update_labels() -> void:
 			shoot_button.text = key_text
 	else:
 		shoot_button.text = "Unassigned"
+		
+func _on_audio_button_pressed(channel: String) -> void:
+	var button = $AudioContainer.get_node("TouchScreenButton" + channel).get_node(channel + "Button")
+	var bus_id = AudioServer.get_bus_index(channel)
+	AudioServer.set_bus_mute(bus_id, button.text == "On")
+	button.text = "On" if button.text == "Off" else "Off"
+	
+# refresh in case player plays again (see title screen again)
+func _refresh_audio_settings():
+	$AudioContainer/TouchScreenButtonMaster/MasterButton.text = "Off" if AudioServer.is_bus_mute(AudioServer.get_bus_index("Master")) else "On"
