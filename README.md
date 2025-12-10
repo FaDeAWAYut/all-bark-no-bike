@@ -17,11 +17,5 @@ Available now on Windows, Linux, Android, and Web!
 - Cover Art: vinitian
 
 ## Screenshots
-Phase 1
-
 <img src="./assets/screenshot-2-phase1.png" alt="Screenshot 2: Phase 1" width="70%"/>
-
-<br/>
-Phase 2
-
 <img src="./assets/screenshot-3-phase2.png" alt="Screenshot 3: Phase 2" width="70%"/>
