@@ -7,6 +7,8 @@ extends Control
 @export var show_duration: float = 5.0  # How long to show before auto-hiding
 @export var fade_duration: float = 0.2  # Fade in/out duration
 
+@onready var useTouchscreen = DisplayServer.is_touchscreen_available()
+
 func _ready():
 	# Start hidden
 	modulate.a = 0.0

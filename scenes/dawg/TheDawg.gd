@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 @onready var useTouchscreen = DisplayServer.is_touchscreen_available()
 var speed = 300
-var direction
+var direction: Vector2
 
 func _physics_process(_delta):
 	if useTouchscreen:
@@ -10,7 +10,7 @@ func _physics_process(_delta):
 	else:
 		direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	
-	velocity = direction * speed
+	velocity = direction * speed	
 	move_and_slide()
 
 func take_damage():

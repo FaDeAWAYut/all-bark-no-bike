@@ -82,7 +82,6 @@ var previousHP: int = 100
 
 func _ready():
 	AudioServer.set_bus_volume_db(2, -5.0) # set SFX volume
-	print("main SFX: ",AudioServer.get_bus_volume_db(2))
 
 	get_tree().paused = false # unpause from gameover
 	initialize_modules()
@@ -103,7 +102,8 @@ func _ready():
 		bossHealthController.died.emit()
 
 func initialize_modules():
-	$Joystick.visible = useTouchscreen
+	if $Joystick: # for debug -- delete line 106 later
+		$Joystick.visible = useTouchscreen
 	$ShootButtonMobile.visible = useTouchscreen
 	
 	gameManager = GameManager.new()
@@ -262,8 +262,13 @@ func show_initial_objective():
 		
 		if isPhaseOne:
 			objective_text += "Take him down!"
+			if useTouchscreen:
+				objective_panel.panel.position.x = 256
 		else:
 			objective_text += "Survive the timer!"
+			if useTouchscreen:
+				objective_panel.panel.position.x = 250
+				objective_panel.panel.position.y += 5
 		
 		objective_panel.show_objective(objective_text, true)  # Auto-hide after duration
 	else:

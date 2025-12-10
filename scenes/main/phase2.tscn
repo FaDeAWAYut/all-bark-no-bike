@@ -20,7 +20,7 @@
 [ext_resource type="PackedScene" uid="uid://bv5t0i620xpop" path="res://scenes/motorbikefriend/motorbike_friend.tscn" id="16_flnuf"]
 [ext_resource type="PackedScene" uid="uid://dji8f5amt6dio" path="res://scenes/hud/objective_panel.tscn" id="17_bqc62"]
 [ext_resource type="PackedScene" uid="uid://dq4qgvtssgtc7" path="res://scenes/hud/shoot_button_mobile.tscn" id="18_ga6hj"]
-[ext_resource type="PackedScene" uid="uid://6kkbv2l0adlo" path="res://scenes/hud/joystick.tscn" id="19_lno4l"]
+[ext_resource type="PackedScene" uid="uid://6kkbv2l0adlo" path="res://scenes/hud/joystick.tscn" id="21_p0ifs"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_blune"]
 size = Vector2(64, 504)
@@ -162,9 +162,9 @@ z_index = 10
 
 [node name="ShootButtonMobile" parent="." instance=ExtResource("18_ga6hj")]
 z_index = 5
-position = Vector2(751, 366)
-scale = Vector2(0.8, 0.8)
+position = Vector2(730, 351)
+scale = Vector2(1.1099995, 1.1099995)
 
-[node name="Joystick" parent="." instance=ExtResource("19_lno4l")]
+[node name="Joystick" parent="." instance=ExtResource("21_p0ifs")]
 z_index = 5
-position = Vector2(11, 319)
+position = Vector2(18, 315)
